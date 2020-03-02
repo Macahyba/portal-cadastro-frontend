@@ -1,0 +1,9 @@
+.example-spacer {
+    flex: auto;
+}
+
+a {
+    color:white;
+    text-decoration:none;
+    cursor:pointer;
+}
