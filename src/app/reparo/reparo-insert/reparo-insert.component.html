@@ -1,0 +1,76 @@
+<div><form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>Cliente</mat-label>
+        <input matInput placeholder="Ex. TV Globo">
+        </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+        <mat-label>Nome Completo</mat-label>
+        <input matInput placeholder="Ex. TV Globo">
+        </mat-form-field>
+    <br>
+    <mat-form-field class="example-full-width">
+        <mat-label>CNPJ</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>        
+    <mat-form-field class="example-full-width">
+        <mat-label>Responsável</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>            
+    <mat-form-field class="example-full-width">
+        <mat-label>Departamento</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>            
+    <mat-form-field class="example-full-width">
+        <mat-label>Equipamento</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>            
+    <mat-form-field class="example-full-width">
+        <mat-label>Serial Number</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>        
+    <mat-form-field class="example-full-width">
+        <mat-label>Valor</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>        
+    <mat-form-field class="example-full-width">
+        <mat-label>Desconto</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>            
+    <mat-form-field class="example-full-width">
+        <mat-label>Valor Final</mat-label>
+        <input matInput>
+        </mat-form-field>
+    <br>            
+    <mat-form-field appearance="fill">
+      <mat-label>Select</mat-label>
+      <mat-select>
+        <mat-option value="option">Option</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Textarea</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Assignee</mat-label>
+    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" placeholder="Ex. TV Globo">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+<app-datepicker></app-datepicker>
+</div>

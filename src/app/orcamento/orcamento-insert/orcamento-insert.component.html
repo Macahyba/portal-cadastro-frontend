@@ -1,0 +1,79 @@
+<form>
+  <mat-grid-list cols="2"  rowHeight="50px">  
+    <mat-grid-tile [colspan]="1" [rowspan]="9">
+        <app-customer class="top-left"></app-customer>
+    </mat-grid-tile>         
+    
+    <mat-grid-tile [colspan]="1" [rowspan]="9">
+      <div class="top-left">
+        <mat-card class="outer-card">
+          <mat-card>   
+            <mat-form-field class="example-full-width">
+              <mat-label>Serviço</mat-label>
+              <mat-select [ngModel]="selectedService"  (ngModelChange)="selectService($event)" name="selectService">
+                <mat-option *ngFor="let s of services" [value]="s">{{s.name}}</mat-option>          
+              </mat-select>
+            </mat-form-field>
+            <br>            
+            <mat-form-field class="example-full-width">
+              <mat-label>Descrição</mat-label>
+              <input matInput disabled [value]="selectedService.description">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Preço</mat-label>
+              <input matInput disabled [value]="selectedService.price">
+            </mat-form-field>
+            <button mat-mini-fab color="primary">+</button>
+          </mat-card> 
+        </mat-card>  
+        
+      </div>    
+    </mat-grid-tile>      
+
+    <mat-grid-tile [colspan]="1" [rowspan]="6">
+      <div class="bottom-left">
+        <mat-card class="outer-card">
+          <mat-card>   
+            <mat-form-field class="example-full-width">
+              <mat-label>Equipamento</mat-label>
+              <input matInput>
+            </mat-form-field>
+            <br>            
+            <mat-form-field class="example-full-width">
+              <mat-label>Serial Number</mat-label>
+              <input matInput>
+            </mat-form-field>
+          </mat-card> 
+        </mat-card>
+      </div>
+    </mat-grid-tile>       
+
+    <mat-grid-tile [colspan]="1" [rowspan]="6">
+      <div class="bottom-left">
+        <mat-card class="outer-card">
+          <mat-card>
+            <mat-form-field class="example-full-width">
+              <mat-label>Valor</mat-label>
+              <input name="valor" matInput value={{totalPrice}} disabled>
+              <span matPrefix>R$&nbsp;</span>
+            </mat-form-field>
+            <br>        
+            <mat-form-field class="example-full-width">
+              <mat-label>Desconto</mat-label>
+              <input matInput name="desconto" [formControl]="desconto">
+              <span matSuffix>%</span>
+            </mat-form-field>
+            <br>            
+            <mat-form-field class="example-full-width">
+              <mat-label>Valor Final</mat-label>
+              <input [value]="returnTotal()" matInput disabled value="{{totalPrice}}">
+              <span matPrefix>R$&nbsp;</span>
+            </mat-form-field>
+          </mat-card> 
+        </mat-card>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list> 
+</form> 
+ 
+<app-datepicker></app-datepicker>
