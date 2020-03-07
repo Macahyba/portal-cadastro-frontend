@@ -1,6 +1,6 @@
 <mat-form-field>
     <mat-label>Selecione a data</mat-label>
-    <input matInput [matDatepicker]="dp">
+    <input matInput [matDatepicker]="dp" [formControl]="date" (ngModelChange)="selected($event)">
     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
     <mat-datepicker #dp></mat-datepicker>
   </mat-form-field>

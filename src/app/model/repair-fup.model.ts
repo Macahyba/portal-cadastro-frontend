@@ -12,5 +12,12 @@ export class RepairFupModel {
         public repair: RepairModel,
         public spareParts: Set<SparePartModel>,
         public equipment: EquipmentModel
-    ){}
+    ){
+        this.id = id || null
+        this.updateDate = updateDate || null
+        this.user = user || null
+        this.repair = repair || null
+        this.spareParts = spareParts || null
+        this.equipment = equipment || null
+    }
 }

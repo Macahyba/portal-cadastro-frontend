@@ -25,17 +25,18 @@ import { MatToolbarModule,
           MatDividerModule,
           MatListModule,
           MatCardModule,
-          MatGridListModule  } from '@angular/material';
+          MatGridListModule,
+          MatCheckboxModule  } from '@angular/material';
 import { ReparoInsertComponent } from './reparo/reparo-insert/reparo-insert.component';
 import { OrcamentoInsertComponent } from './orcamento/orcamento-insert/orcamento-insert.component';
 import { LoginComponent } from './login/login.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
-import { OrcamentoDetailComponent } from './orcamento/orcamento-detail/orcamento-detail.component';
-import { ReparoDetailComponent } from './reparo/reparo-detail/reparo-detail.component';
+import { OrcamentoDetailComponent } from './orcamento/orcamento-list/orcamento-detail/orcamento-detail.component';
+import { ReparoDetailComponent } from './reparo/reparo-list/reparo-detail/reparo-detail.component';
 import { CustomerComponent } from './shared/customer/customer.component';
 import { EquipmentComponent } from './shared/equipment/equipment.component';
-import { ServiceComponent } from './shared/service/service.component';
-
+import { ValorComponent } from './shared/valor/valor.component';
+import { ServicesComponent } from './shared/services/services.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ServiceComponent } from './shared/service/service.component';
     ReparoDetailComponent,
     CustomerComponent,
     EquipmentComponent,
-    ServiceComponent
+    ValorComponent,
+    ServicesComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +78,8 @@ import { ServiceComponent } from './shared/service/service.component';
     MatDividerModule,
     MatListModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

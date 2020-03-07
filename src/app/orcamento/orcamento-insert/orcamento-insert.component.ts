@@ -1,11 +1,7 @@
-import { Component, OnInit, NgModule, OnChanges } from '@angular/core';
+import { Component, OnInit, NgModule, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import { QuotationModel } from 'src/app/model/quotation.model';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ServiceModel } from 'src/app/model/service.model';
-import { CustomerModel } from 'src/app/model/customer.model';
 
 export interface User {
   name: string;
@@ -17,11 +13,11 @@ export interface User {
 })
 export class OrcamentoInsertComponent implements OnInit{
 
-
   selectedService: ServiceModel = new ServiceModel();
   desconto = new FormControl('');
   totalPrice: number = 0;
   services: ServiceModel[];
+  creationDate: Date;
   
   constructor(private _http: QuotationService) {
    
@@ -32,23 +28,14 @@ export class OrcamentoInsertComponent implements OnInit{
      
     this._http.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
-      this.selectedService = this.services[0];
       this.totalPrice = this.selectedService.price;
-    })    
+    })           
 
-         
-
-  }
-
-
-  returnTotal(){
-    return this.totalPrice*(1-this.desconto.value/100);
   }
 
   selectService(service){
     this.selectedService = service;
     this.totalPrice = this.selectedService.price;
   }
-
 
 }

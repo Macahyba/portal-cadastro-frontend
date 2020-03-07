@@ -3,11 +3,11 @@
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="2">
       <div class="example-full-width">
-        <app-customer ></app-customer>
+        <app-customer disabled="disabled" [injectedCustomer]="customer" [injectedContact]="contact"></app-customer>
         <br>
-        <app-equipment ></app-equipment>
+        <app-equipment disabled="disabled" [injectedEquipment]="equipment"></app-equipment>
         <br>
-        <app-services (servicesToInsert)="totalPrice = $event"></app-services>  
+        <app-services disabled="disabled" [injectedServices]="services" (servicesToInsert)="totalPrice = $event"></app-services>  
         <br>
         <app-valor [totalPrice]="totalPrice" ></app-valor>
         <br>
@@ -17,5 +17,5 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-</mat-grid-list>
+  </mat-grid-list>
 </form>

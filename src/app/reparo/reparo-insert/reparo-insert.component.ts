@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReparoInsertComponent implements OnInit {
 
+  creationDate: Date;
+  
   constructor() { }
 
   ngOnInit() {

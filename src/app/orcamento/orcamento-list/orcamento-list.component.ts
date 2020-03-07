@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./orcamento-list.component.scss']
 })
 export class OrcamentoListComponent implements OnInit {
-  displayedColumns: string[] = ['label', 'name', 'totalPrice', 'status', 'creationDate'];
+  displayedColumns: string[] = ['label', 'name', 'equipment', 'serialNumber', 'totalPrice', 'status', 'creationDate'];
   dataSource: MatTableDataSource<QuotationModel>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;

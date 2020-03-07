@@ -20,5 +20,19 @@ export class QuotationModel {
         public contact: ContactModel,
         public aprovalUser: UserModel,
         public services: Set<ServiceModel>
-    ){}
+    ){
+        this.id = id || null
+        this.label = label || null
+        this.totalPrice = totalPrice || null
+        this.totalDiscount = totalDiscount || null
+        this.status = status || null
+        this.creationDate = creationDate || null
+        this.approvalDate = approvalDate || null
+        this.user = user || null
+        this.equipments = equipments || null
+        this.customer = customer || null
+        this.contact = contact || null
+        this.aprovalUser = aprovalUser || null
+        this.services = services || null
+    }
 }

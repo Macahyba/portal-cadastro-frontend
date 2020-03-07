@@ -8,5 +8,11 @@ export class ContactModel {
         public email?: string,
         public department?: string,
         public customer?: CustomerModel
-    ){}
+    ){
+        this.id = id || null
+        this.name = name || null
+        this.email = email || null
+        this.department = department || null
+        this.customer = customer || null
+    }
 }

@@ -1,0 +1,25 @@
+<mat-card class="outer-card">
+    <table mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row"> 
+                <mat-checkbox 
+                    [disabled]="disableChk()" 
+                    [checked]="isSelected(row.id)" 
+                    (change)="serviceChosen($event, row.price)" 
+                    value={{row.id}}>{{row.name}}
+                </mat-checkbox>
+            </td>
+        </ng-container>    
+        <ng-container matColumnDef="desc">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+        </ng-container>  
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">R$ {{row.price}} </td>
+        </ng-container>            
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" style="display: none;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</mat-card>

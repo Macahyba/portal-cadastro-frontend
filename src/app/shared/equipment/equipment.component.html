@@ -1,1 +1,18 @@
-<p>equipment works!</p>
+<mat-card class="outer-card">
+    <mat-card>   
+    <mat-form-field class="example-full-width">
+        <mat-label>Equipamento</mat-label>
+        <input type="text" class="example-form" matInput placeholder="Ex. PDW-700" [matAutocomplete]="equip" [formControl]="equipmentName">
+        <mat-autocomplete #equip="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let equipment of filteredEquipment | async" [value]="equipment.name">
+              {{equipment.name}}
+            </mat-option>
+        </mat-autocomplete>          
+    </mat-form-field>
+    <br>            
+    <mat-form-field class="example-full-width">
+        <mat-label>Serial Number</mat-label>
+        <input type="text" class="example-form" matInput [formControl]="equipmentSerialNumber">   
+    </mat-form-field>
+    </mat-card> 
+</mat-card>

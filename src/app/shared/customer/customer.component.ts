@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -11,7 +11,11 @@ import { ContactModel } from 'src/app/model/contact.model';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, OnChanges {
+ 
+  @Input() disabled: string;
+  @Input() injectedCustomer: CustomerModel;
+  @Input() injectedContact: ContactModel;
 
   customers: CustomerModel[];
   customerName = new FormControl();
@@ -27,6 +31,8 @@ export class CustomerComponent implements OnInit {
   filteredContact: Observable<ContactModel[]>;
   selectedContact: ContactModel = new ContactModel();
 
+
+
   constructor(private _http: QuotationService) { }
 
   ngOnInit() {
@@ -40,8 +46,31 @@ export class CustomerComponent implements OnInit {
         map(value => this._filter(value))
       ); 
 
-    })         
+    })      
+  }
 
+  ngOnChanges(){
+    
+    if(this.disabled === "disabled"){
+      this.customerName.disable();
+      this.customerFullName.disable();
+      this.customerCnpj.disable();
+      this.contactName.disable();
+      this.contactDept.disable();
+      this.contactEmail.disable();
+    }  
+
+    if (this.injectedCustomer){
+      this.customerName.setValue({name:this.injectedCustomer.name});  
+      this.customerFullName.setValue(this.injectedCustomer.fullName);
+      this.customerCnpj.setValue(this.injectedCustomer.cnpj);
+    }
+
+    if(this.injectedContact){
+      this.contactName.setValue({name:this.injectedContact.name});
+      this.contactDept.setValue(this.injectedContact.department);
+      this.contactEmail.setValue(this.injectedContact.email);      
+    }  
   }
 
   displayFn(customer: CustomerModel): string {
@@ -65,8 +94,8 @@ export class CustomerComponent implements OnInit {
 
       this.selectedCustomer = new CustomerModel();
       this.selectedContact = new ContactModel();
-      this.customerFullName.disable();
-      this.customerCnpj.disable();
+      this.customerFullName.enable();
+      this.customerCnpj.enable();
       this.contactName.setValue("");
 
     }

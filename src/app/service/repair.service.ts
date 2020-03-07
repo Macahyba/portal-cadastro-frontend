@@ -5,12 +5,16 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
   })
 
-export class QuotationService {
+export class RepairService {
     
     constructor(private http: HttpClient){}
     
-    getQuotations(){
-        return this.http.get('http://127.0.0.1:8080/portalcadastro/quotations/');
+    getRepairs(){
+        return this.http.get('http://127.0.0.1:8080/portalcadastro/repairs/');
+    }
+
+    getOneRepair(id: string){
+        return this.http.get(`http://127.0.0.1:8080/portalcadastro/repairs/${id}`);
     }
 
     getOneQuotation(id: string){

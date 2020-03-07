@@ -15,11 +15,26 @@ export class RepairModel {
         public notaFiscal: string,
         public tat: number,
         public status: StatusModel,
-        public notadeEntrada: string,
+        public notaDeEntrada: string,
         public repairFups: Set<RepairFupModel>,
         public user: UserModel,
         public equipment: EquipmentModel,
         public customer: CustomerModel,
         public contact: ContactModel        
-    ){}
+    ){
+        this.id = id || null
+        this.creationDate = creationDate || null
+        this.endDate = endDate || null
+        this.sapNotification = sapNotification || null
+        this.warranty = warranty || null
+        this.notaFiscal = notaFiscal || null
+        this.tat = tat || null
+        this.status = status || null
+        this.notaDeEntrada = notaDeEntrada || null
+        this.repairFups = repairFups || null
+        this.user = user || null
+        this.equipment = equipment || null
+        this.customer = customer || null
+        this.contact = contact || null
+    }
 }

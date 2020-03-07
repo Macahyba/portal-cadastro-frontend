@@ -1,33 +1,31 @@
-<form>
-  <mat-grid-list cols="4" rowHeight="1500px">
+<mat-grid-list cols="4" rowHeight="1100px">
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="2">
       <div class="example-full-width">
-        <app-customer ></app-customer>
+        <app-customer disabled="disabled" [injectedCustomer]="customer" [injectedContact]="contact"></app-customer>
         <br>
-        <app-equipment ></app-equipment>
+        <app-equipment disabled="disabled" [injectedEquipment]="equipment"></app-equipment>
         <br>
         <mat-card class="outer-card">
           <mat-card>
             <mat-form-field class="example-full-width">
               <mat-label>SAP Notification</mat-label>
-              <input matInput>
+              <input matInput [value]="sapNotification" disabled>
             </mat-form-field>
             <br>        
             <mat-form-field class="example-full-width">
               <mat-label>Nota de Entrada</mat-label>
-              <input matInput>
+              <input matInput [value]="notaDeEntrada" disabled>
             </mat-form-field>
             <br>            
-            <mat-checkbox>Garantia</mat-checkbox>     
+            <mat-checkbox [checked]="warranty" disabled>Garantia</mat-checkbox>     
           </mat-card> 
         </mat-card>        
         <br>
         <app-datepicker (dateWasSelected)="creationDate = $event"></app-datepicker>
         <br>
-        <button mat-raised-button color="primary">Enviar</button>
+        <button mat-raised-button color="primary">Atualizar</button>
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
 </mat-grid-list>
-</form>

@@ -7,28 +7,17 @@
 
 .example-full-width {
   width: 100%;
+  align-self: baseline;
 }
 
 .outer-card {
 
   background-color: mat-color($primaryPalette);
-  width: 90%;
+
 }
-
-//mat-grid-tile{
-//  background-color: gray;
-//}
-
-.top-left {
-  width: 100% !important;
-  height: 100% !important;
+// CLEAN?
+.center {
+  justify-content: center;
+  align-content: center;
   display: flex;
-  align-items: flex-start;
-}
-
-.bottom-left {
-  width: 100% !important;
-  height: 100% !important;
-  display: flex;
-  align-items: flex-end;
 }
