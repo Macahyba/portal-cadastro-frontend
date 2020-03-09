@@ -1,10 +1,11 @@
-<mat-card class="outer-card">
+<mat-card  [formGroup]="customerFormGroup" class="outer-card">
     <mat-card>
       <mat-form-field class="example-full-width">
         <mat-label>Cliente</mat-label>
+        <input type="hidden" formControlName="customerName" />
         <input type="text" class="example-form" matInput placeholder="Ex. TV Globo" 
-          [matAutocomplete]="cust" 
-          [formControl]="customerName" 
+          [matAutocomplete]="cust"
+          [formControl]="clientAutoComplete"
           (ngModelChange)="selectCustomer($event)">
         <mat-autocomplete #cust="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let customer of filteredCustomer | async" [value]="customer">
@@ -15,22 +16,23 @@
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>Nome Completo</mat-label>
-        <input matInput value={{selectedCustomer.fullName}} [formControl]="customerFullName">
+        <input matInput formControlName="customerFullName">
       </mat-form-field>
       <br>
       <mat-form-field class="example-full-width">
         <mat-label>CNPJ</mat-label>
-        <input matInput value={{selectedCustomer.cnpj}} [formControl]="customerCnpj">
+        <input matInput formControlName="customerCnpj">
       </mat-form-field>
       <br>        
       <mat-form-field class="example-full-width">
         <mat-label>Responsável</mat-label>
+        <input type="hidden" formControlName="contactName" />
         <input type="text" class="example-form" matInput placeholder="Ex. Togashi" 
-          [matAutocomplete]="cont" 
-          [formControl]="contactName" 
+          [matAutocomplete]="cont"
+          [formControl]="contactAutoComplete"
           (ngModelChange)="selectContact($event)">
         <mat-autocomplete #cont="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let contact of filteredContact" [value]="contact">
+            <mat-option *ngFor="let contact of filteredContact | async" [value]="contact">
                 {{contact.name}}
             </mat-option>            
         </mat-autocomplete>
@@ -38,12 +40,12 @@
       <br>            
       <mat-form-field class="example-full-width">
         <mat-label>Departamento</mat-label>
-        <input matInput value={{selectedContact.department}} [formControl]="contactDept">
+        <input matInput formControlName="contactDept">
       </mat-form-field>  
       <br>            
       <mat-form-field class="example-full-width">
         <mat-label>E-mail</mat-label>
-        <input matInput value={{selectedContact.email}} [formControl]="contactEmail">
+        <input matInput formControlName="contactEmail">
       </mat-form-field>  
     </mat-card>  
 </mat-card>
