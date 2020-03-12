@@ -5,7 +5,7 @@
       <div class="example-full-width">
         <app-customer [customerFormGroup]="customerFormGroup" ></app-customer>
         <br>
-        <app-equipment ></app-equipment>
+        <app-equipment [equipmentFormGroup]='equipmentFormGroup'></app-equipment>
         <br>
         <mat-card class="outer-card">
           <mat-card>
@@ -29,5 +29,5 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-</mat-grid-list>
+  </mat-grid-list>
 </form>

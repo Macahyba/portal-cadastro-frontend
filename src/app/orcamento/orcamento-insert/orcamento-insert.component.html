@@ -3,9 +3,9 @@
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="2">
       <div class="example-full-width">
-        <app-customer [customerFormGroup]='customerFormGroup' ></app-customer>
+        <app-customer [customerFormGroup]='customerFormGroup'></app-customer>
         <br>
-        <app-equipment ></app-equipment>
+        <app-equipment [equipmentFormGroup]='equipmentFormGroup'></app-equipment>
         <br>
         <app-services (servicesToInsert)="totalPrice = $event"></app-services>  
         <br>

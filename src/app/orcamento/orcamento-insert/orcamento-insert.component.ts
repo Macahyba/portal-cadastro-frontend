@@ -1,5 +1,5 @@
 import { Component, OnInit, NgModule, OnChanges, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ServiceModel } from 'src/app/model/service.model';
 
@@ -15,12 +15,16 @@ export class OrcamentoInsertComponent implements OnInit{
 
   orcamentoFormGroup = this.fb.group({
     customer: this.fb.group({
-      customerName: this.fb.control(['']),
-      customerFullName: this.fb.control(['']),
-      customerCnpj: this.fb.control(['']),
-      contactName:this.fb.control(['']),
-      contactDept:this.fb.control(['']),
-      contactEmail: this.fb.control(['']),
+      customerName: this.fb.control(''),
+      customerFullName: this.fb.control('', Validators.required),
+      customerCnpj: this.fb.control(''),
+      contactName:this.fb.control(''),
+      contactDept:this.fb.control(''),
+      contactEmail: this.fb.control(''),
+    }),
+    equipment: this.fb.group({
+      equipmentName: this.fb.control(''),
+      equipmentSerialNumber: this.fb.control(''),
     })
   });
 
@@ -32,6 +36,10 @@ export class OrcamentoInsertComponent implements OnInit{
   
   get customerFormGroup() {
     return this.orcamentoFormGroup.controls.customer;
+  }
+
+  get equipmentFormGroup() {
+    return this.orcamentoFormGroup.controls.equipment;
   }
 
   constructor(private _http: QuotationService, private fb: FormBuilder) {

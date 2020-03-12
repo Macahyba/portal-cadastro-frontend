@@ -18,12 +18,20 @@ export class ReparoInsertComponent implements OnInit {
       contactName:this.fb.control(['']),
       contactDept:this.fb.control(['']),
       contactEmail: this.fb.control(['']),
+    }),
+    equipment: this.fb.group({
+      equipmentName: this.fb.control(''),
+      equipmentSerialNumber: this.fb.control(''),
     })
   });
 
   get customerFormGroup() {
     return this.reparoFormGroup.controls.customer;
   }
+
+  get equipmentFormGroup() {
+    return this.reparoFormGroup.controls.equipment;
+  }  
   
   constructor(private fb: FormBuilder) { }
 

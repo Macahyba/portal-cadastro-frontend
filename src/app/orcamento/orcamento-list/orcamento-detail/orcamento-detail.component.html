@@ -1,11 +1,18 @@
-<form>
+<form [formGroup]="orcamentoFormGroup">
   <mat-grid-list cols="4" rowHeight="1500px">
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="2">
       <div class="example-full-width">
-        <app-customer disabled="disabled" [injectedCustomer]="customer" [injectedContact]="contact"></app-customer>
+        <app-customer 
+          disabled="disabled" 
+          [injectedCustomer]="customer" 
+          [injectedContact]="contact"
+          [customerFormGroup]='customerFormGroup'></app-customer>
         <br>
-        <app-equipment disabled="disabled" [injectedEquipment]="equipment"></app-equipment>
+        <app-equipment 
+          disabled="disabled" 
+          [injectedEquipment]="equipment"
+          [equipmentFormGroup]='equipmentFormGroup'></app-equipment>
         <br>
         <app-services disabled="disabled" [injectedServices]="services" (servicesToInsert)="totalPrice = $event"></app-services>  
         <br>

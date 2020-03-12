@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input,  AfterViewInit, OnChanges } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, from, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ContactModel } from 'src/app/model/contact.model';
@@ -11,7 +11,7 @@ import { ContactModel } from 'src/app/model/contact.model';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent implements OnInit, AfterViewInit {
+export class CustomerComponent implements OnInit, OnChanges {
  
   @Input() disabled: string;
   @Input() injectedCustomer: CustomerModel;
@@ -46,7 +46,6 @@ export class CustomerComponent implements OnInit, AfterViewInit {
 
   filteredCustomer: Observable<CustomerModel[]>;
 
-  selectedContact: ContactModel = new ContactModel();
   filteredContact: Observable<ContactModel[]> = 
     this.clientAutoComplete.valueChanges.pipe(
       filter(customer => customer.contacts !== undefined && customer.contacts !== null),
@@ -70,25 +69,25 @@ export class CustomerComponent implements OnInit, AfterViewInit {
     })      
   }
 
-  ngAfterViewInit(){
+  ngOnChanges(){
     
-    if(this.disabled === "disabled"){
-      this.customerName.disable();
-      this.customerFullName.disable();
-      this.customerCnpj.disable();
-      this.contactName.disable();
-      this.contactDept.disable();
-      this.contactEmail.disable();
-    }  
+    // if(this.disabled === "disabled"){
+    //   this.clientAutoComplete.disable();
+    //   this.customerFullName.disable();
+    //   this.customerCnpj.disable();
+    //   this.contactAutoComplete.disable();
+    //   this.contactDept.disable();
+    //   this.contactEmail.disable();
+    // }  
 
     if (this.injectedCustomer){
-      this.customerName.setValue({name:this.injectedCustomer.name});  
+      this.clientAutoComplete.setValue(this.injectedCustomer.name);  
       this.customerFullName.setValue(this.injectedCustomer.fullName);
       this.customerCnpj.setValue(this.injectedCustomer.cnpj);
     }
 
     if(this.injectedContact){
-      this.contactName.setValue({name:this.injectedContact.name});
+      this.contactName.setValue(this.injectedContact.name);
       this.contactDept.setValue(this.injectedContact.department);
       this.contactEmail.setValue(this.injectedContact.email);      
     }  
@@ -114,11 +113,10 @@ export class CustomerComponent implements OnInit, AfterViewInit {
       this.customerCnpj.setValue(customer.cnpj);
     } else {
 
-      this.selectedContact = new ContactModel();
       this.customerFullName.enable();
       this.customerCnpj.enable();
 
-      this.customerName.setValue("");
+      this.customerName.setValue(this.clientAutoComplete.value);
       this.customerFullName.setValue("");
       this.customerCnpj.setValue("");
 
@@ -133,7 +131,6 @@ export class CustomerComponent implements OnInit, AfterViewInit {
 
     if(contact instanceof Object){
 
-      this.selectedContact = contact;
       this.contactDept.disable();
       this.contactEmail.disable();
 
@@ -142,11 +139,10 @@ export class CustomerComponent implements OnInit, AfterViewInit {
       this.contactEmail.setValue(contact.email);
     } else {
 
-      this.selectedContact = new ContactModel();   
       this.contactDept.enable();
       this.contactEmail.enable();
       
-      this.contactName.setValue("");
+      this.contactName.setValue(this.contactAutoComplete.value);
       this.contactDept.setValue("");
       this.contactEmail.setValue("");
     }

@@ -1,9 +1,10 @@
-<mat-card  [formGroup]="customerFormGroup" class="outer-card">
+<mat-card [formGroup]="customerFormGroup" class="outer-card">
     <mat-card>
       <mat-form-field class="example-full-width">
-        <mat-label>Cliente</mat-label>
-        <input type="hidden" formControlName="customerName" />
-        <input type="text" class="example-form" matInput placeholder="Ex. TV Globo" 
+        <mat-label>Cliente</mat-label>    
+        <input *ngIf="injectedCustomer" type="text" matInput  formControlName="customerName">        
+        <input *ngIf="!injectedCustomer" type="hidden" formControlName="customerName" />
+        <input *ngIf="!injectedCustomer" type="text" class="example-form" matInput placeholder="Ex. TV Globo" 
           [matAutocomplete]="cust"
           [formControl]="clientAutoComplete"
           (ngModelChange)="selectCustomer($event)">
