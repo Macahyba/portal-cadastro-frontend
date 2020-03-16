@@ -1,4 +1,4 @@
-<form [formGroup]="reparoFormGroup">
+<form [formGroup]="reparoFormGroup" (submit)="submitForm()">
   <mat-grid-list cols="4" rowHeight="1500px">
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="2">
@@ -11,21 +11,23 @@
           <mat-card>
             <mat-form-field class="example-full-width">
               <mat-label>SAP Notification</mat-label>
-              <input matInput>
+              <input matInput [formControl]="sapNotification">
             </mat-form-field>
-            <br>        
+            <br>
             <mat-form-field class="example-full-width">
               <mat-label>Nota de Entrada</mat-label>
-              <input matInput>
+              <input matInput [formControl]="notaDeEntrada">
             </mat-form-field>
-            <br>            
-            <mat-checkbox>Garantia</mat-checkbox>     
-          </mat-card> 
-        </mat-card>        
+            <br>
+            <mat-checkbox matInput [formControl]="warranty">Garantia</mat-checkbox>
+          </mat-card>
+        </mat-card>
         <br>
-        <app-datepicker (dateWasSelected)="creationDate = $event"></app-datepicker>
+        <app-datepicker
+          (dateWasSelected)="creationDate = $event"
+          [dateFormGroup]="dateFormGroup"></app-datepicker>
         <br>
-        <button mat-raised-button color="primary" (click)="mariolar()" >Enviar</button>
+        <button mat-raised-button color="primary">Enviar</button>
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>

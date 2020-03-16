@@ -1,7 +1,6 @@
 import { ContactModel } from './contact.model';
 
 export class CustomerModel {
-    constructor();
     constructor(
         public id?: number,
         public name?: string,

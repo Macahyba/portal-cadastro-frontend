@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { FormControl, FormGroup  } from '@angular/forms';
+import { FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-equipment',
@@ -16,23 +16,17 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
   @Input() injectedEquipment: EquipmentModel;
   @Input() equipmentFormGroup: FormGroup;
 
-  get equipmentName() : FormControl {
-    return this.equipmentFormGroup.controls.equipmentName as FormControl;
-  }
-
-  get equipmentSerialNumber() : FormControl{
-    return this.equipmentFormGroup.controls.equipmentSerialNumber as FormControl;
-  }
+  equipmentGroup: FormGroup;
+  id = new FormControl('');
+  name = new FormControl('', Validators.required);
+  serialNumber = new FormControl('', Validators.required);
 
   equipmentAutoComplete = new FormControl('');
 
   equipments: EquipmentModel[];
   filteredEquipment: Observable<EquipmentModel[]>;
 
-  constructor(private _http: QuotationService) { }
-
-  ngOnInit() {
-
+  constructor(private _http: QuotationService, private _ref: ChangeDetectorRef) {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 
@@ -41,28 +35,44 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
         startWith(''),
         map(value => this._filter(<EquipmentModel[]>data, value)),
         map(value => this._uniqueName(value)),
-      ); 
+      );
 
-    })      
+    })
+   }
+
+  ngOnInit() {
+    this.equipmentGroup =  new FormGroup({
+        'id' : this.id,
+        'name' : this.name ,
+        'serialNumber' : this.serialNumber
+    })
+
+    this.equipmentFormGroup.registerControl('equipment', this.equipmentGroup);
+    this._ref.detectChanges();
   }
 
   ngAfterViewInit(){
-    // if (this.disabled === "disabled"){
-    //   this.equipmentName.disable();
-    //   this.equipmentSerialNumber.disable();
-    // }
+    setTimeout(() => {
 
-    // if(this.injectedEquipment){
-    //   this.equipmentName.setValue(this.injectedEquipment.name);
-    //   this.equipmentSerialNumber.setValue(this.injectedEquipment.serialNumber);
-    // }
+      if(this.injectedEquipment){
+        this.equipmentGroup.controls.id.setValue(this.injectedEquipment.id);
+        this.equipmentGroup.controls.name.setValue(this.injectedEquipment.name);
+        this.equipmentGroup.controls.serialNumber.setValue(this.injectedEquipment.serialNumber);
+      }
+
+      if (this.disabled === "disabled"){
+        this.equipmentGroup.controls.name.disable();
+        this.equipmentGroup.controls.serialNumber.disable();
+        this.equipmentFormGroup.removeControl('equipment');
+      }
+    }, 0);
   }
 
   private _filter(data: EquipmentModel[], name: any): EquipmentModel[] {
 
     const filterValue = name.name ? name.name.toLowerCase() : name.toLowerCase();
     return data.filter(option => option.name.toLowerCase().includes(filterValue));
-  } 
+  }
 
   private _uniqueName(array: any): EquipmentModel[]{
 
@@ -70,7 +80,7 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
     const map = new Map();
     for (const item of array) {
         if(!map.has(item.name)){
-            map.set(item.name, true);   
+            map.set(item.name, true);
             result.push({name: item.name});
         }
     }
@@ -81,17 +91,16 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
     return equipment && equipment.name ? equipment.name : '';
   }
 
-  selectCustomer(equipment: EquipmentModel){
-    
-    if (equipment instanceof Object) {
-    
-      this.equipmentName.setValue(equipment.name);
-    
-    } else {
-      
-      this.equipmentName.setValue(this.equipmentAutoComplete.value);
-    }
-    
-  }
+  selectEquipment(equipment){
 
+    if (equipment instanceof Object) {
+
+      this.equipmentGroup.controls.name.setValue(equipment.name);
+
+    } else {
+
+      this.equipmentGroup.controls.name.setValue(this.equipmentAutoComplete.value);
+    }
+
+  }
 }

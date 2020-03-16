@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ActivatedRoute } from '@angular/router';
 import { QuotationModel } from 'src/app/model/quotation.model';
@@ -6,7 +6,10 @@ import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { ServiceModel } from 'src/app/model/service.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
+import { StatusModel } from 'src/app/model/status.model';
+import { Subscription, Observable } from 'rxjs';
+import { UserModel } from 'src/app/model/user.model';
 
 @Component({
   selector: 'app-orcamento-detail',
@@ -15,39 +18,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class OrcamentoDetailComponent implements OnInit {
 
-  orcamentoFormGroup = this.fb.group({
-    customer: this.fb.group({
-      customerName: this.fb.control(''),
-      customerFullName: this.fb.control('', Validators.required),
-      customerCnpj: this.fb.control(''),
-      contactName:this.fb.control(''),
-      contactDept:this.fb.control(''),
-      contactEmail: this.fb.control(''),
-    }),
-    equipment: this.fb.group({
-      equipmentName: this.fb.control({value:'', disabled: true}),
-      equipmentSerialNumber: this.fb.control({value:'', disabled: true}),
-    })
-  });
-  
-  get customerFormGroup() {
-    return this.orcamentoFormGroup.controls.customer;
-  }
-
-  get equipmentFormGroup() {
-    return this.orcamentoFormGroup.controls.equipment;
-  }
-
-  constructor(private _http: QuotationService, private route: ActivatedRoute, private fb: FormBuilder) { 
-    this.route.params.subscribe( params => this.id = params.id );
-    this._http.getOneQuotation(this.id).subscribe(data =>{
-      this.quotation = <QuotationModel>data;
-      this.customer = this.quotation.customer;
-      this.contact = this.quotation.contact;
-      this.equipment = this.quotation.equipments[0];
-      this.services = Array.from(this.quotation.services);
-    })    
-  }
+  totalPrice: number = 0;
 
   id: string;
   quotation: QuotationModel;
@@ -55,8 +26,105 @@ export class OrcamentoDetailComponent implements OnInit {
   contact: ContactModel;
   equipment: EquipmentModel;
   services: ServiceModel[];
+  totalDiscount: number;
+  status: StatusModel;
+  message: string;
+  bar: boolean;
+
+  approvalUser : UserModel = new UserModel(1);
+
+  orcamentoFormGroup : FormGroup
+
+  get customerFormGroup() {
+    return this.orcamentoFormGroup;
+  }
+
+  get equipmentFormGroup() {
+    return this.orcamentoFormGroup;
+  }
+
+  get serviceFormGroup(){
+    return this.orcamentoFormGroup;
+  }
+
+  get valorFormGroup(){
+    return this.orcamentoFormGroup;
+  }
+
+  get dateFormGroup(){
+    return this.orcamentoFormGroup;
+  }
+
+  get statusFormGroup(){
+    return this.orcamentoFormGroup;
+  }
+
+  constructor(
+            private _http: QuotationService,
+            private route: ActivatedRoute,
+            private _ref: ChangeDetectorRef) {
+    this.route.params.subscribe( params => this.id = params.id );
+    this._http.getOneQuotation(this.id).subscribe(data =>{
+      this.quotation = <QuotationModel>data;
+      this.customer = this.quotation.customer;
+      this.contact = this.quotation.contact;
+      this.equipment = this.quotation.equipment;
+      this.services = Array.from(this.quotation.services);
+      this.totalDiscount = this.quotation.totalDiscount;
+      this.status = this.quotation.status;
+    })
+  }
 
   ngOnInit() {
+    this.orcamentoFormGroup = new FormGroup({
+      id : new FormControl(this.id),
+      approvalUser : new FormControl(this.approvalUser),
+    });
+  }
+
+  postSubscription: Subscription;
+
+  submitForm(){
+    setTimeout(() => {
+      // console.log(this.orcamentoFormGroup.getRawValue())
+      this.postSubscription =
+        this._http.patchQuotation(this.orcamentoFormGroup.getRawValue())
+        .subscribe(
+          ((response) => {
+            console.log(response);
+            const quo = <QuotationModel>response;
+            this.status = quo.status;
+            this.setMessage('sucesso');
+            this.bar = false;
+            this._ref.detectChanges();
+          }),
+          ((error) => {
+            console.error(error);
+            this.setMessage('erro');
+            this.bar = false;
+            this._ref.detectChanges();
+          })
+        )
+        this.bar = true;
+    }, 0);
+  }
+
+  downloadPdf(){
+    return this._http.downloadPdf(this.id);
+    // window.open(`http://localhost:8080/portalcadastro/pdf/${this.id}`);
+  }
+
+  checkStatus(){
+    return this.status && this.status.status === 'APROVADO';
+  }
+
+  setMessage(m: string){
+
+
+    setTimeout(() => {
+      this.message = "";
+    }, 5000);
+    this.message = m;
   }
 
 }

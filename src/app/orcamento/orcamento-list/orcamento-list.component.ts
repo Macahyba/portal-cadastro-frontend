@@ -12,7 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./orcamento-list.component.scss']
 })
 export class OrcamentoListComponent implements OnInit {
-  displayedColumns: string[] = ['label', 'name', 'equipment', 'serialNumber', 'totalPrice', 'status', 'creationDate'];
+  displayedColumns: string[] = [
+    'label', 'name', 'equipment', 'serialNumber', 'totalPrice',
+     'totalDiscount', 'status', 'creationDate'
+  ];
   dataSource: MatTableDataSource<QuotationModel>;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -20,24 +23,31 @@ export class OrcamentoListComponent implements OnInit {
 
   constructor(private _http: QuotationService, private router: Router) {}
 
-  quotations: Set<QuotationModel>;
+  quotations: Array<QuotationModel>;
 
   ngOnInit() {
-    this._http.getQuotations().subscribe(data => {
-      this.quotations = <Set<QuotationModel>>data
-      this.dataSource = new MatTableDataSource(Array.from(this.quotations.values()));
-      this.dataSource.filterPredicate = (data, filter: string)  => {
+    this._http.getQuotations().subscribe(apiData => {
+      this.quotations = apiData
+      this.dataSource = new MatTableDataSource(this.quotations);
+      this.dataSource.filterPredicate = (data, filter: string) => {
         const accumulator = (currentTerm, key) => {
           return this.nestedCheck(currentTerm, data, key);
         };
-        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();        
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
         const transformedFilter = filter.trim().toLowerCase();
         return dataStr.indexOf(transformedFilter) !== -1;
       };
       this.dataSource.paginator = this.paginator;
       this.dataSource.sortingDataAccessor = (item, property) => {
-        return this.nestedCheck(null, item, property);
-      };      
+        // return this.nestedCheck(null, item, property);
+        switch(property){
+          case 'name' : return item.customer.name;
+          case 'equipment' : return item.equipment.name;
+          case 'serialNumber' : return item.equipment.serialNumber;
+          case 'status' : return item.status.status;
+          default: return item[property];
+        }
+      };
       this.dataSource.sort = this.sort;
     });
 

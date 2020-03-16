@@ -19,26 +19,33 @@ export class ReparoListComponent implements OnInit {
 
   constructor(private _http: RepairService, private router: Router) { }
 
-  repairs: Set<RepairModel>;
+  repairs: Array<RepairModel>;
 
   ngOnInit() {
     this._http.getRepairs().subscribe(data =>{
-      this.repairs = <Set<RepairModel>>data;
+      this.repairs = <Array<RepairModel>>data;
       this.repairs.forEach(repair => { this.getTat(repair)});
       this.dataSource = new MatTableDataSource(Array.from(this.repairs.values()));
       this.dataSource.filterPredicate = (data, filter: string)  => {
         const accumulator = (currentTerm, key) => {
           return this.nestedCheck(currentTerm, data, key);
         };
-        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();        
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
         const transformedFilter = filter.trim().toLowerCase();
         return dataStr.indexOf(transformedFilter) !== -1;
       };
       this.dataSource.paginator = this.paginator;
       this.dataSource.sortingDataAccessor = (item, property) => {
-        return this.nestedCheck(null, item, property);
-      };      
-      this.dataSource.sort = this.sort;      
+        // return this.nestedCheck(null, item, property);
+        switch(property){
+          case 'customer' : return item.customer.name;
+          case 'equipment' : return item.equipment.name;
+          case 'serialNumber' : return item.equipment.serialNumber;
+          case 'status' : return item.status.status;
+          default: return item[property];
+        }
+      };
+      this.dataSource.sort = this.sort;
     })
   }
 
@@ -71,7 +78,12 @@ export class ReparoListComponent implements OnInit {
   getTat(repair: RepairModel){
 
     if (!repair.tat){
-      repair.tat = new Date().getDay() - new Date(repair.creationDate).getDay();
+
+      const now = new Date().valueOf();
+      const cd = new Date(repair.creationDate).valueOf();
+
+      repair.tat = Math.round(Math.abs(now - cd)/1000/60/60/24);
+
     }
   }
 

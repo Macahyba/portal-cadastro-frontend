@@ -21,3 +21,17 @@
   align-content: center;
   display: flex;
 }
+
+.ng-invalid .ng-touched {
+  border: red;
+}
+
+.sucesso {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.erro {
+  color: #D50000;
+  font-weight: bold;
+}

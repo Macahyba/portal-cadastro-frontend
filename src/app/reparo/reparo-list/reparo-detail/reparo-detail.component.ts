@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-reparo-detail',
@@ -12,6 +13,20 @@ import { EquipmentModel } from 'src/app/model/equipament.model';
   styleUrls: ['./reparo-detail.component.scss']
 })
 export class ReparoDetailComponent implements OnInit {
+
+  repairFormGroup = new FormGroup({});
+
+  get customerFormGroup() {
+    return this.repairFormGroup;
+  }
+
+  get equipmentFormGroup() {
+    return this.repairFormGroup;
+  }
+
+  get dateFormGroup(){
+    return this.repairFormGroup;
+  }
 
   constructor(private _http: RepairService, private route: ActivatedRoute) {
     this.route.params.subscribe( params => this.id = params.id );
@@ -23,7 +38,7 @@ export class ReparoDetailComponent implements OnInit {
       this.sapNotification = this.repair.sapNotification;
       this.notaDeEntrada = this.repair.notaDeEntrada;
       this.warranty = this.repair.warranty;
-    })    
+    })
    }
 
   id: string;
@@ -36,6 +51,7 @@ export class ReparoDetailComponent implements OnInit {
   warranty: boolean;
 
   ngOnInit() {
+    setTimeout(() => {},)
   }
 
 }

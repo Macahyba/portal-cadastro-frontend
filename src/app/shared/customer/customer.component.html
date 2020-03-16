@@ -1,52 +1,57 @@
-<mat-card [formGroup]="customerFormGroup" class="outer-card">
-    <mat-card>
-      <mat-form-field class="example-full-width">
-        <mat-label>Cliente</mat-label>    
-        <input *ngIf="injectedCustomer" type="text" matInput  formControlName="customerName">        
-        <input *ngIf="!injectedCustomer" type="hidden" formControlName="customerName" />
-        <input *ngIf="!injectedCustomer" type="text" class="example-form" matInput placeholder="Ex. TV Globo" 
-          [matAutocomplete]="cust"
-          [formControl]="clientAutoComplete"
-          (ngModelChange)="selectCustomer($event)">
-        <mat-autocomplete #cust="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let customer of filteredCustomer | async" [value]="customer">
-            {{customer.name}}
-          </mat-option>
-        </mat-autocomplete>              
-      </mat-form-field>
-      <br>
-      <mat-form-field class="example-full-width">
-        <mat-label>Nome Completo</mat-label>
-        <input matInput formControlName="customerFullName">
-      </mat-form-field>
-      <br>
-      <mat-form-field class="example-full-width">
-        <mat-label>CNPJ</mat-label>
-        <input matInput formControlName="customerCnpj">
-      </mat-form-field>
-      <br>        
-      <mat-form-field class="example-full-width">
-        <mat-label>Responsável</mat-label>
-        <input type="hidden" formControlName="contactName" />
-        <input type="text" class="example-form" matInput placeholder="Ex. Togashi" 
-          [matAutocomplete]="cont"
-          [formControl]="contactAutoComplete"
-          (ngModelChange)="selectContact($event)">
-        <mat-autocomplete #cont="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let contact of filteredContact | async" [value]="contact">
-                {{contact.name}}
-            </mat-option>            
-        </mat-autocomplete>
-      </mat-form-field>
-      <br>            
-      <mat-form-field class="example-full-width">
-        <mat-label>Departamento</mat-label>
-        <input matInput formControlName="contactDept">
-      </mat-form-field>  
-      <br>            
-      <mat-form-field class="example-full-width">
-        <mat-label>E-mail</mat-label>
-        <input matInput formControlName="contactEmail">
-      </mat-form-field>  
-    </mat-card>  
-</mat-card>
+<ng-container [formGroup]="customerFormGroup">
+  <mat-card class="outer-card">
+      <mat-card>
+        <mat-form-field class="example-full-width">
+          <mat-label>Cliente</mat-label>
+          <input type="hidden" [formControl]="id">
+          <input *ngIf="injectedCustomer" type="text" matInput [formControl]="name">
+          <input *ngIf="!injectedCustomer" type="hidden" [formControl]="name" />
+          <input *ngIf="!injectedCustomer" type="text" class="example-form" matInput placeholder="Ex. TV Globo"
+            [matAutocomplete]="cust"
+            [formControl]="clientAutoComplete"
+            (ngModelChange)="selectCustomer($event)">
+          <mat-autocomplete #cust="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let customer of filteredCustomer | async" [value]="customer">
+              {{customer.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Nome Completo</mat-label>
+          <input matInput [formControl]="fullName">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>CNPJ</mat-label>
+          <input matInput [formControl]="cnpj">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Responsável</mat-label>
+          <input type="hidden" [formControl]="cId">
+          <input *ngIf="injectedContact" type="text" matInput  [formControl]="contactGroup.controls.name">
+          <input *ngIf="!injectedContact" type="hidden" [formControl]="contactGroup.controls.name" />
+          <input *ngIf="!injectedContact" type="text" class="example-form" matInput placeholder="Ex. Togashi"
+            [matAutocomplete]="cont"
+            [formControl]="contactAutoComplete"
+            (ngModelChange)="selectContact($event)">
+          <mat-autocomplete #cont="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let contact of filteredContact | async" [value]="contact">
+                  {{contact.name}}
+              </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Departamento</mat-label>
+          <input matInput [formControl]="contactGroup.controls.department">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>E-mail</mat-label>
+          <input matInput [formControl]="contactGroup.controls.email">
+        </mat-form-field>
+      </mat-card>
+  </mat-card>
+</ng-container>

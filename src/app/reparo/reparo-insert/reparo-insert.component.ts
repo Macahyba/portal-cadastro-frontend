@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-reparo-insert',
@@ -8,37 +8,38 @@ import { FormBuilder } from '@angular/forms';
 })
 export class ReparoInsertComponent implements OnInit {
 
-  creationDate: Date;
+  creationDate = new FormControl(new Date());
+  sapNotification = new FormControl('');
+  notaDeEntrada = new FormControl('');
+  warranty = new FormControl('');
 
-  reparoFormGroup = this.fb.group({
-    customer: this.fb.group({
-      customerName: this.fb.control(['']),
-      customerFullName: this.fb.control(['']),
-      customerCnpj: this.fb.control(['']),
-      contactName:this.fb.control(['']),
-      contactDept:this.fb.control(['']),
-      contactEmail: this.fb.control(['']),
-    }),
-    equipment: this.fb.group({
-      equipmentName: this.fb.control(''),
-      equipmentSerialNumber: this.fb.control(''),
-    })
-  });
+  reparoFormGroup : FormGroup;
 
   get customerFormGroup() {
-    return this.reparoFormGroup.controls.customer;
+    return this.reparoFormGroup;
   }
 
   get equipmentFormGroup() {
-    return this.reparoFormGroup.controls.equipment;
-  }  
-  
-  constructor(private fb: FormBuilder) { }
+    return this.reparoFormGroup;
+  }
+
+  get dateFormGroup(){
+    return this.reparoFormGroup;
+  }
+
+  constructor(private fb: FormBuilder) {
+    this.reparoFormGroup = this.fb.group({
+      'creationDate' : this.creationDate,
+      'sapNotification' : this.sapNotification,
+      'notaDeEntrada' : this.notaDeEntrada,
+      'warranty' : this.warranty
+    });
+   }
 
   ngOnInit() {
   }
 
-  mariolar(e) {
+  submitForm() {
     console.log(this.reparoFormGroup.getRawValue());
   }
 

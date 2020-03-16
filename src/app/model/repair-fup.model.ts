@@ -4,14 +4,14 @@ import { SparePartModel } from './spare-part.model';
 import { EquipmentModel } from './equipament.model';
 
 export class RepairFupModel {
-    constructor(
-        public id: number,
-        public updateDate: Date,
-        public description: string,
-        public user: UserModel,
-        public repair: RepairModel,
-        public spareParts: Set<SparePartModel>,
-        public equipment: EquipmentModel
+      constructor(
+        public id?: number,
+        public updateDate?: Date,
+        public description?: string,
+        public user?: UserModel,
+        public repair?: RepairModel,
+        public spareParts?: Set<SparePartModel>,
+        public equipment?: EquipmentModel
     ){
         this.id = id || null
         this.updateDate = updateDate || null

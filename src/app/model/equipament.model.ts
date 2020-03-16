@@ -1,8 +1,6 @@
 import { SparePartModel } from './spare-part.model';
 
 export class EquipmentModel {
-    
-    constructor();
     constructor(
         public id?: number,
         public name?: string,

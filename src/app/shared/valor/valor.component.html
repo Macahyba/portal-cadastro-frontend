@@ -1,21 +1,36 @@
-<mat-card class="outer-card">
-    <mat-card>
-      <mat-form-field class="example-full-width">
-        <mat-label>Valor</mat-label>
-        <input name="valor" matInput value={{totalPrice}} disabled>
-        <span matPrefix>R$&nbsp;</span>
-      </mat-form-field>
-      <br>        
-      <mat-form-field class="example-full-width">
-        <mat-label>Desconto</mat-label>
-        <input matInput name="desconto" [formControl]="desconto">
-        <span matSuffix>%</span>
-      </mat-form-field>
-      <br>            
-      <mat-form-field class="example-full-width">
-        <mat-label>Valor Final</mat-label>
-        <input [value]="returnTotal()" matInput disabled value="{{totalPrice}}">
-        <span matPrefix>R$&nbsp;</span>
-      </mat-form-field>
-    </mat-card> 
-</mat-card>
+<ng-container [formGroup]="valorFormGroup">
+  <mat-card class="outer-card">
+      <mat-card>
+        <mat-form-field class="example-full-width">
+          <mat-label>Valor</mat-label>
+          <input
+            type="text"
+            matInput
+            value={{totalPrice}}
+            formControlName="totalPrice">
+          <span matPrefix>R$&nbsp;</span>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Desconto</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="totalDiscount"
+            [value]="injectedDiscount">
+          <span matSuffix>%</span>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <mat-label>Valor Final</mat-label>
+          <input
+            type="text"
+            [value]="returnTotal()"
+            matInput
+            disabled
+            value="{{totalPrice}}">
+          <span matPrefix>R$&nbsp;</span>
+        </mat-form-field>
+      </mat-card>
+  </mat-card>
+</ng-container>

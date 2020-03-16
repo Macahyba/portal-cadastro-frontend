@@ -1,10 +1,18 @@
-<mat-grid-list cols="4" rowHeight="1100px">
+<form [formGroup]="repairFormGroup">
+  <mat-grid-list cols="4" rowHeight="1100px">
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
     <mat-grid-tile [colspan]="2">
       <div class="example-full-width">
-        <app-customer disabled="disabled" [injectedCustomer]="customer" [injectedContact]="contact"></app-customer>
+        <app-customer
+          disabled="disabled"
+          [injectedCustomer]="customer"
+          [injectedContact]="contact"
+          [customerFormGroup]='customerFormGroup'></app-customer>
         <br>
-        <app-equipment disabled="disabled" [injectedEquipment]="equipment"></app-equipment>
+        <app-equipment
+          disabled="disabled"
+          [injectedEquipment]="equipment"
+          [equipmentFormGroup]='equipmentFormGroup'></app-equipment>
         <br>
         <mat-card class="outer-card">
           <mat-card>
@@ -12,20 +20,23 @@
               <mat-label>SAP Notification</mat-label>
               <input matInput [value]="sapNotification" disabled>
             </mat-form-field>
-            <br>        
+            <br>
             <mat-form-field class="example-full-width">
               <mat-label>Nota de Entrada</mat-label>
               <input matInput [value]="notaDeEntrada" disabled>
             </mat-form-field>
-            <br>            
-            <mat-checkbox [checked]="warranty" disabled>Garantia</mat-checkbox>     
-          </mat-card> 
-        </mat-card>        
+            <br>
+            <mat-checkbox [checked]="warranty" disabled>Garantia</mat-checkbox>
+          </mat-card>
+        </mat-card>
         <br>
-        <app-datepicker (dateWasSelected)="creationDate = $event"></app-datepicker>
+        <app-datepicker
+          (dateWasSelected)="creationDate = $event"
+          [dateFormGroup]="dateFormGroup"></app-datepicker>
         <br>
         <button mat-raised-button color="primary">Atualizar</button>
       </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-</mat-grid-list>
+  </mat-grid-list>
+</form>

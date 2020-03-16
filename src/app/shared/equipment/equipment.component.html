@@ -1,22 +1,25 @@
-<mat-card [formGroup]="equipmentFormGroup" class="outer-card">
-    <mat-card>   
-        <mat-form-field class="example-full-width">
-            <mat-label>Equipamento</mat-label>
-            <input type="hidden" formControlName="equipmentName" />
-            <input type="text" class="example-form" matInput placeholder="Ex. PDW-700" 
-                [matAutocomplete]="equip" 
-                [formControl]="equipmentAutoComplete"
-                (ngModelChange)="selectCustomer($event)">
-            <mat-autocomplete #equip="matAutocomplete" [displayWith]="displayFn">
-                <mat-option *ngFor="let equipment of filteredEquipment | async" [value]="equipment">
-                {{equipment.name}}
-                </mat-option>
-            </mat-autocomplete>          
-        </mat-form-field>
-        <br>            
-        <mat-form-field class="example-full-width">
-            <mat-label>Serial Number</mat-label>
-            <input type="text" matInput formControlName="equipmentSerialNumber">   
-        </mat-form-field>
-    </mat-card> 
-</mat-card>
+<ng-container [formGroup]="equipmentFormGroup">
+    <mat-card  class="outer-card">
+        <mat-card>   
+            <mat-form-field class="example-full-width">
+                <mat-label>Equipamento</mat-label>
+                <input *ngIf="injectedEquipment" type="text" matInput [formControl]="name">        
+                <input *ngIf="!injectedEquipment" type="hidden"  />
+                <input *ngIf="!injectedEquipment" type="text" class="example-form" matInput placeholder="Ex. PDW-700" 
+                    [matAutocomplete]="equip" 
+                    [formControl]="equipmentAutoComplete"
+                    (ngModelChange)="selectEquipment($event)">
+                <mat-autocomplete #equip="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let equipment of filteredEquipment | async" [value]="equipment">
+                    {{equipment.name}}
+                    </mat-option>
+                </mat-autocomplete>          
+            </mat-form-field>
+            <br>            
+            <mat-form-field class="example-full-width">
+                <mat-label>Serial Number</mat-label>
+                <input type="text" matInput [formControl]="serialNumber">   
+            </mat-form-field>
+        </mat-card> 
+    </mat-card>
+</ng-container>
