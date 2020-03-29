@@ -8,3 +8,45 @@ $accentPalette:  mat-palette($mat-pink, A200, A100, A400);
 $warnPalette:    mat-palette($mat-red);
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.base-form {
+  // min-width: 150px;
+  // max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+  align-self: baseline;
+}
+
+.outer-card {
+
+  width: 50%;
+  background-color: mat-color($primaryPalette);
+
+}
+// CLEAN?
+.center {
+  justify-content: center;
+  align-content: center;
+  display: flex;
+}
+
+.ng-invalid .ng-touched {
+  border: red;
+}
+
+.sucesso {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.erro {
+  color: #D50000;
+  font-weight: bold;
+}
+
+.mat-progress-bar {
+  width: 50%;
+}

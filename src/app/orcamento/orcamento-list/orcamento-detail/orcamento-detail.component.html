@@ -1,8 +1,8 @@
 <form [formGroup]="orcamentoFormGroup" (submit)="submitForm()">
-  <mat-grid-list cols="4" rowHeight="1500px">
+  <!-- <mat-grid-list cols="4" rowHeight="1500px">
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-    <mat-grid-tile [colspan]="2">
-      <div class="example-full-width">
+    <mat-grid-tile [colspan]="2"> -->
+      <div class="full-width">
         <div class="sucesso" *ngIf="message === 'sucesso'">
           Salvo com sucesso!<br><br>
         </div>
@@ -13,10 +13,13 @@
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
         </div>
         <app-status
+          [disabled]="role !== 'admin'"
           [injectedStatus]="status"
-          [statusFormGroup]="statusFormGroup"></app-status>
+          [parentFormGroup]="orcamentoFormGroup"></app-status>
         <br>
-        <button type="submit" mat-raised-button color="primary">Atualizar</button>&nbsp;
+        <span *ngIf="role !== 'user'">
+          <button type="submit" mat-raised-button color="primary">Atualizar</button>&nbsp;
+        </span>
         <button
           *ngIf="checkStatus()"
           type="button"
@@ -28,30 +31,31 @@
           disabled="disabled"
           [injectedCustomer]="customer"
           [injectedContact]="contact"
-          [customerFormGroup]='customerFormGroup'></app-customer>
+          [parentFormGroup]='orcamentoFormGroup'></app-customer>
         <br>
         <app-equipment
           disabled="disabled"
           [injectedEquipment]="equipment"
-          [equipmentFormGroup]='equipmentFormGroup'></app-equipment>
+          [parentFormGroup]='orcamentoFormGroup'></app-equipment>
         <br>
         <app-services
           disabled="disabled"
           [injectedServices]="services"
           (servicesToInsert)="totalPrice = $event"
-          [serviceFormGroup]='serviceFormGroup'></app-services>
+          [parentFormGroup]='orcamentoFormGroup'></app-services>
         <br>
         <app-valor
           disabled="disabled"
           [totalPrice]="totalPrice"
           [injectedDiscount]="totalDiscount"
-          [valorFormGroup]="valorFormGroup"></app-valor>
+          [parentFormGroup]="orcamentoFormGroup"></app-valor>
         <br>
         <app-datepicker
           (dateWasSelected)="creationDate = $event"
-          [dateFormGroup]="dateFormGroup"></app-datepicker>
+          [control]="'approvalDate'"
+          [parentFormGroup]="orcamentoFormGroup"></app-datepicker>
       </div>
-    </mat-grid-tile>
+    <!-- </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-  </mat-grid-list>
+  </mat-grid-list> -->
 </form>

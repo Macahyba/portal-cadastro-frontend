@@ -6,6 +6,7 @@ import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { FormGroup } from '@angular/forms';
+import { RepairFupModel } from 'src/app/model/repair-fup.model';
 
 @Component({
   selector: 'app-reparo-detail',
@@ -16,13 +17,13 @@ export class ReparoDetailComponent implements OnInit {
 
   repairFormGroup = new FormGroup({});
 
-  get customerFormGroup() {
-    return this.repairFormGroup;
-  }
+  // get customerFormGroup() {
+  //   return this.repairFormGroup;
+  // }
 
-  get equipmentFormGroup() {
-    return this.repairFormGroup;
-  }
+  // get equipmentFormGroup() {
+  //   return this.repairFormGroup;
+  // }
 
   get dateFormGroup(){
     return this.repairFormGroup;
@@ -38,6 +39,8 @@ export class ReparoDetailComponent implements OnInit {
       this.sapNotification = this.repair.sapNotification;
       this.notaDeEntrada = this.repair.notaDeEntrada;
       this.warranty = this.repair.warranty;
+      this.repairFups = this.repair.repairFups;
+
     })
    }
 
@@ -49,6 +52,7 @@ export class ReparoDetailComponent implements OnInit {
   sapNotification: string;
   notaDeEntrada: string;
   warranty: boolean;
+  repairFups: RepairFupModel[];
 
   ngOnInit() {
     setTimeout(() => {},)

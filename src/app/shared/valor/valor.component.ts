@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/core';
-import { ServiceModel } from 'src/app/model/service.model';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -18,16 +17,16 @@ export class ValorComponent implements OnInit, AfterViewInit {
 
   @Input() disabled: string;
   @Input() injectedDiscount: number = 0;
-  @Input() valorFormGroup: FormGroup;
+  @Input() parentFormGroup: FormGroup;
 
   constructor() { }
 
   ngOnInit() {
     this.totalPriceControl.setValue(this.totalPrice);
-    this.valorFormGroup.registerControl('totalDiscount', this.totalDiscountControl);
-    this.valorFormGroup.registerControl('totalPrice', this.totalPriceControl);
-    this.valorFormGroup.controls.totalPrice.disable();
-    this.totalDiscount = this.valorFormGroup.controls.totalDiscount.value;
+    this.parentFormGroup.registerControl('totalDiscount', this.totalDiscountControl);
+    this.parentFormGroup.registerControl('totalPrice', this.totalPriceControl);
+    this.parentFormGroup.controls.totalPrice.disable();
+    this.totalDiscount = this.parentFormGroup.controls.totalDiscount.value;
   }
 
   ngAfterViewInit(){
@@ -35,13 +34,13 @@ export class ValorComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
 
       if (this.injectedDiscount){
-        this.valorFormGroup.controls.totalDiscount.setValue(this.injectedDiscount);
+        this.parentFormGroup.controls.totalDiscount.setValue(this.injectedDiscount);
       }
 
       if (this.disabled === 'disabled'){
-        this.valorFormGroup.controls.totalDiscount.disable();
-        this.valorFormGroup.removeControl('totalDiscount');
-        this.valorFormGroup.removeControl('totalPrice');
+        this.parentFormGroup.controls.totalDiscount.disable();
+        this.parentFormGroup.removeControl('totalDiscount');
+        this.parentFormGroup.removeControl('totalPrice');
       }
 
     }, 0);

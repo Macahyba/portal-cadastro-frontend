@@ -1,4 +1,4 @@
-<ng-container [formGroup]="dateFormGroup">
+<ng-container [formGroup]="parentFormGroup">
   <mat-form-field>
       <mat-label>Selecione a data</mat-label>
       <input matInput [matDatepicker]="dp" [formControl]="date" (ngModelChange)="selected($event)" [value]="date.value">

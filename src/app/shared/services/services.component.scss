@@ -1,6 +1,20 @@
 @import '../../../styles.scss';
-@import '../../orcamento/orcamento-insert/orcamento-insert.component.scss';
 
 table {
     width: 100%;
-  }
+}
+
+.mat-column-name {
+
+  width: 35% !important;
+}
+
+.mat-column-desc {
+
+  width: 50% !important;
+}
+
+.mat-column-price {
+
+  width: 15% !important;
+}

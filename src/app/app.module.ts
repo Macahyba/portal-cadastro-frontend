@@ -40,6 +40,10 @@ import { ValorComponent } from './shared/valor/valor.component';
 import { ServicesComponent } from './shared/services/services.component';
 import { APIInterceptor } from './service/apiInterceptor.service';
 import { StatusComponent } from './shared/status/status.component';
+import { ReparoFupComponent } from './reparo/reparo-list/reparo-detail/reparo-fups/reparo-fup/reparo-fup.component';
+import { ReparoFupsComponent } from './reparo/reparo-list/reparo-detail/reparo-fups/reparo-fups.component';
+import { AuthGuardService } from './service/auth-guard.service';
+import { RoleGuardService } from './service/role-guard.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,9 @@ import { StatusComponent } from './shared/status/status.component';
     EquipmentComponent,
     ValorComponent,
     ServicesComponent,
-    StatusComponent
+    StatusComponent,
+    ReparoFupComponent,
+    ReparoFupsComponent
   ],
   imports: [
     BrowserModule,
@@ -89,8 +95,10 @@ import { StatusComponent } from './shared/status/status.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: APIInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
+    AuthGuardService,
+    RoleGuardService
   ],
   bootstrap: [AppComponent]
 })

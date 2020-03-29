@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, OnChanges, ɵConsole, A
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ServiceModel } from 'src/app/model/service.model';
 import { MatTableDataSource } from '@angular/material';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-services',
@@ -14,7 +14,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   @Input() disabled: string;
   @Input() injectedServices: ServiceModel[];
   @Output() servicesToInsert = new EventEmitter<number>();
-  @Input () serviceFormGroup: FormGroup;
+  @Input () parentFormGroup: FormGroup;
 
   services: ServiceModel[];
 
@@ -23,10 +23,9 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   prices: number[] = [0];
 
-  // serv = new FormArray([]);
-  serviceArray = new FormArray([]);
+  serviceArray = this._fb.array([]);
 
-  constructor(private _http: QuotationService) {
+  constructor(private _http: QuotationService,  private _fb: FormBuilder) {
 
     this._http.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
@@ -37,7 +36,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.serviceFormGroup.registerControl('services', this.serviceArray)
+    this.parentFormGroup.registerControl('services', this.serviceArray)
   }
 
   ngAfterViewInit(){
@@ -58,7 +57,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
     if (event.checked) {
 
-      this.serviceArray.push(new FormGroup({ 'id' : new FormControl(id) }))
+      this.serviceArray.push(this._fb.group({ id: this._fb.control(id) }));
 
       const index = this.serviceArray.controls.length-1;
 
@@ -99,7 +98,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
 
   disableChk(){
     if (this.disabled) {
-      this.serviceFormGroup.removeControl('services');
+      this.parentFormGroup.removeControl('services');
       return "disabled";
     }
   }

@@ -11,7 +11,11 @@ import { StatusModel } from 'src/app/model/status.model';
 export class StatusComponent implements OnInit, AfterViewInit {
 
   @Input() injectedStatus : StatusModel;
-  @Input() statusFormGroup : FormGroup;
+  @Input() parentFormGroup : FormGroup;
+  @Input() disabled : string;
+
+  status = new FormControl('');
+
   statuses : StatusModel[];
 
   statusGroup : FormGroup;
@@ -19,7 +23,7 @@ export class StatusComponent implements OnInit, AfterViewInit {
   select = new FormControl('', Validators.required);
 
   get statusForm() : FormGroup {
-    return this.statusFormGroup.controls.status as FormGroup;
+    return this.parentFormGroup.controls.status as FormGroup;
   }
 
   constructor(private _http: QuotationService, private _ref: ChangeDetectorRef) {
@@ -34,7 +38,7 @@ export class StatusComponent implements OnInit, AfterViewInit {
     this.statusGroup = new FormGroup({
       id : this.select
     })
-    this.statusFormGroup.registerControl('status', this.statusGroup);
+    this.parentFormGroup.registerControl('status', this.statusGroup);
     this._ref.detectChanges();
   }
 
@@ -43,6 +47,11 @@ export class StatusComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       if (this.injectedStatus){
         this.statusForm.controls.id.setValue(this.injectedStatus.id);
+        this.status.setValue(this.injectedStatus.status);
+      }
+
+      if (this.disabled){
+        this.status.disable();
       }
     }, 1);
   }

@@ -1,10 +1,13 @@
-<ng-container [formGroup]="statusFormGroup">
+<ng-container [formGroup]="parentFormGroup">
   <mat-form-field>
     <mat-label>Status</mat-label>
-    <mat-select [formControl]="select" name="status">
-      <mat-option *ngFor="let status of statuses" [value]="status.id">
-         {{status.status}}
-      </mat-option>
-    </mat-select>
+    <input *ngIf="disabled" matInput [formControl]="status" />
+    <div *ngIf="!disabled">
+      <mat-select [formControl]="select" name="status">
+        <mat-option *ngFor="let status of statuses" [value]="status.id">
+          {{status.status}}
+        </mat-option>
+      </mat-select>
+    </div>
   </mat-form-field>
 </ng-container>

@@ -1,1 +1,25 @@
-<p>login works!</p>
+<form [formGroup]="loginFormGroup" (submit)="submitForm()">
+  <mat-card  class="outer-card">
+      <mat-card>
+          <mat-form-field class="full-width">
+              <mat-label>Usuário</mat-label>
+              <input type="text" matInput formControlName="username">
+          </mat-form-field>
+          <br>
+          <mat-form-field class="full-width">
+              <mat-label>Senha</mat-label>
+              <input type="password" matInput formControlName="password">
+          </mat-form-field>
+          <br>
+          <button
+            type="submit"
+            [disabled]="checkValid()"
+            mat-raised-button
+            color="primary">Enviar</button>
+            <br>
+            <div class="erro" *ngIf="message === 'erro'">
+              <br>Não autorizado!<br>
+            </div>
+      </mat-card>
+  </mat-card>
+</form>

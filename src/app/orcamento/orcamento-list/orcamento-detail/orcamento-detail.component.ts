@@ -10,6 +10,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
 import { Subscription, Observable } from 'rxjs';
 import { UserModel } from 'src/app/model/user.model';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
   selector: 'app-orcamento-detail',
@@ -31,39 +32,17 @@ export class OrcamentoDetailComponent implements OnInit {
   message: string;
   bar: boolean;
 
+  role: string;
+
   approvalUser : UserModel = new UserModel(1);
 
   orcamentoFormGroup : FormGroup
 
-  get customerFormGroup() {
-    return this.orcamentoFormGroup;
-  }
-
-  get equipmentFormGroup() {
-    return this.orcamentoFormGroup;
-  }
-
-  get serviceFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
-  get valorFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
-  get dateFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
-  get statusFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
   constructor(
             private _http: QuotationService,
-            private route: ActivatedRoute,
-            private _ref: ChangeDetectorRef) {
-    this.route.params.subscribe( params => this.id = params.id );
+            private _route: ActivatedRoute,
+            private _auth: AuthenticationService) {
+    this._route.params.subscribe( params => this.id = params.id );
     this._http.getOneQuotation(this.id).subscribe(data =>{
       this.quotation = <QuotationModel>data;
       this.customer = this.quotation.customer;
@@ -78,40 +57,35 @@ export class OrcamentoDetailComponent implements OnInit {
   ngOnInit() {
     this.orcamentoFormGroup = new FormGroup({
       id : new FormControl(this.id),
-      approvalUser : new FormControl(this.approvalUser),
+      approvalUser : new FormControl(this.approvalUser)
     });
+    this.role = this._auth.getRole();
   }
 
   postSubscription: Subscription;
 
   submitForm(){
-    setTimeout(() => {
-      // console.log(this.orcamentoFormGroup.getRawValue())
-      this.postSubscription =
-        this._http.patchQuotation(this.orcamentoFormGroup.getRawValue())
-        .subscribe(
-          ((response) => {
-            console.log(response);
-            const quo = <QuotationModel>response;
-            this.status = quo.status;
-            this.setMessage('sucesso');
-            this.bar = false;
-            this._ref.detectChanges();
-          }),
-          ((error) => {
-            console.error(error);
-            this.setMessage('erro');
-            this.bar = false;
-            this._ref.detectChanges();
-          })
-        )
-        this.bar = true;
-    }, 0);
+
+    this.postSubscription =
+      this._http.patchQuotation(this.orcamentoFormGroup.value)
+      .subscribe(
+        ((response) => {
+          const quo = <QuotationModel>response;
+          this.status = quo.status;
+          this.setMessage('sucesso');
+          this.bar = false;
+        }),
+        ((error) => {
+          console.error(error);
+          this.setMessage('erro');
+          this.bar = false;
+        })
+      )
+      this.bar = true;
   }
 
   downloadPdf(){
     return this._http.downloadPdf(this.id);
-    // window.open(`http://localhost:8080/portalcadastro/pdf/${this.id}`);
   }
 
   checkStatus(){

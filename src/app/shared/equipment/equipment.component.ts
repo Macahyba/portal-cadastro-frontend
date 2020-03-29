@@ -3,7 +3,7 @@ import { QuotationService } from 'src/app/service/quotation.service';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { FormControl, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-equipment',
@@ -14,19 +14,20 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
 
   @Input() disabled: string;
   @Input() injectedEquipment: EquipmentModel;
-  @Input() equipmentFormGroup: FormGroup;
+  @Input() parentFormGroup: FormGroup;
 
-  equipmentGroup: FormGroup;
-  id = new FormControl('');
-  name = new FormControl('', Validators.required);
-  serialNumber = new FormControl('', Validators.required);
+  equipmentGroup = this._fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    serialNumber: ['', Validators.required]
+  });
 
   equipmentAutoComplete = new FormControl('');
 
   equipments: EquipmentModel[];
   filteredEquipment: Observable<EquipmentModel[]>;
 
-  constructor(private _http: QuotationService, private _ref: ChangeDetectorRef) {
+  constructor(private _http: QuotationService, private _fb: FormBuilder) {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 
@@ -41,14 +42,7 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
    }
 
   ngOnInit() {
-    this.equipmentGroup =  new FormGroup({
-        'id' : this.id,
-        'name' : this.name ,
-        'serialNumber' : this.serialNumber
-    })
-
-    this.equipmentFormGroup.registerControl('equipment', this.equipmentGroup);
-    this._ref.detectChanges();
+    this.parentFormGroup.registerControl('equipment', this.equipmentGroup);
   }
 
   ngAfterViewInit(){
@@ -63,7 +57,7 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
       if (this.disabled === "disabled"){
         this.equipmentGroup.controls.name.disable();
         this.equipmentGroup.controls.serialNumber.disable();
-        this.equipmentFormGroup.removeControl('equipment');
+        this.parentFormGroup.removeControl('equipment');
       }
     }, 0);
   }

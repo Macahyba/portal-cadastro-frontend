@@ -8,8 +8,8 @@ import { CustomerModel } from '../model/customer.model';
 import { EquipmentModel } from '../model/equipament.model';
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 
 export class RepairService {
 

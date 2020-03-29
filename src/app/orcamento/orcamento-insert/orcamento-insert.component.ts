@@ -1,11 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ServiceModel } from 'src/app/model/service.model';
 import { Subscription } from 'rxjs';
 import { StatusModel } from 'src/app/model/status.model';
 import { UserModel } from 'src/app/model/user.model';
-import { CustomerModel } from 'src/app/model/customer.model';
 
 @Component({
   selector: 'app-orcamento-insert',
@@ -26,31 +25,11 @@ export class OrcamentoInsertComponent implements OnInit{
   message: string;
   bar: boolean;
 
-  get customerFormGroup() {
-    return this.orcamentoFormGroup;
-  }
-
-  get equipmentFormGroup() {
-    return this.orcamentoFormGroup;
-  }
-
-  get serviceFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
   get serviceSubGroup(){
-    return this.serviceFormGroup.controls.services;
+    return this.orcamentoFormGroup.controls.services;
   }
 
-  get valorFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
-  get dateFormGroup(){
-    return this.orcamentoFormGroup;
-  }
-
-  constructor(private _http: QuotationService, private _ref: ChangeDetectorRef) {
+  constructor(private _http: QuotationService) {
     this.orcamentoFormGroup = new FormGroup({
       user : new FormControl(this.user),
       status : new FormControl(this.status)
@@ -74,22 +53,20 @@ export class OrcamentoInsertComponent implements OnInit{
   postSubscription: Subscription;
 
   submitForm() {
-    console.log(this.orcamentoFormGroup.getRawValue());
+
     this.postSubscription =
-      this._http.setQuotation(this.orcamentoFormGroup.getRawValue())
+      this._http.setQuotation(this.orcamentoFormGroup.value)
       .subscribe(
         ((response) => {
           console.log(response);
           this.setMessage('sucesso');
           this.bar = false;
           window.open('http://localhost:4200/orcamentos',"_self");
-          this._ref.detectChanges();
         }),
         ((error) => {
           console.error(error);
           this.setMessage('erro');
           this.bar = false;
-          this._ref.detectChanges();
         })
       )
       this.bar = true;

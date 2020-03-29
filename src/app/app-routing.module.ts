@@ -8,17 +8,48 @@ import { OrcamentoInsertComponent } from './orcamento/orcamento-insert/orcamento
 import { ReparoInsertComponent } from './reparo/reparo-insert/reparo-insert.component';
 import { OrcamentoDetailComponent } from './orcamento/orcamento-list/orcamento-detail/orcamento-detail.component';
 import { ReparoDetailComponent } from './reparo/reparo-list/reparo-detail/reparo-detail.component';
+import { AuthGuardService } from './service/auth-guard.service';
+import { RoleGuardService } from './service/role-guard.service';
 
 
 const routes: Routes = [
-  {path: 'orcamentos', component: OrcamentoListComponent},
-  {path: 'orcamentos/:id', component: OrcamentoDetailComponent},
-  {path: 'reparos', component: ReparoListComponent},
-  {path: 'reparos/:id', component: ReparoDetailComponent},
-  {path: 'logout', component: LogoutComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'orcamentos-new', component: OrcamentoInsertComponent},
-  {path: 'reparos-new', component: ReparoInsertComponent}
+  {
+    path: 'orcamentos',
+    component: OrcamentoListComponent,
+    canActivate: [AuthGuardService]
+  },{
+    path: 'orcamentos/:id',
+    component: OrcamentoDetailComponent,
+    canActivate: [AuthGuardService]
+  },{
+    path: 'reparos',
+    component: ReparoListComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      role: ['admin', 'manager', 'user']
+    }
+  },{
+    path: 'reparos/:id',
+    component: ReparoDetailComponent,
+    canActivate: [AuthGuardService]
+  },{
+    path: 'logout',
+    component: LogoutComponent
+  },{
+    path: 'login',
+    component: LoginComponent
+  },{
+    path: 'orcamentos-new',
+    component: OrcamentoInsertComponent,
+    canActivate: [AuthGuardService]
+  },{
+    path: 'reparos-new',
+    component: ReparoInsertComponent,
+    canActivate: [AuthGuardService]
+  },{
+    path: '**',
+    redirectTo: '',
+    canActivate: [AuthGuardService]}
 ];
 
 @NgModule({

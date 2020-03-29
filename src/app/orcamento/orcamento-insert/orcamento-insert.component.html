@@ -1,25 +1,26 @@
 <form [formGroup]="orcamentoFormGroup" (submit)="submitForm()">
-  <mat-grid-list cols="4" rowHeight="1500px">
+  <!-- <mat-grid-list cols="4" rowHeight="1500px">
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-    <mat-grid-tile [colspan]="2">
-      <div class="example-full-width">
+    <mat-grid-tile [colspan]="2"> -->
+      <div class="full-width">
         <app-customer
-          [customerFormGroup]='customerFormGroup'></app-customer>
+          [parentFormGroup]='orcamentoFormGroup'></app-customer>
         <br>
         <app-equipment
-          [equipmentFormGroup]='equipmentFormGroup'></app-equipment>
+          [parentFormGroup]='orcamentoFormGroup'></app-equipment>
         <br>
         <app-services
-          [serviceFormGroup]='serviceFormGroup'
+          [parentFormGroup]='orcamentoFormGroup'
           (servicesToInsert)="totalPrice = $event"></app-services>
         <br>
         <app-valor
           [totalPrice]="totalPrice"
-          [valorFormGroup]="valorFormGroup"></app-valor>
+          [parentFormGroup]="orcamentoFormGroup"></app-valor>
         <br>
         <app-datepicker
+          [control]="'creationDate'"
           (dateWasSelected)="creationDate = $event"
-          [dateFormGroup]="dateFormGroup"></app-datepicker>
+          [parentFormGroup]="orcamentoFormGroup"></app-datepicker>
         <br>
         <button
           type="submit"
@@ -36,7 +37,7 @@
             <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
           </div>
       </div>
-    </mat-grid-tile>
+    <!-- </mat-grid-tile>
     <mat-grid-tile [colspan]="1"></mat-grid-tile>
-  </mat-grid-list>
+  </mat-grid-list> -->
 </form>

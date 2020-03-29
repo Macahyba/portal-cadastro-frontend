@@ -16,7 +16,7 @@ export class RepairModel {
         public tat?: number,
         public status?: StatusModel,
         public notaDeEntrada?: string,
-        public repairFups?: Set<RepairFupModel>,
+        public repairFups?: RepairFupModel[],
         public user?: UserModel,
         public equipment?: EquipmentModel,
         public customer?: CustomerModel,

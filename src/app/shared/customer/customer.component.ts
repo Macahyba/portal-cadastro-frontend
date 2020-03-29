@@ -1,6 +1,6 @@
-import { Component, OnInit, Input,  AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input,  AfterViewInit } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
-import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 import { QuotationService } from 'src/app/service/quotation.service';
@@ -16,32 +16,21 @@ export class CustomerComponent implements OnInit, AfterViewInit {
   @Input() disabled: string;
   @Input() injectedCustomer: CustomerModel;
   @Input() injectedContact: ContactModel;
-  @Input() customerFormGroup: FormGroup;
+  @Input() parentFormGroup: FormGroup;
 
+  customerGroup = this._fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    fullName: ['', Validators.required],
+    cnpj: ['', Validators.required],
+  });
 
-  customerGroup : FormGroup;
-  id = new FormControl('');
-  name = new FormControl('', Validators.required);
-  fullName = new FormControl('', Validators.required);
-  cnpj = new FormControl('', Validators.required);
-
-  cId = new FormControl('');
-  cName = new FormControl('', Validators.required);
-  contactGroup = new FormGroup({
-    id : this.cId,
-    name : this.cName,
-    department : new FormControl('', Validators.required),
-    email : new FormControl('', Validators.required)
+  contactGroup = this._fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    department: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]]
   })
-
-
-  get customerForm() : FormGroup {
-    return this.customerFormGroup.controls.customer as FormGroup;
-  }
-
-  get contactsForm() : FormGroup {
-    return this.customerForm.controls.contacts as FormGroup;
-  }
 
   contacts: ContactModel[];
 
@@ -59,7 +48,7 @@ export class CustomerComponent implements OnInit, AfterViewInit {
     )
 
 
-  constructor(private _http: QuotationService, private _ref: ChangeDetectorRef) {
+  constructor(private _http: QuotationService, private _fb: FormBuilder) {
     this._http.getCustomers().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
 
@@ -70,48 +59,27 @@ export class CustomerComponent implements OnInit, AfterViewInit {
           map(value => this._filter(<CustomerModel[]>data, value))
         );
     })
+
   }
 
   ngOnInit() {
-
-    this.customerGroup = new FormGroup({
-        id : this.id,
-        name: this.name,
-        fullName: this.fullName,
-        cnpj: this.cnpj
-    })
-
-    this.customerFormGroup.registerControl('customer', this.customerGroup);
-    this.customerFormGroup.registerControl('contact', this.contactGroup);
-    this._ref.detectChanges();
+    this.parentFormGroup.registerControl('customer', this.customerGroup);
+    this.parentFormGroup.registerControl('contact', this.contactGroup);
   }
 
   ngAfterViewInit(){
     setTimeout(() => {
-
       if (this.injectedCustomer){
-        this.customerForm.controls.id.setValue(this.injectedCustomer.id);
-        this.customerForm.controls.name.setValue(this.injectedCustomer.name);
-        this.customerForm.controls.fullName.setValue(this.injectedCustomer.fullName);
-        this.customerForm.controls.cnpj.setValue(this.injectedCustomer.cnpj);
+        this.customerGroup.patchValue(this.injectedCustomer);
       }
 
       if(this.injectedContact){
-        this.contactGroup.controls.id.setValue(this.injectedContact.id);
-        this.contactGroup.controls.name.setValue(this.injectedContact.name);
-        this.contactGroup.controls.department.setValue(this.injectedContact.department);
-        this.contactGroup.controls.email.setValue(this.injectedContact.email);
+        this.contactGroup.patchValue(this.injectedContact);
       }
 
       if(this.disabled === "disabled"){
-        this.customerForm.controls.name.disable();
-        this.customerForm.controls.fullName.disable();
-        this.customerForm.controls.cnpj.disable();
-        this.contactGroup.controls.name.disable();
-        this.contactGroup.controls.department.disable();
-        this.contactGroup.controls.email.disable();
-        this.customerFormGroup.removeControl('contact');
-        this.customerFormGroup.removeControl('customer');
+        this.customerGroup.disable();
+        this.contactGroup.disable();
       }
     }, 0);
   }
@@ -128,21 +96,21 @@ export class CustomerComponent implements OnInit, AfterViewInit {
   selectCustomer(customer: CustomerModel){
     if (customer instanceof Object){
 
-      this.customerForm.controls.fullName.disable();
-      this.customerForm.controls.cnpj.disable();
+      this.customerGroup.controls.fullName.disable();
+      this.customerGroup.controls.cnpj.disable();
 
-      this.customerForm.controls.name.setValue(customer.name);
-      this.customerForm.controls.fullName.setValue(customer.fullName);
-      this.customerForm.controls.cnpj.setValue(customer.cnpj);
+      this.customerGroup.controls.name.setValue(customer.name);
+      this.customerGroup.controls.fullName.setValue(customer.fullName);
+      this.customerGroup.controls.cnpj.setValue(customer.cnpj);
 
     } else {
 
-      this.customerForm.controls.fullName.enable();
-      this.customerForm.controls.cnpj.enable();
+      this.customerGroup.controls.fullName.enable();
+      this.customerGroup.controls.cnpj.enable();
 
-      this.customerForm.controls.name.setValue(this.clientAutoComplete.value);
-      this.customerForm.controls.fullName.setValue("");
-      this.customerForm.controls.cnpj.setValue("");
+      this.customerGroup.controls.name.setValue(this.clientAutoComplete.value);
+      this.customerGroup.controls.fullName.setValue("");
+      this.customerGroup.controls.cnpj.setValue("");
 
     }
 

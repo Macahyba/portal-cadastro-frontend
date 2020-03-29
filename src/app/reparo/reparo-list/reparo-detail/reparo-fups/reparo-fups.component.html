@@ -1,0 +1,11 @@
+<ng-container [formGroup]="repairFupsFormGroup">
+  <div *ngFor="let repairFup of repairFups">
+    <app-reparo-fup
+      [repairFup]="repairFup"
+      [repairFupFormGroup]="repairFupsFormGroup">
+    </app-reparo-fup>
+    <br><br>
+  </div>
+  <app-reparo-fup
+  [repairFupFormGroup]="repairFupsFormGroup"></app-reparo-fup>
+</ng-container>

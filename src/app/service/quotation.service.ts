@@ -9,12 +9,12 @@ import { ServiceModel } from '../model/service.model';
 import { StatusModel } from '../model/status.model';
 
 @Injectable({
-    providedIn: 'root'
-    })
+  providedIn: 'root'
+})
 
 export class QuotationService {
 
-    HTTP_HOST : string = 'http://localhost:8080/portalcadastro';
+    HTTP_HOST : string = 'http://localhost:8080/api';
 
     httpOptions = {
       headers: new HttpHeaders({

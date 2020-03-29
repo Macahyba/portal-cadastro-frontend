@@ -1,25 +1,25 @@
-<ng-container [formGroup]="equipmentFormGroup">
+<ng-container [formGroup]="parentFormGroup">
     <mat-card  class="outer-card">
-        <mat-card>   
-            <mat-form-field class="example-full-width">
+        <mat-card>
+            <mat-form-field class="full-width" formGroupName="equipment">
                 <mat-label>Equipamento</mat-label>
-                <input *ngIf="injectedEquipment" type="text" matInput [formControl]="name">        
-                <input *ngIf="!injectedEquipment" type="hidden"  />
-                <input *ngIf="!injectedEquipment" type="text" class="example-form" matInput placeholder="Ex. PDW-700" 
-                    [matAutocomplete]="equip" 
+                <input *ngIf="injectedEquipment" type="text" matInput formControlName="name">
+                <input *ngIf="!injectedEquipment" type="hidden" formControlName="name" />
+                <input *ngIf="!injectedEquipment" type="text" class="full-width" matInput placeholder="Ex. PDW-700"
+                    [matAutocomplete]="equip"
                     [formControl]="equipmentAutoComplete"
                     (ngModelChange)="selectEquipment($event)">
                 <mat-autocomplete #equip="matAutocomplete" [displayWith]="displayFn">
                     <mat-option *ngFor="let equipment of filteredEquipment | async" [value]="equipment">
                     {{equipment.name}}
                     </mat-option>
-                </mat-autocomplete>          
+                </mat-autocomplete>
             </mat-form-field>
-            <br>            
-            <mat-form-field class="example-full-width">
+            <br>
+            <mat-form-field class="full-width" formGroupName="equipment">
                 <mat-label>Serial Number</mat-label>
-                <input type="text" matInput [formControl]="serialNumber">   
+                <input type="text" matInput formControlName="serialNumber">
             </mat-form-field>
-        </mat-card> 
+        </mat-card>
     </mat-card>
 </ng-container>
