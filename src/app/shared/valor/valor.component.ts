@@ -1,25 +1,25 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-valor',
   templateUrl: './valor.component.html',
   styleUrls: ['./valor.component.scss']
 })
-export class ValorComponent implements OnInit, AfterViewInit {
+export class ValorComponent implements OnInit, OnChanges {
 
   @Input() totalPrice: number = 0;
   totalDiscount: number = 0;
-  totalDiscountControl = new FormControl(0,
+  totalDiscountControl = this._fb.control(0,
     [Validators.min(0), Validators.max(100), Validators.pattern('[0-9]{0,3}')]);
 
-  totalPriceControl = new FormControl('', [Validators.required, Validators.min(1)]);
+  totalPriceControl = this._fb.control('', [Validators.required, Validators.min(1)]);
 
   @Input() disabled: string;
   @Input() injectedDiscount: number = 0;
   @Input() parentFormGroup: FormGroup;
 
-  constructor() { }
+  constructor(private _fb: FormBuilder) { }
 
   ngOnInit() {
     this.totalPriceControl.setValue(this.totalPrice);
@@ -29,20 +29,12 @@ export class ValorComponent implements OnInit, AfterViewInit {
     this.totalDiscount = this.parentFormGroup.controls.totalDiscount.value;
   }
 
-  ngAfterViewInit(){
+  ngOnChanges(){
 
     setTimeout(() => {
 
-      if (this.injectedDiscount){
-        this.parentFormGroup.controls.totalDiscount.setValue(this.injectedDiscount);
-      }
-
-      if (this.disabled === 'disabled'){
-        this.parentFormGroup.controls.totalDiscount.disable();
-        this.parentFormGroup.removeControl('totalDiscount');
-        this.parentFormGroup.removeControl('totalPrice');
-      }
-
+      if (this.injectedDiscount) this.parentFormGroup.controls.totalDiscount.setValue(this.injectedDiscount);
+      if (this.disabled) this.parentFormGroup.controls.totalDiscount.disable();
     }, 0);
 
   }
@@ -50,6 +42,5 @@ export class ValorComponent implements OnInit, AfterViewInit {
   returnTotal(){
     this.totalPriceControl.setValue(this.totalPrice);
     return this.totalPrice*(1-this.totalDiscount/100);
-
   }
 }

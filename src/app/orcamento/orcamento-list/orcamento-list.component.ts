@@ -27,7 +27,7 @@ export class OrcamentoListComponent implements OnInit {
 
   ngOnInit() {
     this._http.getQuotations().subscribe(apiData => {
-      this.quotations = apiData
+      this.quotations = apiData.slice().reverse();
       this.dataSource = new MatTableDataSource(this.quotations);
       this.dataSource.filterPredicate = (data, filter: string) => {
         const accumulator = (currentTerm, key) => {

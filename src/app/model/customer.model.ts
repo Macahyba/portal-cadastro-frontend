@@ -6,7 +6,7 @@ export class CustomerModel {
         public name?: string,
         public fullName?: string,
         public cnpj?: string,
-        public contacts?: Set<ContactModel>
+        public contacts?: ContactModel[]
     ){
         this.id = id || null
         this.name = name || null

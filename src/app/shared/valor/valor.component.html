@@ -1,18 +1,18 @@
-<ng-container [formGroup]="parentFormGroup">
+<form [formGroup]="parentFormGroup">
   <mat-card class="outer-card">
       <mat-card>
           <mat-form-field class="full-width">
             <mat-label>Valor</mat-label>
             <input type="text" matInput
               value={{totalPrice}}
-              formControlName="totalPrice">
+              [formControl]="totalPriceControl">
             <span matPrefix>R$&nbsp;</span>
           </mat-form-field>
           <br>
           <mat-form-field class="full-width">
             <mat-label>Desconto</mat-label>
             <input type="text" matInput
-              formControlName="totalDiscount"
+              [formControl]="totalDiscountControl"
               [value]="injectedDiscount">
             <span matSuffix>%</span>
           </mat-form-field>
@@ -26,4 +26,4 @@
           </mat-form-field>
       </mat-card>
   </mat-card>
-</ng-container>
+</form>

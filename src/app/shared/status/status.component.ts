@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { StatusModel } from 'src/app/model/status.model';
@@ -8,7 +8,7 @@ import { StatusModel } from 'src/app/model/status.model';
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss']
 })
-export class StatusComponent implements OnInit, AfterViewInit {
+export class StatusComponent implements OnInit, OnChanges {
 
   @Input() injectedStatus : StatusModel;
   @Input() parentFormGroup : FormGroup;
@@ -43,7 +43,7 @@ export class StatusComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(){
+  ngOnChanges(){
     setTimeout(() => {
       if (this.injectedStatus){
         this.statusForm.controls.id.setValue(this.injectedStatus.id);

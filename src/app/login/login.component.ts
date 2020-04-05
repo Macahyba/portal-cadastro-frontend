@@ -3,6 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '../service/authentication.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent implements OnInit {
 
   message: string;
 
-  constructor(private _fb: FormBuilder, private _auth: AuthenticationService, private _router: Router) { }
+  constructor(
+    private _fb: FormBuilder,
+    private _auth: AuthenticationService,
+    private _router: Router,
+    private _stor: StorageService) { }
 
   ngOnInit() {
   }
@@ -36,11 +41,11 @@ export class LoginComponent implements OnInit {
       .subscribe(
         ((response) => {
           this._router.navigate(['/orcamentos']);
-
         }),
         ((error) =>{
           this.setMessage('erro');
-          sessionStorage.clear()
+          sessionStorage.clear();
+          this._stor.storageSub.next(this._auth.getRole());
         })
       )
   }

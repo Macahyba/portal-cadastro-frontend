@@ -11,7 +11,9 @@ import { Router } from '@angular/router';
 })
 export class ReparoListComponent implements OnInit {
 
-  displayedColumns: string[] = ['sapNotification', 'equipment', 'serialNumber', 'customer', 'warranty', 'tat', 'status', 'creationDate'];
+  displayedColumns: string[] =
+    ['sapNotification', 'repairFups', 'equipment',
+      'serialNumber', 'customer', 'warranty', 'tat', 'status', 'creationDate'];
   dataSource: MatTableDataSource<RepairModel>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -23,7 +25,7 @@ export class ReparoListComponent implements OnInit {
 
   ngOnInit() {
     this._http.getRepairs().subscribe(data =>{
-      this.repairs = <Array<RepairModel>>data;
+      this.repairs = data.slice().reverse();
       this.repairs.forEach(repair => { this.getTat(repair)});
       this.dataSource = new MatTableDataSource(Array.from(this.repairs.values()));
       this.dataSource.filterPredicate = (data, filter: string)  => {
@@ -86,6 +88,5 @@ export class ReparoListComponent implements OnInit {
 
     }
   }
-
 
 }

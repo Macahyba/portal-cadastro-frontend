@@ -47,7 +47,15 @@ export class RepairService {
       const payload = JSON.stringify(<RepairModel>quotation);
 
       return this._http.post('repairs/', payload, this.httpOptions).pipe(
-        retry(1),
+        catchError(this.handleError)
+      );
+    }
+
+    patchRepair(repair: RepairModel){
+      const payload = JSON.stringify(<RepairModel>repair);
+      const id = repair.id;
+
+      return this._http.patch(`repairs/${id}`, payload, this.httpOptions).pipe(
         catchError(this.handleError)
       );
     }
@@ -61,7 +69,6 @@ export class RepairService {
         // Get server-side error
         errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
       }
-      console.log(errorMessage);
       return throwError(errorMessage);
   }
 

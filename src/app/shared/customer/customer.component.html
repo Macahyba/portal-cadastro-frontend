@@ -1,11 +1,11 @@
 <ng-container [formGroup]="parentFormGroup">
   <mat-card class="outer-card">
       <mat-card>
-        <mat-form-field class="full-width" formGroupName="customer">
+        <mat-form-field class="full-width">
           <mat-label>Cliente</mat-label>
-          <input type="hidden" formControlName="id">
-          <input *ngIf="injectedCustomer" type="text" matInput formControlName="name">
-          <input *ngIf="!injectedCustomer" type="hidden" formControlName="name" />
+          <input type="hidden" [formControl]="id">
+          <input *ngIf="injectedCustomer" type="text" matInput [formControl]="name">
+          <input *ngIf="!injectedCustomer" type="hidden" [formControl]="name" />
           <input *ngIf="!injectedCustomer" type="text" class="full-width" matInput placeholder="Ex. TV Globo"
             [matAutocomplete]="cust"
             [formControl]="clientAutoComplete"
@@ -17,21 +17,21 @@
           </mat-autocomplete>
         </mat-form-field>
         <br>
-        <mat-form-field class="full-width" formGroupName="customer">
+        <mat-form-field class="full-width">
           <mat-label>Nome Completo</mat-label>
-          <input matInput formControlName="fullName">
+          <input matInput [formControl]="fullName">
         </mat-form-field>
         <br>
-        <mat-form-field class="full-width" formGroupName="customer">
+        <mat-form-field class="full-width">
           <mat-label>CNPJ</mat-label>
-          <input matInput formControlName="cnpj">
+          <input matInput [formControl]="cnpj">
         </mat-form-field>
         <br>
-        <mat-form-field class="full-width" formGroupName="contact">
+        <mat-form-field class="full-width">
           <mat-label>Responsável</mat-label>
-          <input type="hidden" formControlName="id">
-          <input *ngIf="injectedContact" type="text" matInput  formControlName="name">
-          <input *ngIf="!injectedContact" type="hidden" formControlName="name" />
+          <input type="hidden" [formControl]="cId">
+          <input *ngIf="injectedContact" type="text" matInput  [formControl]="cName">
+          <input *ngIf="!injectedContact" type="hidden" [formControl]="cName" />
           <input *ngIf="!injectedContact" type="text" class="example-form" matInput placeholder="Ex. Togashi"
             [matAutocomplete]="cont"
             [formControl]="contactAutoComplete"
@@ -43,14 +43,14 @@
           </mat-autocomplete>
         </mat-form-field>
         <br>
-        <mat-form-field class="full-width" formGroupName="contact">
+        <mat-form-field class="full-width">
           <mat-label>Departamento</mat-label>
-          <input matInput formControlName="department">
+          <input matInput [formControl]="department">
         </mat-form-field>
         <br>
-        <mat-form-field class="full-width" formGroupName="contact">
+        <mat-form-field class="full-width">
           <mat-label>E-mail</mat-label>
-          <input matInput formControlName="email">
+          <input matInput [formControl]="email">
         </mat-form-field>
       </mat-card>
   </mat-card>

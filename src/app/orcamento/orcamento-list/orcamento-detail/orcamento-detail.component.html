@@ -1,7 +1,4 @@
 <form [formGroup]="orcamentoFormGroup" (submit)="submitForm()">
-  <!-- <mat-grid-list cols="4" rowHeight="1500px">
-    <mat-grid-tile [colspan]="1"></mat-grid-tile>
-    <mat-grid-tile [colspan]="2"> -->
       <div class="full-width">
         <div class="sucesso" *ngIf="message === 'sucesso'">
           Salvo com sucesso!<br><br>
@@ -13,7 +10,7 @@
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
         </div>
         <app-status
-          [disabled]="role !== 'admin'"
+          [disabled]="role == 'user'"
           [injectedStatus]="status"
           [parentFormGroup]="orcamentoFormGroup"></app-status>
         <br>
@@ -27,35 +24,48 @@
           (click)="downloadPdf()">Download</button>
         <br><br>
         <input type="hidden" [value]="id">
-        <app-customer
-          disabled="disabled"
-          [injectedCustomer]="customer"
-          [injectedContact]="contact"
-          [parentFormGroup]='orcamentoFormGroup'></app-customer>
-        <br>
-        <app-equipment
-          disabled="disabled"
-          [injectedEquipment]="equipment"
-          [parentFormGroup]='orcamentoFormGroup'></app-equipment>
-        <br>
-        <app-services
-          disabled="disabled"
-          [injectedServices]="services"
-          (servicesToInsert)="totalPrice = $event"
-          [parentFormGroup]='orcamentoFormGroup'></app-services>
-        <br>
-        <app-valor
-          disabled="disabled"
-          [totalPrice]="totalPrice"
-          [injectedDiscount]="totalDiscount"
-          [parentFormGroup]="orcamentoFormGroup"></app-valor>
+        <mat-tab-group>
+          <mat-tab label="Cliente">
+            <br>
+            <app-customer
+              disabled="disabled"
+              [injectedCustomer]="customer"
+              [injectedContact]="contact"
+              [parentFormGroup]='orcamentoFormGroup'>
+          </app-customer>
+          </mat-tab>
+          <mat-tab label="Equipamento">
+            <br>
+            <app-equipment
+              disabled="disabled"
+              [injectedEquipment]="equipment"
+              [parentFormGroup]='orcamentoFormGroup'>
+            </app-equipment>
+          </mat-tab>
+          <mat-tab label="Serviços">
+            <br>
+            <app-services
+              disabled="disabled"
+              [injectedServices]="services"
+              (servicesToInsert)="totalPrice = $event"
+              [parentFormGroup]='orcamentoFormGroup'>
+            </app-services>
+          </mat-tab>
+          <mat-tab label="Valor">
+            <br>
+            <app-valor
+              disabled="disabled"
+              [totalPrice]="totalPrice"
+              [injectedDiscount]="totalDiscount"
+              [parentFormGroup]="orcamentoFormGroup">
+            </app-valor>
+          </mat-tab>
+        </mat-tab-group>
         <br>
         <app-datepicker
-          (dateWasSelected)="creationDate = $event"
+          disabled="disabled"
+          [injectedDate]="creationDate"
           [control]="'approvalDate'"
           [parentFormGroup]="orcamentoFormGroup"></app-datepicker>
       </div>
-    <!-- </mat-grid-tile>
-    <mat-grid-tile [colspan]="1"></mat-grid-tile>
-  </mat-grid-list> -->
 </form>

@@ -3,9 +3,12 @@
         <a href="/">Serviço</a>
         <a mat-button [routerLink]="'/reparos'">Reparo</a>
         <a mat-button [routerLink]="'/orcamentos'">Orçamento</a>
+        <a *ngIf="role" mat-button [routerLink]="'/clientes'">Clientes</a>
+        <a *ngIf="role" mat-button [routerLink]="'/equipamentos'">Equipamentos</a>
+        <a *ngIf="role" mat-button [routerLink]="'/servicos'">Serviços</a>
+        <a *ngIf="role === 'admin'" mat-button [routerLink]="'/usuarios'">Usuários</a>
         <span class="example-spacer"></span>
         <a mat-button [routerLink]="'/logout'">Logout</a>
     </mat-toolbar-row>
 </mat-toolbar>
-    
-       
+

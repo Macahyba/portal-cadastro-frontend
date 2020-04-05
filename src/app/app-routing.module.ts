@@ -10,6 +10,10 @@ import { OrcamentoDetailComponent } from './orcamento/orcamento-list/orcamento-d
 import { ReparoDetailComponent } from './reparo/reparo-list/reparo-detail/reparo-detail.component';
 import { AuthGuardService } from './service/auth-guard.service';
 import { RoleGuardService } from './service/role-guard.service';
+import { CustomerCrudComponent } from './crud/customer-crud/customer-crud.component';
+import { EquipmentCrudComponent } from './crud/equipment-crud/equipment-crud.component';
+import { ServiceCrudComponent } from './crud/service-crud/service-crud.component';
+import { UserCrudComponent } from './crud/user-crud/user-crud.component';
 
 
 const routes: Routes = [
@@ -22,34 +26,54 @@ const routes: Routes = [
     component: OrcamentoDetailComponent,
     canActivate: [AuthGuardService]
   },{
+    path: 'orcamentos-new',
+    component: OrcamentoInsertComponent,
+    canActivate: [AuthGuardService]
+  },{
     path: 'reparos',
     component: ReparoListComponent,
-    canActivate: [RoleGuardService],
-    data: {
-      role: ['admin', 'manager', 'user']
-    }
+    canActivate: [AuthGuardService]
   },{
     path: 'reparos/:id',
     component: ReparoDetailComponent,
-    canActivate: [AuthGuardService]
-  },{
-    path: 'logout',
-    component: LogoutComponent
-  },{
-    path: 'login',
-    component: LoginComponent
-  },{
-    path: 'orcamentos-new',
-    component: OrcamentoInsertComponent,
     canActivate: [AuthGuardService]
   },{
     path: 'reparos-new',
     component: ReparoInsertComponent,
     canActivate: [AuthGuardService]
   },{
+    path: 'clientes',
+    component: CustomerCrudComponent,
+    canActivate: [AuthGuardService]
+  },{
+    path: 'equipamentos',
+    component: EquipmentCrudComponent,
+    canActivate: [AuthGuardService]
+    //
+  },{
+    path: 'servicos',
+    component: ServiceCrudComponent,
+    canActivate: [AuthGuardService]
+    //
+  },{
+    path: 'usuarios',
+    component: UserCrudComponent,
+    canActivate: [RoleGuardService],
+    data: {
+      role: ['admin']
+    }
+    //
+  },{
+    path: 'login',
+    component: LoginComponent
+  },{
+    path: 'logout',
+    component: LogoutComponent
+  },{
     path: '**',
     redirectTo: '',
-    canActivate: [AuthGuardService]}
+    canActivate: [AuthGuardService]
+  }
 ];
 
 @NgModule({

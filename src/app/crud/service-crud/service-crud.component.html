@@ -1,0 +1,55 @@
+<form [formGroup]='serviceForm'>
+  <label>Selecione a operação</label><br><br>
+  <mat-radio-group [(ngModel)]="operacao.value" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
+    <mat-radio-button value="inserir">Inserir</mat-radio-button>&nbsp;
+    <mat-radio-button value="atualizar">Atualizar</mat-radio-button>
+  </mat-radio-group>
+  <br>
+  <mat-form-field class="half-width">
+    <mat-label>Serviços</mat-label>
+    <mat-select (selectionChange)="selected($event)" [formControl]="selectControl">
+      <mat-option
+        *ngFor="let service of services"
+        value="{{service.id}}">
+          Servico: {{service.name}} - Preço: {{service.price}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-card  class="outer-card">
+    <mat-card>
+      <mat-form-field class="full-width">
+          <mat-label>Serviço</mat-label>
+          <input type="text" matInput [formControl]="name">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="full-width">
+          <mat-label>Descrição</mat-label>
+          <input type="text" matInput [formControl]="description">
+      </mat-form-field>
+      <br>
+      <mat-form-field class="full-width">
+          <mat-label>Preço</mat-label>
+          <input type="text" matInput [formControl]="price">
+          <span matPrefix>R$&nbsp;</span>
+      </mat-form-field>
+    </mat-card>
+  </mat-card>
+  <br>
+  <button
+    type="button"
+    [disabled]="checkButton()"
+    (click)="submitForm()"
+    mat-raised-button
+    color="primary">Enviar
+  </button><br><br>
+  <div class="sucesso" *ngIf="message === 'sucesso'">
+    Salvo com sucesso!<br><br>
+  </div>
+  <div class="erro" *ngIf="message === 'erro'">
+    Falha ao salvar!<br><br>
+  </div>
+  <div *ngIf="bar">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
+  </div>
+</form>

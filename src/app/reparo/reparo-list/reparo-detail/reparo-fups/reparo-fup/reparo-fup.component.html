@@ -1,19 +1,32 @@
-<ng-container [formGroup]="repairFupFormGroup">
-  <mat-card  class="outer-card">
+<form [formGroup]="repairFupFormGroup">
+  <mat-card class="outer-card">
       <mat-card>
+          <input type="hidden" [formControl]="id">
           <mat-form-field class="full-width">
               <mat-label>Description</mat-label>
               <textarea matInput [formControl]="description"></textarea>
           </mat-form-field>
           <br>
-          <mat-form-field class="full-width">
-              <mat-label>Spare Part?</mat-label>
-              <input type="text" matInput [formControl]="sparePart">
-          </mat-form-field>
+          <div formArrayName="spareParts">
+            <div *ngFor="let sparePart of spareParts.controls; let i = index" [formGroupName]="i">
+              <mat-form-field class="full-width">
+                <mat-label>Spare Part?</mat-label>
+                <input matInput formControlName="partNumber">
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="!disabled">
+            <button type="button" mat-stroked-button (click)="addPart()">Adicionar Spare Part</button>&nbsp;
+            <button *ngIf="spareParts.length" type="button" mat-stroked-button (click)="removePart()">Remover Spare Part</button>
+            <br><br>
+          </div>
           <app-datepicker
+            [disabled]="disabled"
+            [injectedDate]="creationDate.value"
             [control]="'updateDate'"
-            (dateWasSelected)="creationDate = $event"
-            [parentFormGroup]="repairFupFormGroup"></app-datepicker>
+            [parentFormGroup]="repairFupFormGroup">
+          </app-datepicker>
+          <input *ngIf="disabled" matInput [formControl]="username">
       </mat-card>
   </mat-card>
-</ng-container>
+</form>

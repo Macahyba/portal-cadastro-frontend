@@ -1,6 +1,6 @@
-import { Component, OnInit, Input,  AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input,  OnChanges, ChangeDetectorRef } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 import { QuotationService } from 'src/app/service/quotation.service';
@@ -11,31 +11,29 @@ import { ContactModel } from 'src/app/model/contact.model';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent implements OnInit, AfterViewInit {
+export class CustomerComponent implements OnInit, OnChanges {
 
   @Input() disabled: string;
   @Input() injectedCustomer: CustomerModel;
   @Input() injectedContact: ContactModel;
   @Input() parentFormGroup: FormGroup;
 
-  customerGroup = this._fb.group({
-    id: [''],
-    name: ['', Validators.required],
-    fullName: ['', Validators.required],
-    cnpj: ['', Validators.required],
-  });
+  customerGroup : FormGroup;
+  id = this._fb.control('');
+  name = this._fb.control('', Validators.required);
+  fullName = this._fb.control('', Validators.required);
+  cnpj = this._fb.control('', Validators.required);
 
-  contactGroup = this._fb.group({
-    id: [''],
-    name: ['', Validators.required],
-    department: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]]
-  })
+  contactGroup : FormGroup;
+  cId = this._fb.control('');
+  cName = this._fb.control('', Validators.required);
+  department = this._fb.control('', Validators.required);
+  email = this._fb.control('', [Validators.required, Validators.email]);
 
   contacts: ContactModel[];
 
-  clientAutoComplete = new FormControl('');
-  contactAutoComplete = new FormControl('');
+  clientAutoComplete = this._fb.control('');
+  contactAutoComplete = this._fb.control('');
 
   customers: CustomerModel[];
 
@@ -48,7 +46,7 @@ export class CustomerComponent implements OnInit, AfterViewInit {
     )
 
 
-  constructor(private _http: QuotationService, private _fb: FormBuilder) {
+  constructor(private _http: QuotationService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
     this._http.getCustomers().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
 
@@ -63,11 +61,25 @@ export class CustomerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.customerGroup = this._fb.group({
+      id: this.id,
+      name: this.name,
+      fullName: this.fullName,
+      cnpj: this.cnpj
+    });
+
+    this.contactGroup = this._fb.group({
+      id: this.cId,
+      name: this.cName,
+      department: this.department,
+      email: this.email
+    })
     this.parentFormGroup.registerControl('customer', this.customerGroup);
     this.parentFormGroup.registerControl('contact', this.contactGroup);
+    this._ref.detectChanges();
   }
 
-  ngAfterViewInit(){
+  ngOnChanges(){
     setTimeout(() => {
       if (this.injectedCustomer){
         this.customerGroup.patchValue(this.injectedCustomer);

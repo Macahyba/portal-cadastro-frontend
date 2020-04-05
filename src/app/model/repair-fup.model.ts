@@ -10,7 +10,7 @@ export class RepairFupModel {
         public description?: string,
         public user?: UserModel,
         public repair?: RepairModel,
-        public spareParts?: Set<SparePartModel>,
+        public spareParts?: SparePartModel[],
         public equipment?: EquipmentModel
     ){
         this.id = id || null

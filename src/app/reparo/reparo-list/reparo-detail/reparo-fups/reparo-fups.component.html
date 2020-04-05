@@ -1,11 +1,26 @@
-<ng-container [formGroup]="repairFupsFormGroup">
-  <div *ngFor="let repairFup of repairFups">
-    <app-reparo-fup
-      [repairFup]="repairFup"
-      [repairFupFormGroup]="repairFupsFormGroup">
-    </app-reparo-fup>
-    <br><br>
-  </div>
-  <app-reparo-fup
-  [repairFupFormGroup]="repairFupsFormGroup"></app-reparo-fup>
+<ng-container [formGroup]="parentFormGroup">
+  <mat-tab-group>
+    <mat-tab label="Novo Follow-up">
+      <br>
+      <mat-slide-toggle
+        style="height: 40px;"
+        (change)="toggleNewFup($event)">Adicionar Follow-up
+      </mat-slide-toggle>
+      <div *ngIf="showNewFup">
+        <app-reparo-fup
+          [parentFormArray]="repairFupFormArray">
+        </app-reparo-fup>
+      </div>
+    </mat-tab>
+    <div *ngFor="let repairFup of reverseRepairFups; let i = index">
+      <mat-tab label="Follow-up {{reverseRepairFups.length - i}}">
+        <br>
+        <app-reparo-fup
+          disabled="disabled"
+          [repairFup]="repairFup"
+          [parentFormArray]="repairFupFormArray">
+        </app-reparo-fup>
+      </mat-tab>
+    </div>
+  </mat-tab-group>
 </ng-container>

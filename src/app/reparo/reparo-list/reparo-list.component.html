@@ -13,6 +13,11 @@
       <td mat-cell *matCellDef="let row"> {{row.sapNotification}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="repairFups">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Follow-ups </th>
+      <td mat-cell *matCellDef="let row"> {{row.repairFups.length}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="equipment">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Equipamento </th>
       <td mat-cell *matCellDef="let row"> {{row.equipment.name}} </td>

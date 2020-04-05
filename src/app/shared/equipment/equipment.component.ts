@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { Observable } from 'rxjs';
@@ -10,24 +10,23 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
   templateUrl: './equipment.component.html',
   styleUrls: ['./equipment.component.scss']
 })
-export class EquipmentComponent implements OnInit, AfterViewInit {
+export class EquipmentComponent implements OnInit, OnChanges {
 
   @Input() disabled: string;
   @Input() injectedEquipment: EquipmentModel;
   @Input() parentFormGroup: FormGroup;
 
-  equipmentGroup = this._fb.group({
-    id: [''],
-    name: ['', Validators.required],
-    serialNumber: ['', Validators.required]
-  });
+  equipmentGroup : FormGroup;
+  id = this._fb.control('');
+  name = this._fb.control('', Validators.required);
+  serialNumber = this._fb.control('', Validators.required);
 
   equipmentAutoComplete = new FormControl('');
 
   equipments: EquipmentModel[];
   filteredEquipment: Observable<EquipmentModel[]>;
 
-  constructor(private _http: QuotationService, private _fb: FormBuilder) {
+  constructor(private _http: QuotationService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 
@@ -42,10 +41,16 @@ export class EquipmentComponent implements OnInit, AfterViewInit {
    }
 
   ngOnInit() {
+    this.equipmentGroup = this._fb.group({
+      id: this.id,
+      name: this.name,
+      serialNumber: this.serialNumber
+    });
     this.parentFormGroup.registerControl('equipment', this.equipmentGroup);
+    this._ref.detectChanges();
   }
 
-  ngAfterViewInit(){
+  ngOnChanges(){
     setTimeout(() => {
 
       if(this.injectedEquipment){

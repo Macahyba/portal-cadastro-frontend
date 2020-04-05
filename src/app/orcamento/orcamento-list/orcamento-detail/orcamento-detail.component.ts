@@ -6,9 +6,9 @@ import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { ServiceModel } from 'src/app/model/service.model';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UserModel } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
@@ -31,17 +31,19 @@ export class OrcamentoDetailComponent implements OnInit {
   status: StatusModel;
   message: string;
   bar: boolean;
+  creationDate: Date;
 
   role: string;
 
-  approvalUser : UserModel = new UserModel(1);
+  approvalUser : UserModel = new UserModel(this._auth.getId());
 
-  orcamentoFormGroup : FormGroup
+  orcamentoFormGroup;
 
   constructor(
             private _http: QuotationService,
             private _route: ActivatedRoute,
-            private _auth: AuthenticationService) {
+            private _auth: AuthenticationService,
+            private _fb: FormBuilder) {
     this._route.params.subscribe( params => this.id = params.id );
     this._http.getOneQuotation(this.id).subscribe(data =>{
       this.quotation = <QuotationModel>data;
@@ -51,13 +53,15 @@ export class OrcamentoDetailComponent implements OnInit {
       this.services = Array.from(this.quotation.services);
       this.totalDiscount = this.quotation.totalDiscount;
       this.status = this.quotation.status;
+      this.creationDate = this.quotation.creationDate;
     })
   }
 
   ngOnInit() {
-    this.orcamentoFormGroup = new FormGroup({
-      id : new FormControl(this.id),
-      approvalUser : new FormControl(this.approvalUser)
+    this.orcamentoFormGroup = this._fb.group({
+      id : this._fb.control(this.id),
+      approvalUser : this._fb.control(this.approvalUser),
+      approvalDate : this._fb.control(new Date())
     });
     this.role = this._auth.getRole();
   }
@@ -65,7 +69,6 @@ export class OrcamentoDetailComponent implements OnInit {
   postSubscription: Subscription;
 
   submitForm(){
-
     this.postSubscription =
       this._http.patchQuotation(this.orcamentoFormGroup.value)
       .subscribe(
@@ -93,7 +96,6 @@ export class OrcamentoDetailComponent implements OnInit {
   }
 
   setMessage(m: string){
-
 
     setTimeout(() => {
       this.message = "";

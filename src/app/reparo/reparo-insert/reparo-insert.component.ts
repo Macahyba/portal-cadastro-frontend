@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RepairService } from 'src/app/service/repair.service';
 import { StatusModel } from 'src/app/model/status.model';
 import { UserModel } from 'src/app/model/user.model';
+import { environment } from 'src/environments/environment';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
   selector: 'app-reparo-insert',
@@ -12,37 +14,20 @@ import { UserModel } from 'src/app/model/user.model';
 })
 export class ReparoInsertComponent implements OnInit {
 
-  creationDate = new FormControl(new Date());
-  sapNotification = new FormControl('', Validators.required);
-  notaDeEntrada = new FormControl('', Validators.required);
-  warranty = new FormControl('');
-  status : StatusModel = new StatusModel(1);
-  user : UserModel = new UserModel(1);
-  message: string;
-  bar: boolean;
+  HTTP_HOST = environment.http_host;
 
   reparoFormGroup : FormGroup;
 
-  // get customerFormGroup() {
-  //   return this.reparoFormGroup;
-  // }
+  creationDate: Date;
+  status : StatusModel = new StatusModel(1);
+  user : UserModel = new UserModel(this._auth.getId());
+  message: string;
+  bar: boolean;
 
-  // get equipmentFormGroup() {
-  //   return this.reparoFormGroup;
-  // }
-
-  // get dateFormGroup(){
-  //   return this.reparoFormGroup;
-  // }
-
-  constructor(private _http: RepairService , private fb: FormBuilder, private _ref: ChangeDetectorRef) {
-    this.reparoFormGroup = this.fb.group({
-      'creationDate' : this.creationDate,
-      'sapNotification' : this.sapNotification,
-      'notaDeEntrada' : this.notaDeEntrada,
-      'warranty' : this.warranty,
-      'user': this.user,
-      'status': this.status
+  constructor(private _http: RepairService , private _auth: AuthenticationService) {
+    this.reparoFormGroup = new FormGroup({
+      user: new FormControl(this.user),
+      status: new FormControl(this.status)
     });
    }
 
@@ -52,26 +37,23 @@ export class ReparoInsertComponent implements OnInit {
   postSubscription: Subscription;
 
   submitForm() {
-    console.log(this.reparoFormGroup.getRawValue());
     this.postSubscription =
-      this._http.setRepair(this.reparoFormGroup.getRawValue())
+      this._http.setRepair(this.reparoFormGroup.value)
       .subscribe(
         ((response) => {
-          console.log(response);
           this.setMessage('sucesso');
           this.bar = false;
-          window.open('http://localhost:4200/reparos',"_self");
-          this._ref.detectChanges();
+          setTimeout(() => {
+            window.open(`${this.HTTP_HOST}/reparos`,"_self");
+          }, 2000);
         }),
         ((error) => {
           console.error(error);
           this.setMessage('erro');
           this.bar = false;
-          this._ref.detectChanges();
         })
       )
       this.bar = true;
-
   }
 
   checkValid(){
@@ -85,5 +67,4 @@ export class ReparoInsertComponent implements OnInit {
     }, 5000);
     this.message = m;
   }
-
 }

@@ -1,42 +1,81 @@
-<form [formGroup]="repairFormGroup">
-  <!-- <mat-grid-list cols="4" rowHeight="1100px">
-    <mat-grid-tile [colspan]="1"></mat-grid-tile>
-    <mat-grid-tile [colspan]="2"> -->
-      <div class="full-width">
-        <app-customer
-          disabled="disabled"
-          [injectedCustomer]="customer"
-          [injectedContact]="contact"
-          [parentFormGroup]='repairFormGroup'></app-customer>
-        <br>
-        <app-equipment
-          disabled="disabled"
-          [injectedEquipment]="equipment"
-          [parentFormGroup]='repairFormGroup'></app-equipment>
-        <br>
-        <mat-card class="outer-card">
-          <mat-card>
-            <mat-form-field class="full-width">
-              <mat-label>SAP Notification</mat-label>
-              <input matInput [value]="sapNotification" disabled>
-            </mat-form-field>
-            <br>
-            <mat-form-field class="full-width">
-              <mat-label>Nota de Entrada</mat-label>
-              <input matInput [value]="notaDeEntrada" disabled>
-            </mat-form-field>
-            <br>
-            <mat-checkbox [checked]="warranty" disabled>Garantia</mat-checkbox>
-          </mat-card>
-        </mat-card>
-        <br><br>
-        <app-reparo-fups
-          [repairFups]="repairFups"
-          [repairFupsFormGroup]="repairFormGroup"></app-reparo-fups>
-        <br><br>
-        <button mat-raised-button color="primary">Atualizar</button>
-      </div>
-    <!-- </mat-grid-tile>
-    <mat-grid-tile [colspan]="1"></mat-grid-tile>
-  </mat-grid-list> -->
+<form [formGroup]="repairFormGroup" (submit)="submitForm()">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Cliente</mat-panel-title>
+        <mat-panel-description>Detalhes do cliente</mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-customer
+        disabled="disabled"
+        [injectedCustomer]="customer"
+        [injectedContact]="contact"
+        [parentFormGroup]='repairFormGroup'>
+      </app-customer>
+      <mat-action-row>
+        <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Equipamento</mat-panel-title>
+        <mat-panel-description>Detalhes do equipamento</mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-equipment
+        disabled="disabled"
+        [injectedEquipment]="equipment"
+        [parentFormGroup]='repairFormGroup'>
+      </app-equipment>
+      <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Notas</mat-panel-title>
+        <mat-panel-description>Detalhes das notas</mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-notas
+        disabled="disabled"
+        [injectedNotaDeEntrada]="notaDeEntrada"
+        [injectedSapNotification]="sapNotification"
+        [updateNotaFiscal]="true"
+        [injectedNotaFiscal]="notaFiscal"
+        [injectedWarranty]="warranty"
+        [parentFormGroup]="repairFormGroup">
+      </app-notas>
+      <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Follow-ups</mat-panel-title>
+        <mat-panel-description>Listagem dos follow-ups</mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-reparo-fups
+        [repairFups]="repairFups"
+        [parentFormGroup]="repairFormGroup">
+      </app-reparo-fups>
+      <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button type="button" mat-button color="primary" (click)="nextStep()">Fim</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="full-width">
+    <br>
+    <button mat-raised-button color="primary">Atualizar</button>
+    <br><br>
+    <div class="sucesso" *ngIf="message === 'sucesso'">
+      Salvo com sucesso!<br><br>
+    </div>
+    <div class="erro" *ngIf="message === 'erro'">
+      Falha ao salvar!<br><br>
+    </div>
+    <div *ngIf="bar">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
+    </div>
+  </div>
 </form>

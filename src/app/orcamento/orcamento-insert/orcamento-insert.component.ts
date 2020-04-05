@@ -5,13 +5,17 @@ import { ServiceModel } from 'src/app/model/service.model';
 import { Subscription } from 'rxjs';
 import { StatusModel } from 'src/app/model/status.model';
 import { UserModel } from 'src/app/model/user.model';
+import { environment } from 'src/environments/environment';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
   selector: 'app-orcamento-insert',
   templateUrl: './orcamento-insert.component.html',
   styleUrls: ['./orcamento-insert.component.scss']
 })
-export class OrcamentoInsertComponent implements OnInit{
+export class OrcamentoInsertComponent implements OnInit {
+
+  HTTP_HOST = environment.http_host;
 
   orcamentoFormGroup : FormGroup;
 
@@ -19,9 +23,8 @@ export class OrcamentoInsertComponent implements OnInit{
   desconto = new FormControl('');
   totalPrice: number = 0;
   services: ServiceModel[];
-  creationDate: Date;
   status : StatusModel = new StatusModel(1);
-  user : UserModel = new UserModel(1);
+  user : UserModel = new UserModel(this._auth.getId());
   message: string;
   bar: boolean;
 
@@ -29,7 +32,7 @@ export class OrcamentoInsertComponent implements OnInit{
     return this.orcamentoFormGroup.controls.services;
   }
 
-  constructor(private _http: QuotationService) {
+  constructor(private _http: QuotationService, private _auth: AuthenticationService) {
     this.orcamentoFormGroup = new FormGroup({
       user : new FormControl(this.user),
       status : new FormControl(this.status)
@@ -53,15 +56,15 @@ export class OrcamentoInsertComponent implements OnInit{
   postSubscription: Subscription;
 
   submitForm() {
-
     this.postSubscription =
       this._http.setQuotation(this.orcamentoFormGroup.value)
       .subscribe(
         ((response) => {
-          console.log(response);
           this.setMessage('sucesso');
           this.bar = false;
-          window.open('http://localhost:4200/orcamentos',"_self");
+          setTimeout(() => {
+            window.open(`${this.HTTP_HOST}/orcamentos`,"_self");
+          }, 2000);
         }),
         ((error) => {
           console.error(error);
@@ -70,7 +73,6 @@ export class OrcamentoInsertComponent implements OnInit{
         })
       )
       this.bar = true;
-
   }
 
   checkValid(){
@@ -84,6 +86,4 @@ export class OrcamentoInsertComponent implements OnInit{
     }, 5000);
     this.message = m;
   }
-
-
 }

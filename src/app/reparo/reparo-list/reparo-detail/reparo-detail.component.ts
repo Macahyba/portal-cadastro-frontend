@@ -5,8 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
+import { UserModel } from 'src/app/model/user.model';
+import { AuthenticationService } from 'src/app/service/authentication.service';
+import { Subscription } from 'rxjs';
+import { StatusModel } from 'src/app/model/status.model';
 
 @Component({
   selector: 'app-reparo-detail',
@@ -15,35 +19,6 @@ import { RepairFupModel } from 'src/app/model/repair-fup.model';
 })
 export class ReparoDetailComponent implements OnInit {
 
-  repairFormGroup = new FormGroup({});
-
-  // get customerFormGroup() {
-  //   return this.repairFormGroup;
-  // }
-
-  // get equipmentFormGroup() {
-  //   return this.repairFormGroup;
-  // }
-
-  get dateFormGroup(){
-    return this.repairFormGroup;
-  }
-
-  constructor(private _http: RepairService, private route: ActivatedRoute) {
-    this.route.params.subscribe( params => this.id = params.id );
-    this._http.getOneRepair(this.id).subscribe(data =>{
-      this.repair = <RepairModel>data;
-      this.customer = this.repair.customer;
-      this.contact = this.repair.contact;
-      this.equipment = this.repair.equipment;
-      this.sapNotification = this.repair.sapNotification;
-      this.notaDeEntrada = this.repair.notaDeEntrada;
-      this.warranty = this.repair.warranty;
-      this.repairFups = this.repair.repairFups;
-
-    })
-   }
-
   id: string;
   repair: RepairModel;
   customer: CustomerModel;
@@ -51,11 +26,85 @@ export class ReparoDetailComponent implements OnInit {
   equipment: EquipmentModel;
   sapNotification: string;
   notaDeEntrada: string;
+  notaFiscal: string;
   warranty: boolean;
   repairFups: RepairFupModel[];
+  status: StatusModel;
+  bar: boolean;
+  message: string;
+  repairFormGroup;
+
+  step = null;
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+
+  approvalUser : UserModel = new UserModel(this._auth.getId());
+
+  constructor(
+              private _http: RepairService,
+              private _route: ActivatedRoute,
+              private _fb: FormBuilder,
+              private _auth: AuthenticationService) {
+    this._route.params.subscribe( params => this.id = params.id );
+    this._http.getOneRepair(this.id).subscribe(data =>{
+      this.repair = <RepairModel>data;
+      this.customer = this.repair.customer;
+      this.contact = this.repair.contact;
+      this.equipment = this.repair.equipment;
+      this.sapNotification = this.repair.sapNotification;
+      this.notaDeEntrada = this.repair.notaDeEntrada;
+      this.notaFiscal = this.repair.notaFiscal;
+      this.warranty = this.repair.warranty;
+      this.repairFups = this.repair.repairFups;
+    })
+   }
 
   ngOnInit() {
-    setTimeout(() => {},)
+    this.repairFormGroup = this._fb.group({
+      id: this._fb.control(this.id),
+      approvalUser: this._fb.control(this.approvalUser)
+     })
+  }
+
+  postSubscription: Subscription;
+
+  submitForm(){
+    this.postSubscription =
+      this._http.patchRepair(this.repairFormGroup.value)
+      .subscribe(
+        ((response) => {
+          const quo = <RepairModel>response;
+          this.status = quo.status;
+          this.setMessage('sucesso');
+          this.bar = false;
+          location.reload();
+        }),
+        ((error) => {
+          console.error(error);
+          this.setMessage('erro');
+          this.bar = false;
+        })
+      )
+      this.bar = true;
+  }
+
+  setMessage(m: string){
+
+
+    setTimeout(() => {
+      this.message = "";
+    }, 5000);
+    this.message = m;
   }
 
 }

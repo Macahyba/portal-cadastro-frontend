@@ -20,11 +20,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   align-self: baseline;
 }
 
+.half-width {
+  width: 50%;
+  align-self: baseline;
+}
+
 .outer-card {
 
   width: 50%;
   background-color: mat-color($primaryPalette);
-
 }
 // CLEAN?
 .center {

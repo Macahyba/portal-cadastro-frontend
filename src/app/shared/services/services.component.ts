@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
-export class ServicesComponent implements OnInit, AfterViewInit {
+export class ServicesComponent implements OnInit, OnChanges {
 
   @Input() disabled: string;
   @Input() injectedServices: ServiceModel[];
@@ -39,7 +39,7 @@ export class ServicesComponent implements OnInit, AfterViewInit {
     this.parentFormGroup.registerControl('services', this.serviceArray)
   }
 
-  ngAfterViewInit(){
+  ngOnChanges(){
 
     setTimeout(() => {
       if(this.injectedServices && this.injectedServices.length > 0){

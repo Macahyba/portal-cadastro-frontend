@@ -9,7 +9,7 @@ import { ReparoListComponent } from './reparo/reparo-list/reparo-list.component'
 import { LogoutComponent } from './logout/logout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatToolbarModule,
           MatButtonModule,
           MatIconModule,
@@ -27,7 +27,11 @@ import { MatToolbarModule,
           MatCardModule,
           MatGridListModule,
           MatCheckboxModule,
-          MatProgressBarModule  } from '@angular/material';
+          MatProgressBarModule,
+          MatTabsModule,
+          MatSlideToggleModule,
+          MatExpansionModule,
+          MatRadioModule} from '@angular/material';
 import { ReparoInsertComponent } from './reparo/reparo-insert/reparo-insert.component';
 import { OrcamentoInsertComponent } from './orcamento/orcamento-insert/orcamento-insert.component';
 import { LoginComponent } from './login/login.component';
@@ -44,6 +48,11 @@ import { ReparoFupComponent } from './reparo/reparo-list/reparo-detail/reparo-fu
 import { ReparoFupsComponent } from './reparo/reparo-list/reparo-detail/reparo-fups/reparo-fups.component';
 import { AuthGuardService } from './service/auth-guard.service';
 import { RoleGuardService } from './service/role-guard.service';
+import { NotasComponent } from './shared/notas/notas.component';
+import { EquipmentCrudComponent } from './crud/equipment-crud/equipment-crud.component';
+import { UserCrudComponent } from './crud/user-crud/user-crud.component';
+import { CustomerCrudComponent } from './crud/customer-crud/customer-crud.component';
+import { ServiceCrudComponent } from './crud/service-crud/service-crud.component';
 
 @NgModule({
   declarations: [
@@ -64,13 +73,19 @@ import { RoleGuardService } from './service/role-guard.service';
     ServicesComponent,
     StatusComponent,
     ReparoFupComponent,
-    ReparoFupsComponent
+    ReparoFupsComponent,
+    NotasComponent,
+    EquipmentCrudComponent,
+    UserCrudComponent,
+    CustomerCrudComponent,
+    ServiceCrudComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     MatToolbarModule,
     MatButtonModule,
@@ -89,7 +104,11 @@ import { RoleGuardService } from './service/role-guard.service';
     MatCardModule,
     MatGridListModule,
     MatCheckboxModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTabsModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    MatRadioModule
   ],
   providers: [
     {
