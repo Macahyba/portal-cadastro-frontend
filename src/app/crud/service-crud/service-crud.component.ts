@@ -16,7 +16,7 @@ export class ServiceCrudComponent implements OnInit {
 
   serviceForm = this._fb.group({});
 
-  operacao = this._fb.control('');
+  operacao: string = "inserir";
   selectControl = this._fb.control('');
 
   id = this._fb.control('');
@@ -42,7 +42,6 @@ export class ServiceCrudComponent implements OnInit {
       description : this.description,
       price: this.price
     })
-    this.operacao.setValue("inserir");
     this.selectControl.disable();
   }
 
@@ -59,7 +58,7 @@ export class ServiceCrudComponent implements OnInit {
   }
 
   checkButton(): boolean {
-    if (this.operacao.value === 'inserir'){
+    if (this.operacao === 'inserir'){
       return this.serviceForm.valid ? false : true;
     } else {
       return (this.serviceForm.valid && this.selectedService) ? false : true;
@@ -70,7 +69,7 @@ export class ServiceCrudComponent implements OnInit {
 
   submitForm(){
 
-    if (this.operacao.value === 'atualizar') {
+    if (this.operacao === 'atualizar') {
 
       this.postSubscription =
         this._http.patchService(this.serviceForm.value)
@@ -120,7 +119,7 @@ export class ServiceCrudComponent implements OnInit {
   }
 
   radioSelect(){
-    if (this.operacao.value === 'inserir'){
+    if (this.operacao === 'inserir'){
       this.serviceForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();

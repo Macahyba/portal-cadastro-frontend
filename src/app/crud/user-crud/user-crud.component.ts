@@ -17,7 +17,7 @@ export class UserCrudComponent implements OnInit {
 
   userForm = this._fb.group({});
 
-  operacao = this._fb.control('');
+  operacao: string = "inserir";
   selectControl = this._fb.control('');
 
   id = this._fb.control('');
@@ -69,12 +69,11 @@ export class UserCrudComponent implements OnInit {
     }, {
       validator : this.validateEquals(this.password, this.passwordConfirm)
     })
-    this.operacao.setValue("inserir");
     this.selectControl.disable();
   }
 
   checkButton(): boolean {
-    if (this.operacao.value === 'inserir'){
+    if (this.operacao === 'inserir'){
       return this.userForm.valid ? false : true;
     } else {
       return (this.userForm.valid && this.selectedUser) ? false : true;
@@ -96,11 +95,11 @@ export class UserCrudComponent implements OnInit {
   }
 
   isInserir(): boolean {
-    return this.operacao.value === 'inserir'
+    return this.operacao === 'inserir'
   }
 
   isAtualizar(): boolean {
-    return this.operacao.value === 'atualizar'
+    return this.operacao === 'atualizar'
   }
 
   radioSelect(){
@@ -139,7 +138,7 @@ export class UserCrudComponent implements OnInit {
 
   submitForm(){
 
-    if (this.operacao.value === 'atualizar') {
+    if (this.isAtualizar()) {
 
       if (this.changePass){
         this.postSubscription =

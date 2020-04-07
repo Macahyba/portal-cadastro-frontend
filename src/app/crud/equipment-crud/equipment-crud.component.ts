@@ -16,7 +16,7 @@ export class EquipmentCrudComponent implements OnInit {
 
   equipmentForm = this._fb.group({});
 
-  operacao = this._fb.control('');
+  operacao: string = "inserir";
   selectControl = this._fb.control('');
 
   equipments: EquipmentModel[];
@@ -30,12 +30,11 @@ export class EquipmentCrudComponent implements OnInit {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
     })
-    this.operacao.setValue("inserir");
     this.selectControl.disable();
   }
 
   checkButton(): boolean {
-    if (this.operacao.value === 'inserir'){
+    if (this.operacao === 'inserir'){
       return this.equipmentForm.valid ? false : true;
     } else {
       return (this.equipmentForm.valid && this.selectedEquipment) ? false : true;
@@ -43,7 +42,8 @@ export class EquipmentCrudComponent implements OnInit {
   }
 
   radioSelect(){
-    if (this.operacao.value === 'inserir'){
+    console.log(this.operacao)
+    if (this.operacao === 'inserir'){
       this.equipmentForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();
@@ -64,7 +64,7 @@ export class EquipmentCrudComponent implements OnInit {
 
   submitForm(){
 
-    if (this.operacao.value === 'atualizar') {
+    if (this.operacao === 'atualizar') {
 
       this.postSubscription =
         this._http.patchEquipment(this.equipmentForm.value.equipment)

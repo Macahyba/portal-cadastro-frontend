@@ -1,6 +1,6 @@
 <form [formGroup]='serviceForm'>
   <label>Selecione a operação</label><br><br>
-  <mat-radio-group [(ngModel)]="operacao.value" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
+  <mat-radio-group [(ngModel)]="operacao" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
     <mat-radio-button value="inserir">Inserir</mat-radio-button>&nbsp;
     <mat-radio-button value="atualizar">Atualizar</mat-radio-button>
   </mat-radio-group>

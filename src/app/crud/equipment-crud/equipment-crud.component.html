@@ -1,6 +1,6 @@
 <form [formGroup]='equipmentForm'>
   <label>Selecione a operação</label><br><br>
-  <mat-radio-group [(ngModel)]="operacao.value" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
+  <mat-radio-group [(ngModel)]="operacao" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
     <mat-radio-button value="inserir">Inserir</mat-radio-button>&nbsp;
     <mat-radio-button value="atualizar">Atualizar</mat-radio-button>
   </mat-radio-group>
@@ -20,12 +20,6 @@
     [injectedEquipment]='selectedEquipment'>
   </app-equipment>
   <br>
-  <!-- <button
-    type="button"
-    [disabled]="checkAdd()"
-    mat-raised-button
-    color="primary">Adicionar
-  </button>&nbsp; -->
   <button
     type="button"
     (click)="submitForm()"

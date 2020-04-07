@@ -18,7 +18,7 @@ export class CustomerCrudComponent implements OnInit {
 
   customerForm = this._fb.group({});
 
-  operacao = this._fb.control('');
+  operacao: string = "inserir";
   selectControl = this._fb.control('');
 
   customers: CustomerModel[];
@@ -35,7 +35,6 @@ export class CustomerCrudComponent implements OnInit {
     this._http.getCustomers().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
     })
-    this.operacao.setValue("inserir");
     this.selectControl.disable();
   }
 
@@ -58,7 +57,7 @@ export class CustomerCrudComponent implements OnInit {
   }
 
   checkButton(): boolean {
-    if (this.operacao.value === 'inserir'){
+    if (this.operacao === 'inserir'){
       return this.customerForm.valid ? false : true;
     } else {
       return (this.customerForm.valid
@@ -73,7 +72,7 @@ export class CustomerCrudComponent implements OnInit {
     let sendForm: CustomerModel = this.customerForm.value.customer;
     sendForm.contacts = [this.customerForm.value.contact];
 
-    if (this.operacao.value === 'atualizar') {
+    if (this.operacao === 'atualizar') {
 
       this.postSubscription =
         this._http.patchCustomer(sendForm)
@@ -123,7 +122,7 @@ export class CustomerCrudComponent implements OnInit {
   }
 
   radioSelect(){
-    if (this.operacao.value === 'inserir'){
+    if (this.operacao === 'inserir'){
       this.customerForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();
