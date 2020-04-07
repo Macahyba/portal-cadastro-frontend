@@ -12,5 +12,4 @@ export class StorageService {
     return this.storageSub.asObservable();
   }
 
-
 }

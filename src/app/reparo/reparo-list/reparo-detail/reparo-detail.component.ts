@@ -103,7 +103,7 @@ export class ReparoDetailComponent implements OnInit {
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 

@@ -53,6 +53,7 @@ import { EquipmentCrudComponent } from './crud/equipment-crud/equipment-crud.com
 import { UserCrudComponent } from './crud/user-crud/user-crud.component';
 import { CustomerCrudComponent } from './crud/customer-crud/customer-crud.component';
 import { ServiceCrudComponent } from './crud/service-crud/service-crud.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { ServiceCrudComponent } from './crud/service-crud/service-crud.component
     EquipmentCrudComponent,
     UserCrudComponent,
     CustomerCrudComponent,
-    ServiceCrudComponent
+    ServiceCrudComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,

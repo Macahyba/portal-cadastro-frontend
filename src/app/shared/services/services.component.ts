@@ -1,8 +1,8 @@
-import { Component, OnInit, EventEmitter, Output, Input, OnChanges, ɵConsole, AfterViewInit } from '@angular/core';
-import { QuotationService } from 'src/app/service/quotation.service';
+import { Component, OnInit, EventEmitter, Output, Input, OnChanges } from '@angular/core';
 import { ServiceModel } from 'src/app/model/service.model';
 import { MatTableDataSource } from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ServiceService } from 'src/app/service/service.service';
 
 @Component({
   selector: 'app-services',
@@ -25,7 +25,7 @@ export class ServicesComponent implements OnInit, OnChanges {
 
   serviceArray = this._fb.array([]);
 
-  constructor(private _http: QuotationService,  private _fb: FormBuilder) {
+  constructor(private _http: ServiceService,  private _fb: FormBuilder) {
 
     this._http.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;

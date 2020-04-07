@@ -38,7 +38,7 @@ export class ReparoInsertComponent implements OnInit {
 
   submitForm() {
     this.postSubscription =
-      this._http.setRepair(this.reparoFormGroup.value)
+      this._http.postRepair(this.reparoFormGroup.value)
       .subscribe(
         ((response) => {
           this.setMessage('sucesso');
@@ -64,7 +64,7 @@ export class ReparoInsertComponent implements OnInit {
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 }

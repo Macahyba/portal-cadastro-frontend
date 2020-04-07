@@ -3,8 +3,8 @@ import { CustomerModel } from 'src/app/model/customer.model';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
-import { QuotationService } from 'src/app/service/quotation.service';
 import { ContactModel } from 'src/app/model/contact.model';
+import { CustomerService } from 'src/app/service/customer.service';
 
 @Component({
   selector: 'app-customer',
@@ -46,7 +46,7 @@ export class CustomerComponent implements OnInit, OnChanges {
     )
 
 
-  constructor(private _http: QuotationService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
+  constructor(private _http: CustomerService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
     this._http.getCustomers().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
 

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { QuotationService } from 'src/app/service/quotation.service';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ContactModel } from 'src/app/model/contact.model';
 import { StorageService } from 'src/app/service/storage.service';
+import { CustomerService } from 'src/app/service/customer.service';
 
 @Component({
   selector: 'app-customer-crud',
@@ -29,7 +29,7 @@ export class CustomerCrudComponent implements OnInit {
   message: string;
   bar: boolean;
 
-  constructor(private _fb: FormBuilder, private _http: QuotationService, private _stor: StorageService) { }
+  constructor(private _fb: FormBuilder, private _http: CustomerService, private _stor: StorageService) { }
 
   ngOnInit() {
     this._http.getCustomers().subscribe(data =>{
@@ -41,11 +41,12 @@ export class CustomerCrudComponent implements OnInit {
 
   customerSelect(event){
     this.selectedCustomer = this.getCustomerById(parseInt(event.value));
-    this.contacts = this.selectedCustomer.contacts;
+    if (this.selectedCustomer) this.contacts = this.selectedCustomer.contacts;
+    if (this.contacts.length > 0) this.selectedContact = this.contacts[0];
   }
 
   contactSelect(event){
-    this.selectedContact = this.getContactById(parseInt(event.value));
+    if (this.selectedCustomer) this.selectedContact = this.getContactById(parseInt(event.value));
   }
 
   getCustomerById(id: number): CustomerModel{
@@ -93,7 +94,7 @@ export class CustomerCrudComponent implements OnInit {
     } else {
 
       this.postSubscription =
-      this._http.setCustomer(sendForm)
+      this._http.postCustomer(sendForm)
       .subscribe(
         ((response) => {
           this.setMessage('sucesso');
@@ -117,7 +118,7 @@ export class CustomerCrudComponent implements OnInit {
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 

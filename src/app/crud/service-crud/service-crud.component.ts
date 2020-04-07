@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ServiceModel } from 'src/app/model/service.model';
-import { QuotationService } from 'src/app/service/quotation.service';
 import { Subscription } from 'rxjs';
+import { ServiceService } from 'src/app/service/service.service';
 
 @Component({
   selector: 'app-service-crud',
@@ -29,7 +29,7 @@ export class ServiceCrudComponent implements OnInit {
   message: string;
   bar: boolean;
 
-  constructor(private _http: QuotationService, private _fb: FormBuilder) {
+  constructor(private _http: ServiceService, private _fb: FormBuilder) {
     this._http.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
     })
@@ -91,7 +91,7 @@ export class ServiceCrudComponent implements OnInit {
     } else {
 
       this.postSubscription =
-      this._http.setService(this.serviceForm.value)
+      this._http.postService(this.serviceForm.value)
       .subscribe(
         ((response) => {
           this.setMessage('sucesso');
@@ -115,7 +115,7 @@ export class ServiceCrudComponent implements OnInit {
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 

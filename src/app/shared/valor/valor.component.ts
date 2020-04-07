@@ -41,6 +41,6 @@ export class ValorComponent implements OnInit, OnChanges {
 
   returnTotal(){
     this.totalPriceControl.setValue(this.totalPrice);
-    return this.totalPrice*(1-this.totalDiscount/100);
+    return this.totalPrice*(1-this.totalDiscountControl.value/100);
   }
 }

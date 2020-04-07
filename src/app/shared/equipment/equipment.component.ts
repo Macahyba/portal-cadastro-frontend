@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { QuotationService } from 'src/app/service/quotation.service';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { EquipmentService } from 'src/app/service/equipment.service';
 
 @Component({
   selector: 'app-equipment',
@@ -26,7 +26,7 @@ export class EquipmentComponent implements OnInit, OnChanges {
   equipments: EquipmentModel[];
   filteredEquipment: Observable<EquipmentModel[]>;
 
-  constructor(private _http: QuotationService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
+  constructor(private _http: EquipmentService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 

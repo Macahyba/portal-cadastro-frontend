@@ -1,20 +1,4 @@
 <form [formGroup]='userForm'>
-  <label>Selecione a operação</label><br><br>
-  <mat-radio-group [(ngModel)]="operacao.value" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
-    <mat-radio-button value="inserir">Inserir</mat-radio-button>&nbsp;
-    <mat-radio-button value="atualizar">Atualizar</mat-radio-button>
-  </mat-radio-group>
-  <br>
-  <mat-form-field class="half-width">
-    <mat-label>Usuários</mat-label>
-    <mat-select (selectionChange)="selected($event)" [formControl]="selectControl">
-      <mat-option
-        *ngFor="let user of users"
-        value="{{user.id}}">
-          Usuário: {{user.username}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
 
   <mat-card class="outer-card">
     <mat-card>
@@ -52,13 +36,12 @@
           <input type="text" matInput [formControl]="phone">
       </mat-form-field>
 
-      <mat-checkbox *ngIf="!isMe() && isAtualizar()" matInput [formControl]="changePass">Resetar Senha?</mat-checkbox>
-      <mat-checkbox *ngIf="isMe()" matInput [formControl]="changePass" (change)="checkPassword($event)">Alterar Senha?</mat-checkbox>
-      <mat-form-field class="full-width" *ngIf="isInserir() || isMe()">
+      <mat-checkbox matInput [formControl]="changePass" (change)="checkPassword($event)">Alterar Senha?</mat-checkbox>
+      <mat-form-field class="full-width">
         <mat-label>Senha</mat-label>
         <input type="password" matInput [formControl]="password">
       </mat-form-field>
-      <mat-form-field class="full-width" *ngIf="isInserir() || isMe()">
+      <mat-form-field class="full-width">
         <mat-label>Confirme a senha</mat-label>
         <input type="password" matInput [formControl]="passwordConfirm">
       </mat-form-field>
@@ -76,7 +59,7 @@
     [disabled]="checkButton()"
     (click)="submitForm()"
     mat-raised-button
-    color="primary">Enviar
+    color="primary">Atualizar
   </button><br><br>
   <div class="sucesso" *ngIf="message === 'sucesso'">
     Salvo com sucesso!<br><br>

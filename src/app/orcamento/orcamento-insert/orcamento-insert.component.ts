@@ -7,6 +7,7 @@ import { StatusModel } from 'src/app/model/status.model';
 import { UserModel } from 'src/app/model/user.model';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from 'src/app/service/authentication.service';
+import { ServiceService } from 'src/app/service/service.service';
 
 @Component({
   selector: 'app-orcamento-insert',
@@ -32,7 +33,10 @@ export class OrcamentoInsertComponent implements OnInit {
     return this.orcamentoFormGroup.controls.services;
   }
 
-  constructor(private _http: QuotationService, private _auth: AuthenticationService) {
+  constructor(
+      private _http: QuotationService,
+      private _services: ServiceService,
+      private _auth: AuthenticationService) {
     this.orcamentoFormGroup = new FormGroup({
       user : new FormControl(this.user),
       status : new FormControl(this.status)
@@ -41,7 +45,7 @@ export class OrcamentoInsertComponent implements OnInit {
 
   ngOnInit() {
 
-    this._http.getServices().subscribe(data =>{
+    this._services.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.totalPrice = this.selectedService.price;
     })
@@ -57,7 +61,7 @@ export class OrcamentoInsertComponent implements OnInit {
 
   submitForm() {
     this.postSubscription =
-      this._http.setQuotation(this.orcamentoFormGroup.value)
+      this._http.postQuotation(this.orcamentoFormGroup.value)
       .subscribe(
         ((response) => {
           this.setMessage('sucesso');
@@ -83,7 +87,7 @@ export class OrcamentoInsertComponent implements OnInit {
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 }

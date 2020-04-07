@@ -18,6 +18,20 @@ export class ReparoFupsComponent implements OnInit {
 
   showNewFup: boolean;
 
+  step = null;
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+
   constructor(private _fb: FormBuilder) { }
 
   ngOnInit() {

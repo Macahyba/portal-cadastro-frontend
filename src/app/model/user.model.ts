@@ -4,7 +4,6 @@ export class UserModel {
         public username?: string,
         public fullName?: string,
         public email?: string,
-        public profile?: string,
         public role?: string,
         public phone?: string,
         ){
@@ -12,7 +11,6 @@ export class UserModel {
             this.username = username || null
             this.fullName = fullName || null
             this.email = email || null
-            this.profile = profile || null
             this.role = role || null
             this.phone = phone || null
         }

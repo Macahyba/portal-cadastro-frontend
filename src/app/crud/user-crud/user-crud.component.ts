@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { FormBuilder, Validators } from '@angular/forms';
-import { UserModel } from 'src/app/model/user.model';
-import { QuotationService } from 'src/app/service/quotation.service';
+import { FormBuilder, Validators, FormGroup, AbstractControl, ValidatorFn, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/service/user.service';
+import { UserDetailsModel } from 'src/app/model/user-details';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
   selector: 'app-user-crud',
@@ -26,17 +27,27 @@ export class UserCrudComponent implements OnInit {
   profile = this._fb.control('', Validators.required);
   phone = this._fb.control('', Validators.required);
   role = this._fb.control('', Validators.required);
-  password = this._fb.control('');
+  changePass = this._fb.control('');
 
-  users: UserModel[];
+  password = this._fb.control('', [Validators.required, Validators.minLength(8)]);
+  passwordConfirm = this._fb.control('', [Validators.required, Validators.minLength(8)]);
 
-  selectedUser: UserModel;
+  users: UserDetailsModel[];
+
+  selectedUser: UserDetailsModel;
   message: string;
   bar: boolean;
 
-  constructor(private _fb: FormBuilder, private _http: QuotationService) {
-    this._http.getUsers().subscribe(data =>{
-      this.users = <UserModel[]>data;
+  getUserForm(){
+    return this.userForm.controls.user as FormGroup;
+  }
+
+  constructor(
+      private _fb: FormBuilder,
+      private _http: UserService,
+      private _auth: AuthenticationService) {
+    this._http.getUsersDetails().subscribe(data =>{
+      this.users = <UserDetailsModel[]>data;
     })
    }
 
@@ -44,11 +55,19 @@ export class UserCrudComponent implements OnInit {
     this.userForm = this._fb.group({
       id: this.id,
       username: this.username,
-      fullName : this.fullName,
-      email: this.email,
       profile: this.profile,
-      phone: this.phone,
-      role: this.role
+      password: this.password,
+      passwordConfirm: this.passwordConfirm,
+      user: this._fb.group({
+        id: this.id,
+        username: this.username,
+        fullName : this.fullName,
+        email: this.email,
+        role: this.role,
+        phone: this.phone
+      })
+    }, {
+      validator : this.validateEquals(this.password, this.passwordConfirm)
     })
     this.operacao.setValue("inserir");
     this.selectControl.disable();
@@ -62,25 +81,54 @@ export class UserCrudComponent implements OnInit {
     }
   }
 
+  isMe(): boolean {
+     return Math.floor(this._auth.getId()) === this.id.value ? true : false;
+  }
+
+  checkPassword(event): void{
+    if (!event.checked) {
+      this.password.disable();
+      this.passwordConfirm.disable();
+    } else {
+      this.password.enable();
+      this.passwordConfirm.enable();
+    }
+  }
+
+  isInserir(): boolean {
+    return this.operacao.value === 'inserir'
+  }
+
+  isAtualizar(): boolean {
+    return this.operacao.value === 'atualizar'
+  }
+
   radioSelect(){
-    if (this.operacao.value === 'inserir'){
+    if (this.isInserir()){
       this.userForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();
+      this.password.enable();
+      this.passwordConfirm.enable();
     } else {
       this.selectControl.enable();
+      this.userForm.reset();
+      this.password.disable();
+      this.passwordConfirm.disable();
     }
   }
 
   selected(event){
     this.selectedUser = this.getUserById(parseInt(event.value));
     this.userForm.controls.id.setValue(this.selectedUser.id);
-    this.userForm.controls.username.setValue(this.selectedUser.username);
-    this.userForm.controls.fullName.setValue(this.selectedUser.fullName);
-    this.userForm.controls.email.setValue(this.selectedUser.email);
+    this.userForm.controls.username.setValue(this.selectedUser.user.username);
     this.userForm.controls.profile.setValue(this.selectedUser.profile);
-    this.userForm.controls.phone.setValue(this.selectedUser.phone);
-    this.userForm.controls.role.setValue(this.selectedUser.role);
+    this.getUserForm().controls.id.setValue(this.selectedUser.id);
+    this.getUserForm().controls.username.setValue(this.selectedUser.user.username);
+    this.getUserForm().controls.fullName.setValue(this.selectedUser.user.fullName);
+    this.getUserForm().controls.email.setValue(this.selectedUser.user.email);
+    this.getUserForm().controls.phone.setValue(this.selectedUser.user.phone);
+    this.getUserForm().controls.role.setValue(this.selectedUser.user.role);
   }
 
   getUserById(id: number){
@@ -91,59 +139,81 @@ export class UserCrudComponent implements OnInit {
 
   submitForm(){
 
-    // if (this.operacao.value === 'atualizar') {
+    if (this.operacao.value === 'atualizar') {
 
-    //   this.postSubscription =
-    //     this._http.patchUser(this.userForm.value)
-    //     .subscribe(
-    //       ((response) => {
-    //         this.setMessage('sucesso');
-    //         this.bar = false;
-    //         setTimeout(() => {
-    //           window.open(`${this.HTTP_HOST}/users`,"_self");
-    //         }, 2000);
-    //       }),
-    //       ((error) => {
-    //         console.error(error);
-    //         this.setMessage('erro');
-    //         this.bar = false;
-    //       })
-    //     )
-    // } else {
+      if (this.changePass){
+        this.postSubscription =
+        this._http.resetUser(this.userForm.value)
+        .subscribe(
+          ((response) => {
+            this.setMessage('sucesso');
+          }),
+          ((error) => {
+            console.error(error);
+            this.setMessage('erro');
+          })
+        )
+      }
 
-    //   this.postSubscription =
-    //   this._http.setUser(this.userForm.value)
-    //   .subscribe(
-    //     ((response) => {
-    //       this.setMessage('sucesso');
-    //       this.bar = false;
-    //       setTimeout(() => {
-    //         window.open(`${this.HTTP_HOST}/users`,"_self");
-    //       }, 2000);
-    //     }),
-    //     ((error) => {
-    //       console.error(error);
-    //       this.setMessage('erro');
-    //       this.bar = false;
-    //     })
-    //   )
-    // }
+      this.postSubscription =
+        this._http.patchUserDetails(this.userForm.value)
+        .subscribe(
+          ((response) => {
+            this.setMessage('sucesso');
+            this.bar = false;
+            setTimeout(() => {
+              window.open(`${this.HTTP_HOST}/usuarios`,"_self");
+            }, 2000);
+          }),
+          ((error) => {
+            console.error(error);
+            this.setMessage('erro');
+            this.bar = false;
+          })
+        )
+    } else {
 
-    // this.bar = true;
-
-    console.log(this.userForm.value)
-    if (this.password.value){
-      console.log("a")
+      this.postSubscription =
+      this._http.postUserDetails(this.userForm.value)
+      .subscribe(
+        ((response) => {
+          this.setMessage('sucesso');
+          this.bar = false;
+          setTimeout(() => {
+            window.open(`${this.HTTP_HOST}/usuarios`,"_self");
+          }, 2000);
+        }),
+        ((error) => {
+          console.error(error);
+          this.setMessage('erro');
+          this.bar = false;
+        })
+      )
     }
 
+    this.bar = true;
   }
 
   setMessage(m: string){
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 
+
+  validateEquals(field1: AbstractControl, field2: AbstractControl){
+    return function(){
+      const field1Value = field1.value;
+      const field2Value = field2.value;
+
+      if (field1Value !== '' && field1Value !== field2Value) {
+        return { 'notMatch': true }
+      }
+      return null;
+    }
+  }
+
 }
+

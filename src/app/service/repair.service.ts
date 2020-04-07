@@ -31,20 +31,8 @@ export class RepairService {
         return this._http.get<RepairModel>(`repairs/${id}`);
     }
 
-    getServices(): Observable<ServiceModel> {
-        return this._http.get<ServiceModel>('services/');
-    }
-
-    getCustomers(): Observable<CustomerModel> {
-        return this._http.get<CustomerModel>('customers/');
-    }
-
-    getEquipments(): Observable<EquipmentModel> {
-        return this._http.get<EquipmentModel>('equipments/');
-    }
-
-    setRepair(quotation: RepairModel){
-      const payload = JSON.stringify(<RepairModel>quotation);
+    postRepair(repair: RepairModel){
+      const payload = JSON.stringify(<RepairModel>repair);
 
       return this._http.post('repairs/', payload, this.httpOptions).pipe(
         catchError(this.handleError)

@@ -17,44 +17,48 @@ export class LoginComponent implements OnInit {
     password: ['',Validators.required]
   });
 
+  bar: boolean;
   message: string;
 
   constructor(
     private _fb: FormBuilder,
-    private _auth: AuthenticationService,
-    private _router: Router,
-    private _stor: StorageService) { }
+    private _auth: AuthenticationService) { }
 
   ngOnInit() {
   }
 
-  checkValid(){
+  checkButton(){
     return this.loginFormGroup.valid ? false : true;
   }
 
   postSubscription: Subscription;
 
-  submitForm(){
-
+  submitForm() {
     this.postSubscription =
-      this._auth.authenticate(this.loginFormGroup.value.username, this.loginFormGroup.value.password)
+    this._auth.authenticate(this.loginFormGroup.value.username, this.loginFormGroup.value.password)
       .subscribe(
         ((response) => {
-          this._router.navigate(['/orcamentos']);
+          this.setMessage('sucesso');
+          this.bar = false;
+          setTimeout(() => {
+            window.open('/orcamentos',"_self");
+          }, 1000);
         }),
-        ((error) =>{
+        ((error) => {
+          console.error(error);
           this.setMessage('erro');
-          sessionStorage.clear();
-          this._stor.storageSub.next(this._auth.getRole());
+          this.bar = false;
+          this.loginFormGroup.reset();
         })
       )
+      this.bar = true;
   }
 
   setMessage(m: string){
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 

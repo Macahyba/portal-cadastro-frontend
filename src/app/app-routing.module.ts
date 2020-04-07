@@ -14,6 +14,7 @@ import { CustomerCrudComponent } from './crud/customer-crud/customer-crud.compon
 import { EquipmentCrudComponent } from './crud/equipment-crud/equipment-crud.component';
 import { ServiceCrudComponent } from './crud/service-crud/service-crud.component';
 import { UserCrudComponent } from './crud/user-crud/user-crud.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 const routes: Routes = [
@@ -49,20 +50,21 @@ const routes: Routes = [
     path: 'equipamentos',
     component: EquipmentCrudComponent,
     canActivate: [AuthGuardService]
-    //
   },{
     path: 'servicos',
     component: ServiceCrudComponent,
     canActivate: [AuthGuardService]
-    //
+  },{
+    path: 'perfil',
+    component: PerfilComponent,
+    canActivate: [AuthGuardService]
   },{
     path: 'usuarios',
     component: UserCrudComponent,
     canActivate: [RoleGuardService],
     data: {
-      role: ['admin']
+      role: ['admin', 'manager']
     }
-    //
   },{
     path: 'login',
     component: LoginComponent

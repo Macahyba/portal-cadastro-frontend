@@ -17,12 +17,14 @@
         <span *ngIf="role !== 'user'">
           <button type="submit" mat-raised-button color="primary">Atualizar</button>&nbsp;
         </span>
+        <span *ngIf="checkStatus()">
         <button
-          *ngIf="checkStatus()"
           type="button"
           mat-raised-button color="warn"
           (click)="downloadPdf()">Download</button>
-        <br><br>
+          <br>
+        </span>
+        <br>
         <input type="hidden" [value]="id">
         <mat-tab-group>
           <mat-tab label="Cliente">

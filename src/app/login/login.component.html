@@ -12,14 +12,20 @@
           </mat-form-field>
           <br>
           <button
-            type="submit"
-            [disabled]="checkValid()"
-            mat-raised-button
-            color="primary">Enviar</button>
-            <br>
-            <div class="erro" *ngIf="message === 'erro'">
-              <br>Não autorizado!<br>
-            </div>
+          type="submit"
+          [disabled]="checkButton()"
+          mat-raised-button
+          color="primary">Enviar
+        </button><br>
+        <div class="sucesso" *ngIf="message === 'sucesso'">
+          <br>Login com sucesso!<br>
+        </div>
+        <div class="erro" *ngIf="message === 'erro'">
+          <br>Não autorizado!<br>
+        </div>
+        <div *ngIf="bar">
+          <br><mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
+        </div>
       </mat-card>
   </mat-card>
 </form>

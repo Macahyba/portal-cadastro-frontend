@@ -1,4 +1,4 @@
-<ng-container [formGroup]="parentFormGroup">
+<!-- <ng-container [formGroup]="parentFormGroup">
   <mat-tab-group>
     <mat-tab label="Novo Follow-up">
       <br>
@@ -23,4 +23,44 @@
       </mat-tab>
     </div>
   </mat-tab-group>
+</ng-container> -->
+<ng-container [formGroup]="parentFormGroup">
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Novo Follow-up</mat-panel-title>
+      </mat-expansion-panel-header>
+        <mat-slide-toggle
+          style="height: 40px;"
+          (change)="toggleNewFup($event)">Adicionar Follow-up
+        </mat-slide-toggle>
+        <div *ngIf="showNewFup">
+          <app-reparo-fup
+            [parentFormArray]="repairFupFormArray">
+          </app-reparo-fup>
+        </div>
+      <mat-action-row>
+        <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <div *ngFor="let repairFup of reverseRepairFups; let i = index">
+      <mat-expansion-panel [expanded]="step === i+1" (opened)="setStep(i+1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Follow-up {{reverseRepairFups.length - i}}</mat-panel-title>
+        </mat-expansion-panel-header>
+          <app-reparo-fup
+            disabled="disabled"
+            [repairFup]="repairFup"
+            [parentFormArray]="repairFupFormArray">
+          </app-reparo-fup>
+        <mat-action-row>
+          <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
+          <button type="button" mat-button color="primary" (click)="nextStep()">
+            <span *ngIf="reverseRepairFups.length !== i+1">Próximo</span>
+            <span *ngIf="reverseRepairFups.length === i+1">Fim</span>
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </div>
+  </mat-accordion>
 </ng-container>

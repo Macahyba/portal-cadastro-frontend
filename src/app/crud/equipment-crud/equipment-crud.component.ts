@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { QuotationService } from 'src/app/service/quotation.service';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { EquipmentService } from 'src/app/service/equipment.service';
 
 @Component({
   selector: 'app-equipment-crud',
@@ -24,7 +24,7 @@ export class EquipmentCrudComponent implements OnInit {
   message: string;
   bar: boolean;
 
-  constructor(private _fb: FormBuilder, private _http: QuotationService) { }
+  constructor(private _fb: FormBuilder, private _http: EquipmentService) { }
 
   ngOnInit() {
     this._http.getEquipments().subscribe(data =>{
@@ -85,7 +85,7 @@ export class EquipmentCrudComponent implements OnInit {
     } else {
 
       this.postSubscription =
-      this._http.setEquipment(this.equipmentForm.value.equipment)
+      this._http.postEquipment(this.equipmentForm.value.equipment)
       .subscribe(
         ((response) => {
           this.setMessage('sucesso');
@@ -109,7 +109,7 @@ export class EquipmentCrudComponent implements OnInit {
 
     setTimeout(() => {
       this.message = "";
-    }, 5000);
+    }, 3000);
     this.message = m;
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { QuotationService } from 'src/app/service/quotation.service';
 import { StatusModel } from 'src/app/model/status.model';
+import { StatusService } from 'src/app/service/status.service';
 
 @Component({
   selector: 'app-status',
@@ -26,7 +26,7 @@ export class StatusComponent implements OnInit, OnChanges {
     return this.parentFormGroup.controls.status as FormGroup;
   }
 
-  constructor(private _http: QuotationService, private _ref: ChangeDetectorRef) {
+  constructor(private _http: StatusService, private _ref: ChangeDetectorRef) {
     this._http.getStatus().subscribe(data =>{
       this.statuses = <StatusModel[]>data;
     })
