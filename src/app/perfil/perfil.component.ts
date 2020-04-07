@@ -80,7 +80,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
       this.getUserForm().controls.email.setValue(this.user.user.email);
       this.getUserForm().controls.phone.setValue(this.user.user.phone);
       this.getUserForm().controls.role.setValue(this.user.user.role);
-    }, 0);
+    }, 1000);
   }
 
   checkButton(): boolean {

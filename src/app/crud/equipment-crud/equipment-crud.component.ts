@@ -42,7 +42,6 @@ export class EquipmentCrudComponent implements OnInit {
   }
 
   radioSelect(){
-    console.log(this.operacao)
     if (this.operacao === 'inserir'){
       this.equipmentForm.reset();
       this.selectControl.setValue("")

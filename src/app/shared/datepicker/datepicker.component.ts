@@ -26,10 +26,6 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
   ngOnChanges(){
     setTimeout(() => {
-      // if (this.injectedDate){
-      //   console.log(this.injectedDate)
-      //   this.parentFormGroup.get(this.control).setValue(this.injectedDate);
-      // }
       if (this.disabled){
         this.date.disable();
       }
