@@ -26,15 +26,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .outer-card {
-
-  width: 50%;
+  overflow: auto;
+  // width: 50%;
   background-color: mat-color($primaryPalette);
-}
-// CLEAN?
-.center {
-  justify-content: center;
-  align-content: center;
-  display: flex;
 }
 
 .ng-invalid .ng-touched {

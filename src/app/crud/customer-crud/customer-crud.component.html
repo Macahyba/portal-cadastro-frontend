@@ -5,7 +5,7 @@
     <mat-radio-button value="atualizar">Atualizar</mat-radio-button>
   </mat-radio-group>
   <br>
-  <mat-form-field class="half-width">
+  <mat-form-field class="full-width">
     <mat-label>Clientes</mat-label>
     <mat-select (selectionChange)="customerSelect($event)" [formControl]="selectControl">
       <mat-option
@@ -16,7 +16,7 @@
     </mat-select>
   </mat-form-field>
   <br>
-  <mat-form-field class="half-width">
+  <mat-form-field class="full-width">
     <mat-label>Contatos</mat-label>
     <mat-select (selectionChange)="contactSelect($event)" [formControl]="selectControl">
       <mat-option

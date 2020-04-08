@@ -4,51 +4,58 @@ table {
     width: 100%;
 }
 
+.table-container {
+  position: relative;
+  overflow: auto;
+}
+
 .mat-form-field {
   font-size: 14px;
   width: 100%;
 }
 
-td, th {
-  width: 25%;
-}
 
 .mat-column-label {
 
-  width: 12.5% !important;
+  padding-right: 10px;
 }
 
 .mat-column-name {
-
-  width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-equipment {
 
-  width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-serialNumber {
 
-  width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-totalPrice {
 
-  width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-totalDiscount {
 
-  width: 10.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-status {
 
-  width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-creationDate {
 
-  width: 14.5% !important;
+  padding-left: 10px;
 }

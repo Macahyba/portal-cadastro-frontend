@@ -92,7 +92,8 @@ export class OrcamentoDetailComponent implements OnInit {
   }
 
   checkStatus(){
-    return this.status && this.status.status === 'APROVADO';
+    return this.status &&
+      (this.status.status === 'APROVADO' || this.status.status === 'FINALIZADO');
   }
 
   setMessage(m: string){

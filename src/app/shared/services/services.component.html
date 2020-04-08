@@ -1,6 +1,6 @@
 <ng-container [formGroup]="parentFormGroup">
     <mat-card  class="outer-card">
-        <table mat-table class="mat-elevation-z8" [dataSource]="dataSource">
+        <table mat-table class="table-container" [dataSource]="dataSource">
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let service">

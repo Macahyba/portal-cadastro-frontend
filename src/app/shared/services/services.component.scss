@@ -4,17 +4,24 @@ table {
     width: 100%;
 }
 
+.table-container {
+  position: relative;
+  overflow: auto;
+}
+
 .mat-column-name {
 
-  width: 35% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-desc {
 
-  width: 50% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-price {
 
-  width: 15% !important;
+  padding-left: 10px;
 }

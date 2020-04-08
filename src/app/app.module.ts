@@ -31,7 +31,8 @@ import { MatToolbarModule,
           MatTabsModule,
           MatSlideToggleModule,
           MatExpansionModule,
-          MatRadioModule} from '@angular/material';
+          MatRadioModule,
+          MatMenuModule} from '@angular/material';
 import { ReparoInsertComponent } from './reparo/reparo-insert/reparo-insert.component';
 import { OrcamentoInsertComponent } from './orcamento/orcamento-insert/orcamento-insert.component';
 import { LoginComponent } from './login/login.component';
@@ -110,7 +111,8 @@ import { PerfilComponent } from './perfil/perfil.component';
     MatTabsModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule
   ],
   providers: [
     {

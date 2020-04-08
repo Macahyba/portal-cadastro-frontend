@@ -4,57 +4,65 @@ table {
     width: 100%;
 }
 
+.table-container {
+  position: relative;
+  overflow: auto;
+}
+
 .mat-form-field {
     font-size: 14px;
     width: 100%;
 }
 
-td, th {
-    width: 25%;
-}
-
 .mat-column-label {
 
-    width: 12.5% !important;
+  padding-right: 10px;
 }
 
 .mat-column-sapNotification {
 
-    width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-repairFups {
 
-   width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-equipment {
 
-    width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-serialNumber {
 
-    width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-customer {
 
-    width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-warranty {
 
-    width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-tat {
 
-    width: 12.5% !important;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mat-column-status {
 
-    width: 12.5% !important;
+  padding-left: 10px;
 }
 
