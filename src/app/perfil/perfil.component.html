@@ -19,11 +19,7 @@
       <br>
       <mat-form-field class="full-width">
           <mat-label>Perfil</mat-label>
-          <mat-select matInput [formControl]="profile">
-            <mat-option value="user">User</mat-option>
-            <mat-option value="manager">Manager</mat-option>
-            <mat-option value="admin">Admin</mat-option>
-          </mat-select>
+          <input type="text" matInput [formControl]="profile">
       </mat-form-field>
       <br>
       <mat-form-field class="full-width">
