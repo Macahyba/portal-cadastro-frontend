@@ -28,11 +28,15 @@ export class ServiceCrudComponent implements OnInit {
   selectedService: ServiceModel;
   message: string;
   bar: boolean;
+  barFetch: boolean;
+  error: string;
 
   constructor(private _http: ServiceService, private _fb: FormBuilder) {
     this._http.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
-    })
+      this.barFetch = false;
+    });
+    this.barFetch = true;
    }
 
   ngOnInit() {
@@ -84,6 +88,7 @@ export class ServiceCrudComponent implements OnInit {
           ((error) => {
             console.error(error);
             this.setMessage('erro');
+            this.error = error;
             this.bar = false;
           })
         )

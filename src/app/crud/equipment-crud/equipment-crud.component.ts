@@ -23,13 +23,17 @@ export class EquipmentCrudComponent implements OnInit {
   selectedEquipment: EquipmentModel;
   message: string;
   bar: boolean;
+  barFetch: boolean;
+  error: string;
 
   constructor(private _fb: FormBuilder, private _http: EquipmentService) { }
 
   ngOnInit() {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
+      this.barFetch = false;
     })
+    this.barFetch = true;
     this.selectControl.disable();
   }
 
@@ -96,6 +100,7 @@ export class EquipmentCrudComponent implements OnInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )

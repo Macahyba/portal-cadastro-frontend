@@ -1,4 +1,7 @@
 <form [formGroup]="orcamentoFormGroup" (submit)="submitForm()">
+  <div *ngIf="barFetch">
+    <br><mat-progress-bar mode="query"></mat-progress-bar><br>
+  </div>
   <mat-tab-group>
     <mat-tab label="Cliente">
       <br>
@@ -42,7 +45,7 @@
     Salvo com sucesso!<br><br>
   </div>
   <div class="erro" *ngIf="message === 'erro'">
-    Falha ao salvar!<br><br>
+    {{error}}<br><br>
   </div>
   <div *ngIf="bar">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>

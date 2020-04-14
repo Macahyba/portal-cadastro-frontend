@@ -10,8 +10,6 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .base-form {
-  // min-width: 150px;
-  // max-width: 500px;
   width: 100%;
 }
 
@@ -27,7 +25,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .outer-card {
   overflow: auto;
-  // width: 50%;
   background-color: mat-color($primaryPalette);
 }
 
@@ -46,5 +43,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-progress-bar {
-  width: 50%;
+  width: 100%;
 }

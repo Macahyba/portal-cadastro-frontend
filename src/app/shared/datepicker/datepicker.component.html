@@ -1,6 +1,6 @@
 <ng-container [formGroup]="parentFormGroup">
   <mat-form-field *ngIf="injectedDate">
-    <input matInput type="text" [formControl]="date" value="{{injectedDate | date:'dd/MM/yyyy':'-0300'}}">
+    <input matInput type="text" [formControl]="date" value="{{injectedDate | date:'dd/MM/yyyy HH:mm:ss':'-0300'}}">
   </mat-form-field>
   <mat-form-field *ngIf="!injectedDate">
     <mat-label>Selecione a data</mat-label>

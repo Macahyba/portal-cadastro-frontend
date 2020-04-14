@@ -27,14 +27,13 @@ export class StatusService {
 
     handleError(error) {
       let errorMessage = '';
-      if(error.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = error.error.message;
+
+      if (error.name && error.name.includes("Timeout")){
+        errorMessage = "Tempo de requisição excedido!";
       } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        errorMessage = "Falha ao salvar!";
       }
       return throwError(errorMessage);
-   }
+    }
 
   }

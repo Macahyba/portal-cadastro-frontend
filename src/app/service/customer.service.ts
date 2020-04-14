@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { CustomerModel } from '../model/customer.model';
-import { catchError } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 
 
 
@@ -31,6 +31,7 @@ export class CustomerService {
     const payload = JSON.stringify(<CustomerModel>customer);
 
     return this._http.post('customers/', payload, this.httpOptions).pipe(
+      timeout(10000),
       catchError(this.handleError)
     );
   }
@@ -40,6 +41,7 @@ export class CustomerService {
     const id = customer.id;
 
     return this._http.patch(`customers/${id}`, payload, this.httpOptions).pipe(
+      timeout(10000),
       catchError(this.handleError)
     );
   }
@@ -47,14 +49,13 @@ export class CustomerService {
 
   handleError(error) {
     let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
+
+    if (error.name && error.name.includes("Timeout")){
+      errorMessage = "Tempo de requisição excedido!";
     } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = "Falha ao salvar!";
     }
     return throwError(errorMessage);
- }
+  }
 
 }

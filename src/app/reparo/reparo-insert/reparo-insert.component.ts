@@ -23,6 +23,7 @@ export class ReparoInsertComponent implements OnInit {
   user : UserModel = new UserModel(this._auth.getId());
   message: string;
   bar: boolean;
+  error: string;
 
   constructor(private _http: RepairService , private _auth: AuthenticationService) {
     this.reparoFormGroup = new FormGroup({
@@ -50,6 +51,7 @@ export class ReparoInsertComponent implements OnInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )

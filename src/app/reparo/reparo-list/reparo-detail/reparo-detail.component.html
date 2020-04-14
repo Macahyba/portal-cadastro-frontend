@@ -1,4 +1,7 @@
 <form [formGroup]="repairFormGroup" (submit)="submitForm()">
+  <div *ngIf="barFetch">
+    <br><mat-progress-bar mode="query"></mat-progress-bar><br>
+  </div>
   <mat-accordion>
     <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
       <mat-expansion-panel-header>
@@ -72,7 +75,7 @@
       Salvo com sucesso!<br><br>
     </div>
     <div class="erro" *ngIf="message === 'erro'">
-      Falha ao salvar!<br><br>
+      {{error}}<br><br>
     </div>
     <div *ngIf="bar">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>

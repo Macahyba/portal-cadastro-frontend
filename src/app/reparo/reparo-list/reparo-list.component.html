@@ -4,7 +4,9 @@
   <mat-label>Buscar</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Globo">
 </mat-form-field>
-
+<div *ngIf="barFetch">
+  <br><mat-progress-bar mode="query"></mat-progress-bar><br>
+</div>
 <div class="table-container">
   <table mat-table [dataSource]="dataSource" matSort>
 

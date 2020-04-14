@@ -4,7 +4,9 @@
   <mat-label>Buscar</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Globo">
 </mat-form-field>
-
+<div *ngIf="barFetch">
+  <br><mat-progress-bar mode="query"></mat-progress-bar><br>
+</div>
 <div class="table-container">
   <table mat-table [dataSource]="dataSource" matSort>
 
@@ -54,4 +56,7 @@
   </table>
 
   <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+
+  <button mat-button  style="zoom: 2;"><mat-icon
+    (click)="downloadCsv()">cloud_download</mat-icon></button>
 </div>

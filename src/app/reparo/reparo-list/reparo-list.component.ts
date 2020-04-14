@@ -15,6 +15,7 @@ export class ReparoListComponent implements OnInit {
     ['sapNotification', 'repairFups', 'equipment',
       'serialNumber', 'customer', 'warranty', 'tat', 'status', 'creationDate'];
   dataSource: MatTableDataSource<RepairModel>;
+  barFetch: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -48,7 +49,9 @@ export class ReparoListComponent implements OnInit {
         }
       };
       this.dataSource.sort = this.sort;
-    })
+      this.barFetch = false;
+    });
+    this.barFetch = true;
   }
 
   applyFilter(event: Event) {

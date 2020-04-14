@@ -31,8 +31,10 @@ export class ReparoDetailComponent implements OnInit {
   repairFups: RepairFupModel[];
   status: StatusModel;
   bar: boolean;
+  barFetch: boolean;
   message: string;
   repairFormGroup;
+  error: string;
 
   step = null;
 
@@ -66,7 +68,9 @@ export class ReparoDetailComponent implements OnInit {
       this.notaFiscal = this.repair.notaFiscal;
       this.warranty = this.repair.warranty;
       this.repairFups = this.repair.repairFups;
-    })
+      this.barFetch = false;
+    });
+    this.barFetch = true;
    }
 
   ngOnInit() {
@@ -92,6 +96,7 @@ export class ReparoDetailComponent implements OnInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )

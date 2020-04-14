@@ -28,6 +28,8 @@ export class OrcamentoInsertComponent implements OnInit {
   user : UserModel = new UserModel(this._auth.getId());
   message: string;
   bar: boolean;
+  barFetch: boolean;
+  error: string;
 
   get serviceSubGroup(){
     return this.orcamentoFormGroup.controls.services;
@@ -48,7 +50,9 @@ export class OrcamentoInsertComponent implements OnInit {
     this._services.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.totalPrice = this.selectedService.price;
-    })
+      this.barFetch = false;
+    });
+    this.barFetch = true;
 
   }
 
@@ -73,6 +77,7 @@ export class OrcamentoInsertComponent implements OnInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )

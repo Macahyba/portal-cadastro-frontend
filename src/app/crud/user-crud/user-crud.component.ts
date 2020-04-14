@@ -37,6 +37,8 @@ export class UserCrudComponent implements OnInit {
   selectedUser: UserDetailsModel;
   message: string;
   bar: boolean;
+  barFetch: boolean;
+  error: string;
 
   getUserForm(){
     return this.userForm.controls.user as FormGroup;
@@ -48,7 +50,9 @@ export class UserCrudComponent implements OnInit {
       private _auth: AuthenticationService) {
     this._http.getUsersDetails().subscribe(data =>{
       this.users = <UserDetailsModel[]>data;
-    })
+      this.barFetch = false;
+    });
+    this.barFetch = true;
    }
 
   ngOnInit() {
@@ -120,10 +124,10 @@ export class UserCrudComponent implements OnInit {
   selected(event){
     this.selectedUser = this.getUserById(parseInt(event.value));
     this.userForm.controls.id.setValue(this.selectedUser.id);
-    this.userForm.controls.username.setValue(this.selectedUser.user.username);
+    this.userForm.controls.username.setValue(this.selectedUser.username);
     this.userForm.controls.profile.setValue(this.selectedUser.profile);
     this.getUserForm().controls.id.setValue(this.selectedUser.id);
-    this.getUserForm().controls.username.setValue(this.selectedUser.user.username);
+    this.getUserForm().controls.username.setValue(this.selectedUser.username);
     this.getUserForm().controls.fullName.setValue(this.selectedUser.user.fullName);
     this.getUserForm().controls.email.setValue(this.selectedUser.user.email);
     this.getUserForm().controls.phone.setValue(this.selectedUser.user.phone);
@@ -150,6 +154,7 @@ export class UserCrudComponent implements OnInit {
           ((error) => {
             console.error(error);
             this.setMessage('erro');
+            this.error = error;
           })
         )
       }
@@ -167,6 +172,7 @@ export class UserCrudComponent implements OnInit {
           ((error) => {
             console.error(error);
             this.setMessage('erro');
+            this.error = error;
             this.bar = false;
           })
         )

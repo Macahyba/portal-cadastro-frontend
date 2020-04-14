@@ -33,6 +33,8 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   user: UserDetailsModel;
   message: string;
   bar: boolean;
+  barFetch: boolean;
+  error: string;
 
   getUserForm(){
     return this.userForm.controls.user as FormGroup;
@@ -44,7 +46,9 @@ export class PerfilComponent implements OnInit, AfterViewInit {
       private _auth: AuthenticationService) {
     this._http.getOneUserDetails(this._auth.getId()).subscribe(data =>{
       this.user = <UserDetailsModel>data;
-    })
+      this.barFetch = false;
+    });
+    this.barFetch = true;
    }
 
   ngOnInit() {
@@ -56,7 +60,6 @@ export class PerfilComponent implements OnInit, AfterViewInit {
       passwordConfirm: this.passwordConfirm,
       user: this._fb.group({
         id: this.id,
-        username: this.username,
         fullName : this.fullName,
         email: this.email,
         role: this.role,
@@ -72,15 +75,15 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     setTimeout(() => {
       this.userForm.controls.id.setValue(this.user.id);
-      this.userForm.controls.username.setValue(this.user.user.username);
+      this.userForm.controls.username.setValue(this.user.username);
       this.userForm.controls.profile.setValue(this.user.profile);
       this.getUserForm().controls.id.setValue(this.user.id);
-      this.getUserForm().controls.username.setValue(this.user.user.username);
       this.getUserForm().controls.fullName.setValue(this.user.user.fullName);
       this.getUserForm().controls.email.setValue(this.user.user.email);
       this.getUserForm().controls.phone.setValue(this.user.user.phone);
       this.getUserForm().controls.role.setValue(this.user.user.role);
-      this.profile.disable()
+      this.profile.disable();
+      this.username.disable();
     }, 1000);
   }
 
@@ -115,6 +118,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )

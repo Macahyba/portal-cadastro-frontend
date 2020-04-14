@@ -28,13 +28,18 @@ export class CustomerCrudComponent implements OnInit {
   selectedContact: ContactModel;
   message: string;
   bar: boolean;
+  barFetch: boolean;
+  error: string;
+
 
   constructor(private _fb: FormBuilder, private _http: CustomerService, private _stor: StorageService) { }
 
   ngOnInit() {
     this._http.getCustomers().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
+      this.barFetch = false;
     })
+    this.barFetch = true;
     this.selectControl.disable();
   }
 
@@ -105,6 +110,7 @@ export class CustomerCrudComponent implements OnInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )

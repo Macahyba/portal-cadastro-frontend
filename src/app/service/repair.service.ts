@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, timeout } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { RepairModel } from '../model/repair.model';
 import { ServiceModel } from '../model/service.model';
@@ -35,6 +35,7 @@ export class RepairService {
       const payload = JSON.stringify(<RepairModel>repair);
 
       return this._http.post('repairs/', payload, this.httpOptions).pipe(
+        timeout(10000),
         catchError(this.handleError)
       );
     }
@@ -44,20 +45,20 @@ export class RepairService {
       const id = repair.id;
 
       return this._http.patch(`repairs/${id}`, payload, this.httpOptions).pipe(
+        timeout(10000),
         catchError(this.handleError)
       );
     }
 
-    handleError(error) {
-      let errorMessage = '';
-      if(error.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = error.error.message;
-      } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      return throwError(errorMessage);
+  handleError(error) {
+    let errorMessage = '';
+
+    if (error.name && error.name.includes("Timeout")){
+      errorMessage = "Tempo de requisição excedido!";
+    } else {
+      errorMessage = "Falha ao salvar!";
+    }
+    return throwError(errorMessage);
   }
 
 }

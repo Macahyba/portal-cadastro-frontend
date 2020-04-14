@@ -1,4 +1,7 @@
 <form [formGroup]='serviceForm'>
+  <div *ngIf="barFetch">
+    <br><mat-progress-bar mode="query"></mat-progress-bar><br>
+  </div>
   <label>Selecione a operação</label><br><br>
   <mat-radio-group [(ngModel)]="operacao" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
     <mat-radio-button value="inserir">Inserir</mat-radio-button>&nbsp;
@@ -47,7 +50,7 @@
     Salvo com sucesso!<br><br>
   </div>
   <div class="erro" *ngIf="message === 'erro'">
-    Falha ao salvar!<br><br>
+    {{error}}<br><br>
   </div>
   <div *ngIf="bar">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>

@@ -40,7 +40,7 @@ export class APIInterceptor implements HttpInterceptor {
     (err: any) => {
       if (err instanceof HttpErrorResponse) {
         if (err.status !== 401 || this.apiReq.url.includes("authenticate")) return;
-        // this._router.navigate(['logout']);
+        this._router.navigate(['logout']);
       }
     }))
   }

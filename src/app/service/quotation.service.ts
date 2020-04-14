@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { QuotationModel } from '../model/quotation.model';
 import { environment } from 'src/environments/environment';
@@ -35,6 +35,7 @@ export class QuotationService {
         const payload = JSON.stringify(<QuotationModel>quotation);
 
         return this._http.post('quotations/', payload, this.httpOptions).pipe(
+          timeout(10000),
           catchError(this.handleError)
         );
     }
@@ -44,23 +45,38 @@ export class QuotationService {
       const id = quotation.id;
 
       return this._http.patch(`quotations/${id}`, payload, this.httpOptions).pipe(
+        timeout(10000),
         catchError(this.handleError)
       );
     }
 
-    downloadPdf(id: string){
-      window.open(`${this.HTTP_HOST}/pdf/${id}`);
+    downloadPdf(id: string, label: string){
+      this._http.get(`pdf/${id}`, {responseType: 'blob'})
+      .subscribe(response => this.downLoadFile(response, "application/pdf", `${label}.pdf`));
     }
 
-    handleError(error) {
-        let errorMessage = '';
-        if(error.error instanceof ErrorEvent) {
-          // Get client-side error
-          errorMessage = error.error.message;
-        } else {
-          // Get server-side error
-          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-        }
-        return throwError(errorMessage);
-     }
+    downloadCsv(){
+      this._http.get(`quotations-csv`, {responseType: 'blob'})
+      .subscribe(response => this.downLoadFile(response, "application/ms-excel", "quotations.csv"));
+    }
+
+    downLoadFile(data: any, type: string, filename: string) {
+      let blob = new Blob([data], { type: type});
+      let url = window.URL.createObjectURL(blob);
+      let anchor = document.createElement("a");
+      anchor.download = filename;
+      anchor.href = url;
+      anchor.click();
+  }
+
+  handleError(error) {
+    let errorMessage = '';
+
+    if (error.name && error.name.includes("Timeout")){
+      errorMessage = "Tempo de requisição excedido!";
+    } else {
+      errorMessage = "Falha ao salvar!";
+    }
+    return throwError(errorMessage);
+  }
 }

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, timeout, catchError } from 'rxjs/operators';
 import * as decode from 'jwt-decode';
 import { StorageService } from './storage.service';
+import { of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class AuthenticationService {
     authenticate(username, password) {
 
       return this._httpClient.post<any>('authenticate',{username,password}).pipe(
+        timeout(10000),
         map(
           userData => {
             sessionStorage.setItem('username',username);
@@ -23,7 +25,8 @@ export class AuthenticationService {
             this._stor.storageSub.next(this.getRole());
             return userData;
           }
-        )
+        ),
+        catchError(this.handleError)
       );
   }
 
@@ -77,6 +80,17 @@ export class AuthenticationService {
   logOut() {
     sessionStorage.clear();
     this._stor.storageSub.next(this.getRole());
+  }
+
+  handleError(error) {
+    let errorMessage = '';
+
+    if (error.name && error.name.includes("Timeout")){
+      errorMessage = "Tempo de requisição excedido!";
+    } else {
+      errorMessage = "Não autorizado!";
+    }
+    return throwError(errorMessage);
   }
 
 }

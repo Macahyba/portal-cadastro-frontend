@@ -17,6 +17,7 @@ export class OrcamentoListComponent implements OnInit {
      'totalDiscount', 'status', 'creationDate'
   ];
   dataSource: MatTableDataSource<QuotationModel>;
+  barFetch: boolean;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -49,7 +50,9 @@ export class OrcamentoListComponent implements OnInit {
         }
       };
       this.dataSource.sort = this.sort;
+      this.barFetch = false;
     });
+    this.barFetch = true;
 
   }
 
@@ -77,6 +80,10 @@ export class OrcamentoListComponent implements OnInit {
 
   openDetail(id: string){
     this.router.navigate([`orcamentos/${id}`]);
+  }
+
+  downloadCsv(){
+    return this._http.downloadCsv();
   }
 
 }

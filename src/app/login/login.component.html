@@ -21,7 +21,7 @@
           <br>Login com sucesso!<br>
         </div>
         <div class="erro" *ngIf="message === 'erro'">
-          <br>Não autorizado!<br>
+          <br>{{error}}<br>
         </div>
         <div *ngIf="bar">
           <br><mat-progress-bar mode="indeterminate"></mat-progress-bar><br>

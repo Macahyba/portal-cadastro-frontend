@@ -22,6 +22,7 @@ export class OrcamentoDetailComponent implements OnInit {
   totalPrice: number = 0;
 
   id: string;
+  label: string;
   quotation: QuotationModel;
   customer: CustomerModel;
   contact: ContactModel;
@@ -31,7 +32,9 @@ export class OrcamentoDetailComponent implements OnInit {
   status: StatusModel;
   message: string;
   bar: boolean;
+  barFetch: boolean;
   creationDate: Date;
+  error: string;
 
   role: string;
 
@@ -54,7 +57,10 @@ export class OrcamentoDetailComponent implements OnInit {
       this.totalDiscount = this.quotation.totalDiscount;
       this.status = this.quotation.status;
       this.creationDate = this.quotation.creationDate;
+      this.label = this.quotation.label;
+      this.barFetch = false;
     })
+    this.barFetch = true;
   }
 
   ngOnInit() {
@@ -81,6 +87,7 @@ export class OrcamentoDetailComponent implements OnInit {
         ((error) => {
           console.error(error);
           this.setMessage('erro');
+          this.error = error;
           this.bar = false;
         })
       )
@@ -88,7 +95,7 @@ export class OrcamentoDetailComponent implements OnInit {
   }
 
   downloadPdf(){
-    return this._http.downloadPdf(this.id);
+    return this._http.downloadPdf(this.id, this.label);
   }
 
   checkStatus(){
