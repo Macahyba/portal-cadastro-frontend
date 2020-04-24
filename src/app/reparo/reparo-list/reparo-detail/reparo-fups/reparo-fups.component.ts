@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-reparo-fups',
@@ -10,11 +11,11 @@ import { RepairFupModel } from 'src/app/model/repair-fup.model';
 export class ReparoFupsComponent implements OnInit {
 
   @Input() parentFormGroup : FormGroup;
-  @Input() repairFups : RepairFupModel[];
-  @Input() disabled: string;
+  @Input() repairFups$ : Observable<RepairFupModel[]>;
+  @Input() disabled: boolean;
 
   repairFupFormArray: FormArray;
-  reverseRepairFups : RepairFupModel[];
+  reverseRepairFups;
 
   showNewFup: boolean;
 
@@ -37,9 +38,10 @@ export class ReparoFupsComponent implements OnInit {
   ngOnInit() {
     this.repairFupFormArray = this._fb.array([]);
     this.parentFormGroup.registerControl('repairFups', this.repairFupFormArray);
-    setTimeout(() => {
-      if (this.repairFups) this.reverseRepairFups = this.repairFups.sort(this.compare);
-    }, 1000);
+
+    this.repairFups$.subscribe(rfs =>{
+      this.reverseRepairFups = rfs.sort(this.compare);
+    })
   }
 
   compare(a, b){

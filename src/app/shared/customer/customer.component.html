@@ -4,9 +4,9 @@
         <mat-form-field class="full-width">
           <mat-label>Cliente</mat-label>
           <input type="hidden" [formControl]="id">
-          <input *ngIf="injectedCustomer" type="text" matInput [formControl]="name">
-          <input *ngIf="!injectedCustomer" type="hidden" [formControl]="name" />
-          <input *ngIf="!injectedCustomer" type="text" class="full-width" matInput placeholder="Ex. TV Globo"
+          <input *ngIf="injectedCustomer$" type="text" matInput [formControl]="name">
+          <input *ngIf="!injectedCustomer$" type="hidden" [formControl]="name" />
+          <input *ngIf="!injectedCustomer$" type="text" class="full-width" matInput placeholder="Ex. TV Globo"
             [matAutocomplete]="cust"
             [formControl]="clientAutoComplete"
             (ngModelChange)="selectCustomer($event)" />
@@ -30,9 +30,9 @@
         <mat-form-field class="full-width">
           <mat-label>Responsável</mat-label>
           <input type="hidden" [formControl]="cId">
-          <input *ngIf="injectedContact" type="text" matInput  [formControl]="cName">
-          <input *ngIf="!injectedContact" type="hidden" [formControl]="cName" />
-          <input *ngIf="!injectedContact" type="text" class="example-form" matInput placeholder="Ex. Togashi"
+          <input *ngIf="injectedContact$" type="text" matInput  [formControl]="cName">
+          <input *ngIf="!injectedContact$" type="hidden" [formControl]="cName" />
+          <input *ngIf="!injectedContact$" type="text" class="example-form" matInput placeholder="Ex. Togashi"
             [matAutocomplete]="cont"
             [formControl]="contactAutoComplete"
             (ngModelChange)="selectContact($event)">

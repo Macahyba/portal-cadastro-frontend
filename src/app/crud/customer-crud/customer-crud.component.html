@@ -31,8 +31,8 @@
   </mat-form-field>
   <app-customer
     [parentFormGroup]='customerForm'
-    [injectedCustomer]='selectedCustomer'
-    [injectedContact]='selectedContact'>
+    [injectedCustomer$]='selectedCustomer$'
+    [injectedContact$]='selectedContact$'>
   </app-customer>
   <br>
   <button

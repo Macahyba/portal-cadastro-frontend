@@ -1,20 +1,21 @@
-import { Component, OnInit, Input, OnChanges, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-notas',
   templateUrl: './notas.component.html',
   styleUrls: ['./notas.component.scss']
 })
-export class NotasComponent implements OnInit, OnChanges {
+export class NotasComponent implements OnInit {
 
   @Input() parentFormGroup: FormGroup;
-  @Input() injectedNotaDeEntrada: string;
-  @Input() injectedSapNotification: string;
+  @Input() injectedNotaDeEntrada$ = new BehaviorSubject<string>("");
+  @Input() injectedSapNotification$ = new BehaviorSubject<string>("");
   @Input() updateNotaFiscal: string;
-  @Input() injectedNotaFiscal: string;
-  @Input() injectedWarranty: boolean;
-  @Input() disabled: string;
+  @Input() injectedNotaFiscal$ = new BehaviorSubject<string>("");
+  @Input() injectedWarranty$ = new BehaviorSubject<boolean>(false);
+  @Input() disabled: boolean;
 
   notaDeEntrada = this._fb.control('', Validators.required);
   sapNotification = this._fb.control('', Validators.required);
@@ -28,22 +29,29 @@ export class NotasComponent implements OnInit, OnChanges {
     this.parentFormGroup.registerControl('sapNotification', this.sapNotification);
     this.parentFormGroup.registerControl('notaFiscal', this.notaFiscal);
     this.parentFormGroup.registerControl('warranty', this.warranty);
-  }
 
-  ngOnChanges(){
-    setTimeout(() => {
 
-      if (this.injectedNotaDeEntrada) this.parentFormGroup.controls.notaDeEntrada.setValue(this.injectedNotaDeEntrada);
-      if (this.injectedSapNotification) this.parentFormGroup.controls.sapNotification.patchValue(this.injectedSapNotification);
-      if (this.injectedWarranty) this.parentFormGroup.controls.warranty.setValue(this.injectedWarranty);
-      if (this.injectedNotaFiscal) this.parentFormGroup.controls.notaFiscal.setValue(this.injectedNotaFiscal);
+    this.injectedNotaDeEntrada$.subscribe(nota =>{
+      this.parentFormGroup.controls.notaDeEntrada.setValue(nota);
+    })
 
-      if (this.disabled) {
-        this.parentFormGroup.controls.notaDeEntrada.disable();
-        this.parentFormGroup.controls.sapNotification.disable();
-        this.parentFormGroup.controls.warranty.disable();
-      }
-    }, 0);
+    this.injectedSapNotification$.subscribe(nota =>{
+      this.parentFormGroup.controls.sapNotification.setValue(nota);
+    })
+
+    this.injectedWarranty$.subscribe(nota =>{
+      this.parentFormGroup.controls.warranty.setValue(nota);
+    })
+
+    this.injectedNotaFiscal$.subscribe(nota =>{
+      this.parentFormGroup.controls.notaFiscal.setValue(nota);
+    })
+
+    if (this.disabled) {
+      this.parentFormGroup.controls.notaDeEntrada.disable();
+      this.parentFormGroup.controls.sapNotification.disable();
+      this.parentFormGroup.controls.warranty.disable();
+    }
   }
 
 }

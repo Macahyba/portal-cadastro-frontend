@@ -1,22 +1,24 @@
-import { Component, OnInit, EventEmitter, Output, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ServiceModel } from 'src/app/model/service.model';
 import { MatTableDataSource } from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceService } from 'src/app/service/service.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
-export class ServicesComponent implements OnInit, OnChanges {
+export class ServicesComponent implements OnInit {
 
-  @Input() disabled: string;
-  @Input() injectedServices: ServiceModel[];
+  @Input() disabled: boolean;
+  @Input() injectedServices$: Observable<ServiceModel[]>;
   @Output() servicesToInsert = new EventEmitter<number>();
   @Input () parentFormGroup: FormGroup;
 
   services: ServiceModel[];
+  ckdServices: ServiceModel[];;
 
   displayedColumns: string[] = ['name', 'desc', 'price'];
   dataSource: MatTableDataSource<ServiceModel>;
@@ -37,23 +39,20 @@ export class ServicesComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.parentFormGroup.registerControl('services', this.serviceArray)
+
+    if(this.injectedServices$) this.injectedServices$.subscribe(services =>{
+      const injectedPrices = services.reduce((sum, s) =>{
+        return sum + s.price;
+      }, 0);
+      this.servicesToInsert.emit(injectedPrices);
+      this.ckdServices = services;
+
+    })
+
   }
 
-  ngOnChanges(){
-
-    setTimeout(() => {
-      if(this.injectedServices && this.injectedServices.length > 0){
-        const injectedPrices = this.injectedServices.reduce((sum, s) =>{
-          return sum + s.price;
-        }, 0);
-        this.servicesToInsert.emit(injectedPrices);
-      }
-    }, 0);
-  }
 
   serviceChosen(event, price, id){
-
-
 
     if (event.checked) {
 
@@ -84,10 +83,10 @@ export class ServicesComponent implements OnInit, OnChanges {
 
   isSelected(id: number){
 
-    if (this.injectedServices){
+    if (this.ckdServices){
       let check: boolean;
-      for (let i = 0; i < this.injectedServices.length; i++) {
-        if (id === this.injectedServices[i].id) {
+      for (let i = 0; i < this.ckdServices.length; i++) {
+        if (id === this.ckdServices[i].id) {
           check = true;
           break;
         }
@@ -99,7 +98,7 @@ export class ServicesComponent implements OnInit, OnChanges {
   disableChk(){
     if (this.disabled) {
       this.parentFormGroup.removeControl('services');
-      return "disabled";
+      return true;
     }
   }
 }

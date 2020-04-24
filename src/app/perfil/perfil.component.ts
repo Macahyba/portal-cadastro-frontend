@@ -4,14 +4,14 @@ import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/fo
 import { UserDetailsModel } from '../model/user-details';
 import { UserService } from '../service/user.service';
 import { AuthenticationService } from '../service/authentication.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss']
 })
-export class PerfilComponent implements OnInit, AfterViewInit {
+export class PerfilComponent implements OnInit {
 
 
   HTTP_HOST = environment.http_host;
@@ -30,7 +30,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
   password = this._fb.control('', [Validators.required, Validators.minLength(8)]);
   passwordConfirm = this._fb.control('', [Validators.required, Validators.minLength(8)]);
 
-  user: UserDetailsModel;
+  user = new Subject<UserDetailsModel>();
   message: string;
   bar: boolean;
   barFetch: boolean;
@@ -45,7 +45,7 @@ export class PerfilComponent implements OnInit, AfterViewInit {
       private _http: UserService,
       private _auth: AuthenticationService) {
     this._http.getOneUserDetails(this._auth.getId()).subscribe(data =>{
-      this.user = <UserDetailsModel>data;
+      this.user.next(<UserDetailsModel>data);
       this.barFetch = false;
     });
     this.barFetch = true;
@@ -70,22 +70,36 @@ export class PerfilComponent implements OnInit, AfterViewInit {
     })
     this.password.disable();
     this.passwordConfirm.disable();
-  }
 
-  ngAfterViewInit(){
-    setTimeout(() => {
-      this.userForm.controls.id.setValue(this.user.id);
-      this.userForm.controls.username.setValue(this.user.username);
-      this.userForm.controls.profile.setValue(this.user.profile);
-      this.getUserForm().controls.id.setValue(this.user.id);
-      this.getUserForm().controls.fullName.setValue(this.user.user.fullName);
-      this.getUserForm().controls.email.setValue(this.user.user.email);
-      this.getUserForm().controls.phone.setValue(this.user.user.phone);
-      this.getUserForm().controls.role.setValue(this.user.user.role);
+    this.user.subscribe(user =>{
+      this.userForm.controls.id.setValue(user.id);
+      this.userForm.controls.username.setValue(user.username);
+      this.userForm.controls.profile.setValue(user.profile);
+      this.getUserForm().controls.id.setValue(user.id);
+      this.getUserForm().controls.fullName.setValue(user.user.fullName);
+      this.getUserForm().controls.email.setValue(user.user.email);
+      this.getUserForm().controls.phone.setValue(user.user.phone);
+      this.getUserForm().controls.role.setValue(user.user.role);
       this.profile.disable();
       this.username.disable();
-    }, 1000);
+    })
+
   }
+
+  // ngAfterViewInit(){
+  //   setTimeout(() => {
+  //     this.userForm.controls.id.setValue(this.user.id);
+  //     this.userForm.controls.username.setValue(this.user.username);
+  //     this.userForm.controls.profile.setValue(this.user.profile);
+  //     this.getUserForm().controls.id.setValue(this.user.id);
+  //     this.getUserForm().controls.fullName.setValue(this.user.user.fullName);
+  //     this.getUserForm().controls.email.setValue(this.user.user.email);
+  //     this.getUserForm().controls.phone.setValue(this.user.user.phone);
+  //     this.getUserForm().controls.role.setValue(this.user.user.role);
+  //     this.profile.disable();
+  //     this.username.disable();
+  //   }, 1000);
+  // }
 
   checkButton(): boolean {
       return (this.userForm.valid) ? false : true;

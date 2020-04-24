@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { DateAdapter } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -8,28 +8,25 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./datepicker.component.scss']
 })
 
-export class DatepickerComponent implements OnInit, OnChanges {
+export class DatepickerComponent implements OnInit {
 
   @Input() parentFormGroup : FormGroup;
   @Input() control: string;
   @Input() injectedDate: Date;
-  @Input() disabled: string;
+  @Input() disabled: boolean;
 
   date = new FormControl(new Date(), Validators.required);
 
-  constructor(private _adapter: DateAdapter<any>) { }
+  constructor(private _adapter: DateAdapter<any>, private _cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this._adapter.setLocale('pt-br');
     this.parentFormGroup.registerControl(this.control, this.date);
-  }
 
-  ngOnChanges(){
-    setTimeout(() => {
-      if (this.disabled){
-        this.date.disable();
-      }
-    }, 0);
+    if (this.disabled) this.date.disable();
+
+    this._cdr.detectChanges();
+
   }
 
 }

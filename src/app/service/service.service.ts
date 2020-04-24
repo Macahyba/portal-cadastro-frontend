@@ -29,7 +29,7 @@ export class ServiceService {
     const payload = JSON.stringify(<ServiceModel>service);
 
     return this._http.post('services/', payload, this.httpOptions).pipe(
-      timeout(10000),
+      timeout(15000),
       catchError(this.handleError)
     );
   }
@@ -39,7 +39,7 @@ export class ServiceService {
     const id = service.id;
 
     return this._http.patch(`services/${id}`, payload, this.httpOptions).pipe(
-      timeout(10000),
+      timeout(15000),
       catchError(this.handleError)
     );
   }

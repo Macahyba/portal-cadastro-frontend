@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { ContactModel } from 'src/app/model/contact.model';
-import { StorageService } from 'src/app/service/storage.service';
 import { CustomerService } from 'src/app/service/customer.service';
 
 @Component({
@@ -24,15 +23,18 @@ export class CustomerCrudComponent implements OnInit {
   customers: CustomerModel[];
   contacts: ContactModel[];
 
-  selectedCustomer: CustomerModel;
-  selectedContact: ContactModel;
+  selectedCustomer$ = new BehaviorSubject<CustomerModel>(new CustomerModel());
+  selectedContact$ = new BehaviorSubject<ContactModel>(new ContactModel());
   message: string;
   bar: boolean;
   barFetch: boolean;
   error: string;
 
 
-  constructor(private _fb: FormBuilder, private _http: CustomerService, private _stor: StorageService) { }
+  constructor(
+    private _fb: FormBuilder,
+    private _http: CustomerService,
+    private _cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this._http.getCustomers().subscribe(data =>{
@@ -41,16 +43,18 @@ export class CustomerCrudComponent implements OnInit {
     })
     this.barFetch = true;
     this.selectControl.disable();
+    this._cdr.detectChanges();
   }
 
   customerSelect(event){
-    this.selectedCustomer = this.getCustomerById(parseInt(event.value));
-    if (this.selectedCustomer) this.contacts = this.selectedCustomer.contacts;
-    if (this.contacts.length > 0) this.selectedContact = this.contacts[0];
+    const customer = this.getCustomerById(parseInt(event.value));
+    this.contacts = customer.contacts;
+    this.selectedCustomer$.next(customer);
+    if (this.contacts.length > 0) this.selectedContact$.next(this.contacts[0]);
   }
 
   contactSelect(event){
-    if (this.selectedCustomer) this.selectedContact = this.getContactById(parseInt(event.value));
+    if (this.selectedCustomer$) this.selectedContact$.next(this.getContactById(parseInt(event.value)));
   }
 
   getCustomerById(id: number): CustomerModel{
@@ -66,7 +70,7 @@ export class CustomerCrudComponent implements OnInit {
       return this.customerForm.valid ? false : true;
     } else {
       return (this.customerForm.valid
-        && this.selectedCustomer && this.selectedContact) ? false : true;
+        && this.selectedCustomer$ && this.selectedContact$) ? false : true;
     }
   }
 

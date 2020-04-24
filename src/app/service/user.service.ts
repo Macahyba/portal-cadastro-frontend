@@ -39,7 +39,7 @@ export class UserService {
       const payload = JSON.stringify(<UserModel>user);
 
       return this._http.post('users/', payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }
@@ -48,7 +48,7 @@ export class UserService {
       const payload = JSON.stringify(<UserDetailsModel>user);
 
       return this._http.post('usersdetails/', payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }
@@ -58,7 +58,7 @@ export class UserService {
       const id = user.id;
 
       return this._http.patch(`users/${id}`, payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }
@@ -68,7 +68,7 @@ export class UserService {
       const id = user.id;
 
       return this._http.patch(`usersdetails/${id}`, payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }
@@ -78,7 +78,7 @@ export class UserService {
       const id = user.id;
 
       return this._http.patch(`reset/${id}`, payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }

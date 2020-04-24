@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -10,10 +10,10 @@ import { EquipmentService } from 'src/app/service/equipment.service';
   templateUrl: './equipment.component.html',
   styleUrls: ['./equipment.component.scss']
 })
-export class EquipmentComponent implements OnInit, OnChanges {
+export class EquipmentComponent implements OnInit {
 
-  @Input() disabled: string;
-  @Input() injectedEquipment: EquipmentModel;
+  @Input() disabled: boolean;
+  @Input() injectedEquipment$: Observable<EquipmentModel>;
   @Input() parentFormGroup: FormGroup;
 
   equipmentGroup : FormGroup;
@@ -26,7 +26,7 @@ export class EquipmentComponent implements OnInit, OnChanges {
   equipments: EquipmentModel[];
   filteredEquipment: Observable<EquipmentModel[]>;
 
-  constructor(private _http: EquipmentService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
+  constructor(private _http: EquipmentService, private _fb: FormBuilder) {
     this._http.getEquipments().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 
@@ -47,24 +47,18 @@ export class EquipmentComponent implements OnInit, OnChanges {
       serialNumber: this.serialNumber
     });
     this.parentFormGroup.registerControl('equipment', this.equipmentGroup);
-    this._ref.detectChanges();
-  }
 
-  ngOnChanges(){
-    setTimeout(() => {
+    if (this.injectedEquipment$) this.injectedEquipment$.subscribe(data =>{
+      this.equipmentGroup.controls.id.setValue(data.id);
+      this.equipmentGroup.controls.name.setValue(data.name);
+      this.equipmentGroup.controls.serialNumber.setValue(data.serialNumber);
+    })
 
-      if(this.injectedEquipment){
-        this.equipmentGroup.controls.id.setValue(this.injectedEquipment.id);
-        this.equipmentGroup.controls.name.setValue(this.injectedEquipment.name);
-        this.equipmentGroup.controls.serialNumber.setValue(this.injectedEquipment.serialNumber);
-      }
-
-      if (this.disabled === "disabled"){
-        this.equipmentGroup.controls.name.disable();
-        this.equipmentGroup.controls.serialNumber.disable();
-        this.parentFormGroup.removeControl('equipment');
-      }
-    }, 0);
+    if (this.disabled){
+      this.equipmentGroup.controls.name.disable();
+      this.equipmentGroup.controls.serialNumber.disable();
+      this.parentFormGroup.removeControl('equipment');
+    }
   }
 
   private _filter(data: EquipmentModel[], name: any): EquipmentModel[] {

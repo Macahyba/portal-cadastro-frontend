@@ -14,7 +14,7 @@
         </div>
         <app-status
           [disabled]="role == 'user'"
-          [injectedStatus]="status"
+          [injectedStatus$]="status$"
           [parentFormGroup]="orcamentoFormGroup"></app-status>
         <br>
         <span *ngIf="role !== 'user'">
@@ -33,25 +33,25 @@
           <mat-tab label="Cliente">
             <br>
             <app-customer
-              disabled="disabled"
-              [injectedCustomer]="customer"
-              [injectedContact]="contact"
+              [disabled]="true"
+              [injectedCustomer$]="customer$"
+              [injectedContact$]="contact$"
               [parentFormGroup]='orcamentoFormGroup'>
           </app-customer>
           </mat-tab>
           <mat-tab label="Equipamento">
             <br>
             <app-equipment
-              disabled="disabled"
-              [injectedEquipment]="equipment"
+              [disabled]="true"
+              [injectedEquipment$]="equipment$"
               [parentFormGroup]='orcamentoFormGroup'>
             </app-equipment>
           </mat-tab>
           <mat-tab label="Serviços">
             <br>
             <app-services
-              disabled="disabled"
-              [injectedServices]="services"
+              [disabled]="true"
+              [injectedServices$]="services$"
               (servicesToInsert)="totalPrice = $event"
               [parentFormGroup]='orcamentoFormGroup'>
             </app-services>
@@ -60,22 +60,22 @@
             <br>
             <app-valor
               *ngIf="role === 'user'"
-              disabled="disabled"
+              [disabled]="true"
               [totalPrice]="totalPrice"
-              [injectedDiscount]="totalDiscount"
+              [injectedDiscount$]="totalDiscount$"
               [parentFormGroup]="orcamentoFormGroup">
             </app-valor>
             <app-valor
               *ngIf="role !== 'user'"
               [totalPrice]="totalPrice"
-              [injectedDiscount]="totalDiscount"
+              [injectedDiscount$]="totalDiscount$"
               [parentFormGroup]="orcamentoFormGroup">
             </app-valor>
           </mat-tab>
         </mat-tab-group>
         <br>
         <app-datepicker
-          disabled="disabled"
+          [disabled]="true"
           [injectedDate]="creationDate"
           [control]="'approvalDate'"
           [parentFormGroup]="orcamentoFormGroup"></app-datepicker>

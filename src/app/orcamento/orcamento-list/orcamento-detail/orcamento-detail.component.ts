@@ -8,7 +8,7 @@ import { EquipmentModel } from 'src/app/model/equipament.model';
 import { ServiceModel } from 'src/app/model/service.model';
 import { FormBuilder } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { UserModel } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
@@ -24,12 +24,12 @@ export class OrcamentoDetailComponent implements OnInit {
   id: string;
   label: string;
   quotation: QuotationModel;
-  customer: CustomerModel;
-  contact: ContactModel;
-  equipment: EquipmentModel;
-  services: ServiceModel[];
-  totalDiscount: number;
-  status: StatusModel;
+  customer$ = new BehaviorSubject<CustomerModel>(new CustomerModel());
+  contact$ = new BehaviorSubject<ContactModel>(new ContactModel());
+  equipment$ = new BehaviorSubject<EquipmentModel>(new EquipmentModel());
+  services$ = new BehaviorSubject<ServiceModel[]>([new ServiceModel()]);
+  totalDiscount$ = new BehaviorSubject<number>(0);
+  status$ = new BehaviorSubject<StatusModel>(new StatusModel());
   message: string;
   bar: boolean;
   barFetch: boolean;
@@ -50,12 +50,12 @@ export class OrcamentoDetailComponent implements OnInit {
     this._route.params.subscribe( params => this.id = params.id );
     this._http.getOneQuotation(this.id).subscribe(data =>{
       this.quotation = <QuotationModel>data;
-      this.customer = this.quotation.customer;
-      this.contact = this.quotation.contact;
-      this.equipment = this.quotation.equipment;
-      this.services = Array.from(this.quotation.services);
-      this.totalDiscount = this.quotation.totalDiscount;
-      this.status = this.quotation.status;
+      this.customer$.next(this.quotation.customer);
+      this.contact$.next(this.quotation.contact);
+      this.equipment$.next(this.quotation.equipment);
+      this.services$.next(Array.from(this.quotation.services));
+      this.totalDiscount$.next(this.quotation.totalDiscount);
+      this.status$.next(this.quotation.status);
       this.creationDate = this.quotation.creationDate;
       this.label = this.quotation.label;
       this.barFetch = false;
@@ -70,6 +70,7 @@ export class OrcamentoDetailComponent implements OnInit {
       approvalDate : this._fb.control(new Date())
     });
     this.role = this._auth.getRole();
+
   }
 
   postSubscription: Subscription;
@@ -80,9 +81,10 @@ export class OrcamentoDetailComponent implements OnInit {
       .subscribe(
         ((response) => {
           const quo = <QuotationModel>response;
-          this.status = quo.status;
+          // this.status = quo.status;
           this.setMessage('sucesso');
           this.bar = false;
+          location.reload();
         }),
         ((error) => {
           console.error(error);
@@ -94,13 +96,12 @@ export class OrcamentoDetailComponent implements OnInit {
       this.bar = true;
   }
 
-  downloadPdf(){
-    return this._http.downloadPdf(this.id, this.label);
+  checkStatus(){
+    return (this.status$.value.status === 'APROVADO' || this.status$.value.status === 'FINALIZADO')
   }
 
-  checkStatus(){
-    return this.status &&
-      (this.status.status === 'APROVADO' || this.status.status === 'FINALIZADO');
+  downloadPdf(){
+    return this._http.downloadPdf(this.id, this.label);
   }
 
   setMessage(m: string){

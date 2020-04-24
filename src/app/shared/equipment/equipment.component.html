@@ -3,9 +3,9 @@
         <mat-card>
           <mat-form-field class="full-width">
               <mat-label>Equipamento</mat-label>
-              <input *ngIf="injectedEquipment" type="text" matInput [formControl]="name">
-              <input *ngIf="!injectedEquipment" type="hidden" [formControl]="name" />
-              <input *ngIf="!injectedEquipment" type="text" class="full-width" matInput placeholder="Ex. PDW-700"
+              <input *ngIf="injectedEquipment$" type="text" matInput [formControl]="name">
+              <input *ngIf="!injectedEquipment$" type="hidden" [formControl]="name" />
+              <input *ngIf="!injectedEquipment$" type="text" class="full-width" matInput placeholder="Ex. PDW-700"
                   [matAutocomplete]="equip"
                   [formControl]="equipmentAutoComplete"
                   (ngModelChange)="selectEquipment($event)">

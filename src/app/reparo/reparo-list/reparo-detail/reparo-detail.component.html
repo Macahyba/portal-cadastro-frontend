@@ -5,29 +5,29 @@
   <mat-accordion>
     <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
       <mat-expansion-panel-header>
-        <mat-panel-title>Cliente</mat-panel-title>
-        <mat-panel-description>Detalhes do cliente</mat-panel-description>
+        <mat-panel-title>Status</mat-panel-title>
+        <mat-panel-description>Status do reparo</mat-panel-description>
       </mat-expansion-panel-header>
-      <app-customer
-        disabled="disabled"
-        [injectedCustomer]="customer"
-        [injectedContact]="contact"
-        [parentFormGroup]='repairFormGroup'>
-      </app-customer>
+      <app-status
+        [disabled]="role == 'user'"
+        [injectedStatus$]="status$"
+        [parentFormGroup]="repairFormGroup">
+      </app-status>
       <mat-action-row>
         <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
       </mat-action-row>
     </mat-expansion-panel>
     <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
       <mat-expansion-panel-header>
-        <mat-panel-title>Equipamento</mat-panel-title>
-        <mat-panel-description>Detalhes do equipamento</mat-panel-description>
+        <mat-panel-title>Cliente</mat-panel-title>
+        <mat-panel-description>Detalhes do cliente</mat-panel-description>
       </mat-expansion-panel-header>
-      <app-equipment
-        disabled="disabled"
-        [injectedEquipment]="equipment"
+      <app-customer
+        [disabled]="true"
+        [injectedCustomer$]="customer$"
+        [injectedContact$]="contact$"
         [parentFormGroup]='repairFormGroup'>
-      </app-equipment>
+      </app-customer>
       <mat-action-row>
         <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
         <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
@@ -35,18 +35,14 @@
     </mat-expansion-panel>
     <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
       <mat-expansion-panel-header>
-        <mat-panel-title>Notas</mat-panel-title>
-        <mat-panel-description>Detalhes das notas</mat-panel-description>
+        <mat-panel-title>Equipamento</mat-panel-title>
+        <mat-panel-description>Detalhes do equipamento</mat-panel-description>
       </mat-expansion-panel-header>
-      <app-notas
-        disabled="disabled"
-        [injectedNotaDeEntrada]="notaDeEntrada"
-        [injectedSapNotification]="sapNotification"
-        [updateNotaFiscal]="true"
-        [injectedNotaFiscal]="notaFiscal"
-        [injectedWarranty]="warranty"
-        [parentFormGroup]="repairFormGroup">
-      </app-notas>
+      <app-equipment
+        [disabled]="true"
+        [injectedEquipment$]="equipment$"
+        [parentFormGroup]='repairFormGroup'>
+      </app-equipment>
       <mat-action-row>
         <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
         <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
@@ -54,11 +50,30 @@
     </mat-expansion-panel>
     <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
       <mat-expansion-panel-header>
+        <mat-panel-title>Notas</mat-panel-title>
+        <mat-panel-description>Detalhes das notas</mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-notas
+        [disabled]="true"
+        [injectedNotaDeEntrada$]="notaDeEntrada$"
+        [injectedSapNotification$]="sapNotification$"
+        [updateNotaFiscal]="true"
+        [injectedNotaFiscal$]="notaFiscal$"
+        [injectedWarranty$]="warranty$"
+        [parentFormGroup]="repairFormGroup">
+      </app-notas>
+      <mat-action-row>
+        <button type="button" mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+      <mat-expansion-panel-header>
         <mat-panel-title>Follow-ups</mat-panel-title>
         <mat-panel-description>Listagem dos follow-ups</mat-panel-description>
       </mat-expansion-panel-header>
       <app-reparo-fups
-        [repairFups]="repairFups"
+        [repairFups$]="repairFups$"
         [parentFormGroup]="repairFormGroup">
       </app-reparo-fups>
       <mat-action-row>

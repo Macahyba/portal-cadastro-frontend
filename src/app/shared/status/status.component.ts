@@ -1,18 +1,19 @@
-import { Component, OnInit, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
 import { StatusService } from 'src/app/service/status.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss']
 })
-export class StatusComponent implements OnInit, OnChanges {
+export class StatusComponent implements OnInit {
 
-  @Input() injectedStatus : StatusModel;
+  @Input() injectedStatus$ : Observable<StatusModel>;
   @Input() parentFormGroup : FormGroup;
-  @Input() disabled : string;
+  @Input() disabled : boolean;
 
   status = new FormControl('');
 
@@ -39,21 +40,15 @@ export class StatusComponent implements OnInit, OnChanges {
       id : this.select
     })
     this.parentFormGroup.registerControl('status', this.statusGroup);
+
+    if (this.injectedStatus$) this.injectedStatus$.subscribe(sts => {
+      this.statusForm.controls.id.setValue(sts.id);
+      this.status.setValue(sts.status);
+    })
+
+    if (this.disabled) this.status.disable();
+
     this._ref.detectChanges();
-  }
-
-
-  ngOnChanges(){
-    setTimeout(() => {
-      if (this.injectedStatus){
-        this.statusForm.controls.id.setValue(this.injectedStatus.id);
-        this.status.setValue(this.injectedStatus.status);
-      }
-
-      if (this.disabled){
-        this.status.disable();
-      }
-    }, 1);
   }
 
 }

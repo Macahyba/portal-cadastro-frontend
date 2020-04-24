@@ -15,7 +15,7 @@ export class AuthenticationService {
     authenticate(username, password) {
 
       return this._httpClient.post<any>('authenticate',{username,password}).pipe(
-        timeout(10000),
+        timeout(15000),
         map(
           userData => {
             sessionStorage.setItem('username',username);

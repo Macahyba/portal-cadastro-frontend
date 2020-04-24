@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.role = sessionStorage.getItem('role');
-    this._stor.watchStorage().subscribe(data =>this.role = data)
+    this._stor.storageSub.subscribe(data =>this.role = data)
   }
 
 }

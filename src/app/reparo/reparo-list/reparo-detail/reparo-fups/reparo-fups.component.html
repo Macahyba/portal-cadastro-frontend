@@ -1,29 +1,3 @@
-<!-- <ng-container [formGroup]="parentFormGroup">
-  <mat-tab-group>
-    <mat-tab label="Novo Follow-up">
-      <br>
-      <mat-slide-toggle
-        style="height: 40px;"
-        (change)="toggleNewFup($event)">Adicionar Follow-up
-      </mat-slide-toggle>
-      <div *ngIf="showNewFup">
-        <app-reparo-fup
-          [parentFormArray]="repairFupFormArray">
-        </app-reparo-fup>
-      </div>
-    </mat-tab>
-    <div *ngFor="let repairFup of reverseRepairFups; let i = index">
-      <mat-tab label="Follow-up {{reverseRepairFups.length - i}}">
-        <br>
-        <app-reparo-fup
-          disabled="disabled"
-          [repairFup]="repairFup"
-          [parentFormArray]="repairFupFormArray">
-        </app-reparo-fup>
-      </mat-tab>
-    </div>
-  </mat-tab-group>
-</ng-container> -->
 <ng-container [formGroup]="parentFormGroup">
   <mat-accordion>
     <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
@@ -49,8 +23,8 @@
           <mat-panel-title>Follow-up {{reverseRepairFups.length - i}}</mat-panel-title>
         </mat-expansion-panel-header>
           <app-reparo-fup
-            disabled="disabled"
-            [repairFup]="repairFup"
+            [disabled]="true"
+            [injectedRepairFup]="repairFup"
             [parentFormArray]="repairFupFormArray">
           </app-reparo-fup>
         <mat-action-row>

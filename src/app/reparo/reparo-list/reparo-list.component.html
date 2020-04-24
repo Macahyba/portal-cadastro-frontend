@@ -20,6 +20,11 @@
       <td mat-cell *matCellDef="let row"> {{row.repairFups.length}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="notaFiscal">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> NF de Saída </th>
+      <td mat-cell *matCellDef="let row"> {{row.notaFiscal}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="equipment">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Equipamento </th>
       <td mat-cell *matCellDef="let row"> {{row.equipment.name}} </td>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -11,11 +11,11 @@ import { CustomerService } from 'src/app/service/customer.service';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent implements OnInit, OnChanges {
+export class CustomerComponent implements OnInit {
 
-  @Input() disabled: string;
-  @Input() injectedCustomer: CustomerModel;
-  @Input() injectedContact: ContactModel;
+  @Input() disabled: boolean;
+  @Input() injectedCustomer$: Observable<CustomerModel>;
+  @Input() injectedContact$: Observable<ContactModel>;
   @Input() parentFormGroup: FormGroup;
 
   customerGroup : FormGroup;
@@ -46,7 +46,7 @@ export class CustomerComponent implements OnInit, OnChanges {
     )
 
 
-  constructor(private _http: CustomerService, private _fb: FormBuilder, private _ref: ChangeDetectorRef) {
+  constructor(private _http: CustomerService, private _fb: FormBuilder) {
     this._http.getCustomers().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
 
@@ -76,24 +76,20 @@ export class CustomerComponent implements OnInit, OnChanges {
     })
     this.parentFormGroup.registerControl('customer', this.customerGroup);
     this.parentFormGroup.registerControl('contact', this.contactGroup);
-    this._ref.detectChanges();
-  }
+    if (this.injectedCustomer$) this.injectedCustomer$.subscribe(data =>{
+      this.customerGroup.controls.cnpj.setValue(data.cnpj)
+      this.customerGroup.patchValue(data);
+    })
 
-  ngOnChanges(){
-    setTimeout(() => {
-      if (this.injectedCustomer){
-        this.customerGroup.patchValue(this.injectedCustomer);
-      }
+    if (this.injectedContact$) this.injectedContact$.subscribe(data =>{
+      this.contactGroup.patchValue(data);
+    })
 
-      if(this.injectedContact){
-        this.contactGroup.patchValue(this.injectedContact);
-      }
+    if(this.disabled){
+      this.customerGroup.disable();
+      this.contactGroup.disable();
+    }
 
-      if(this.disabled === "disabled"){
-        this.customerGroup.disable();
-        this.contactGroup.disable();
-      }
-    }, 0);
   }
 
   displayFn(customer: CustomerModel): string {

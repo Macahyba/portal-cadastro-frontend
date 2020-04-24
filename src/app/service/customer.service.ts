@@ -31,7 +31,7 @@ export class CustomerService {
     const payload = JSON.stringify(<CustomerModel>customer);
 
     return this._http.post('customers/', payload, this.httpOptions).pipe(
-      timeout(10000),
+      timeout(15000),
       catchError(this.handleError)
     );
   }
@@ -41,7 +41,7 @@ export class CustomerService {
     const id = customer.id;
 
     return this._http.patch(`customers/${id}`, payload, this.httpOptions).pipe(
-      timeout(10000),
+      timeout(15000),
       catchError(this.handleError)
     );
   }

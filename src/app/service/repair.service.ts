@@ -35,7 +35,7 @@ export class RepairService {
       const payload = JSON.stringify(<RepairModel>repair);
 
       return this._http.post('repairs/', payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }
@@ -45,7 +45,7 @@ export class RepairService {
       const id = repair.id;
 
       return this._http.patch(`repairs/${id}`, payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }

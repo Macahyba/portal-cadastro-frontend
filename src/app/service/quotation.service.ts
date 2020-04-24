@@ -35,7 +35,7 @@ export class QuotationService {
         const payload = JSON.stringify(<QuotationModel>quotation);
 
         return this._http.post('quotations/', payload, this.httpOptions).pipe(
-          timeout(10000),
+          timeout(15000),
           catchError(this.handleError)
         );
     }
@@ -45,7 +45,7 @@ export class QuotationService {
       const id = quotation.id;
 
       return this._http.patch(`quotations/${id}`, payload, this.httpOptions).pipe(
-        timeout(10000),
+        timeout(15000),
         catchError(this.handleError)
       );
     }

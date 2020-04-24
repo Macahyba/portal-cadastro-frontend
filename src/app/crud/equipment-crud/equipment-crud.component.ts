@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EquipmentService } from 'src/app/service/equipment.service';
 
@@ -20,13 +20,16 @@ export class EquipmentCrudComponent implements OnInit {
   selectControl = this._fb.control('');
 
   equipments: EquipmentModel[];
-  selectedEquipment: EquipmentModel;
+  selectedEquipment$ = new BehaviorSubject<EquipmentModel>(new EquipmentModel());
   message: string;
   bar: boolean;
   barFetch: boolean;
   error: string;
 
-  constructor(private _fb: FormBuilder, private _http: EquipmentService) { }
+  constructor(
+        private _fb: FormBuilder,
+        private _http: EquipmentService,
+        private _cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this._http.getEquipments().subscribe(data =>{
@@ -35,13 +38,14 @@ export class EquipmentCrudComponent implements OnInit {
     })
     this.barFetch = true;
     this.selectControl.disable();
+    this._cdr.detectChanges();
   }
 
   checkButton(): boolean {
     if (this.operacao === 'inserir'){
       return this.equipmentForm.valid ? false : true;
     } else {
-      return (this.equipmentForm.valid && this.selectedEquipment) ? false : true;
+      return (this.equipmentForm.valid && this.selectedEquipment$) ? false : true;
     }
   }
 
@@ -56,7 +60,7 @@ export class EquipmentCrudComponent implements OnInit {
   }
 
   selected(event){
-    this.selectedEquipment = this.getEquipmentById(parseInt(event.value));
+    this.selectedEquipment$.next(this.getEquipmentById(parseInt(event.value)));
   }
 
   getEquipmentById(id: number){

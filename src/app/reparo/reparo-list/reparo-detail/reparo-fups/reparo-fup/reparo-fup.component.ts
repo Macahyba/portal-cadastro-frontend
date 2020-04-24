@@ -1,20 +1,21 @@
-import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
 import { UserModel } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { SparePartModel } from 'src/app/model/spare-part.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-reparo-fup',
   templateUrl: './reparo-fup.component.html',
   styleUrls: ['./reparo-fup.component.scss']
 })
-export class ReparoFupComponent implements OnInit, OnChanges {
+export class ReparoFupComponent implements OnInit {
 
   @Input() parentFormArray : FormArray;
-  @Input() repairFup: RepairFupModel;
-  @Input() disabled: string;
+  @Input() injectedRepairFup: RepairFupModel;
+  @Input() disabled: boolean;
 
   repairFupFormGroup: FormGroup;
 
@@ -33,44 +34,43 @@ export class ReparoFupComponent implements OnInit, OnChanges {
   constructor(private _fb: FormBuilder, private _auth: AuthenticationService) { }
 
   ngOnInit() {
-    this.repairFupFormGroup =  this._fb.group({
+
+    this.repairFupFormGroup = this._fb.group({
       id: this.id,
       description : this.description,
       spareParts : this._fb.array([]),
       user : this.user
     })
-    if (!this.repairFup) this.parentFormArray.push(this.repairFupFormGroup);
-  }
 
-  ngOnChanges(){
+    if (!this.injectedRepairFup) this.parentFormArray.push(this.repairFupFormGroup);
 
-    setTimeout(() => {
+    if (this.injectedRepairFup){
 
-      if (this.repairFup){
-        this.id.setValue(this.repairFup.id);
-        this.description.setValue(this.repairFup.description);
-        this.username.setValue(this.repairFup.user.fullName);
+        this.id.setValue(this.injectedRepairFup.id)
+        this.description.setValue(this.injectedRepairFup.description);
+        this.username.setValue(this.injectedRepairFup.user.fullName);
 
-        for (let index = 0; index < this.repairFup.spareParts.length; index++) {
+
+        for (let index = 0; index < this.injectedRepairFup.spareParts.length; index++) {
           this.spareParts.push(
             this._fb.group({
-              id: this.repairFup.spareParts[index].id,
-              partNumber: this.repairFup.spareParts[index].partNumber
+              id: this.injectedRepairFup.spareParts[index].id,
+              partNumber: this.injectedRepairFup.spareParts[index].partNumber
             })
           )
         }
 
-        this.creationDate.setValue(this.repairFup.updateDate);
-        this.user.setValue(this.repairFup.user);
+        this.creationDate.setValue(this.injectedRepairFup.updateDate);
+        this.user.setValue(this.injectedRepairFup.user);
+    }
 
-      }
+    if(this.disabled){
+      this.description.disable();
+      this.spareParts.disable();
+      this.username.disable();
+    }
 
-      if(this.disabled){
-        this.description.disable();
-        this.spareParts.disable();
-        this.username.disable();
-      }
-    }, 0);
+
   }
 
   createPart(){

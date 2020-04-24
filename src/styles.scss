@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/theming";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 $primaryPalette: mat-palette($mat-indigo);
 $accentPalette:  mat-palette($mat-pink, A200, A100, A400);
