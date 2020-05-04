@@ -1,4 +1,4 @@
-<a mat-button color="primary" [routerLink]="'/orcamentos-new'">Inserir Orçamento</a>
+<a id="insert" mat-button color="primary" routerLink="/orcamentos-new">Inserir Orçamento</a>
 <br>
 <mat-form-field>
   <mat-label>Buscar</mat-label>
@@ -51,12 +51,13 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetail(row.id)"></tr>
+    <tr [id]="'orc-'+row.id" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetail(row.id)"></tr>
 
   </table>
 
   <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 
-  <button mat-button  style="zoom: 2;"><mat-icon
-    (click)="downloadCsv()">cloud_download</mat-icon></button>
+  <button mat-button id="csv" style="zoom: 2;" (click)="downloadCsv()">
+    <mat-icon>cloud_download</mat-icon>
+  </button>
 </div>

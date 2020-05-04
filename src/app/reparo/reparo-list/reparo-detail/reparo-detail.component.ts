@@ -5,9 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
-import { UserModel } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { Subscription, BehaviorSubject, Subject } from 'rxjs';
 import { StatusModel } from 'src/app/model/status.model';
@@ -19,13 +18,13 @@ import { StatusModel } from 'src/app/model/status.model';
 })
 export class ReparoDetailComponent implements OnInit {
 
-  id: string;
+  id: number;
   repair: RepairModel;
   customer$ = new BehaviorSubject<CustomerModel>(new CustomerModel());
   contact$ = new BehaviorSubject<ContactModel>(new ContactModel());
   equipment$ = new BehaviorSubject<EquipmentModel>(new EquipmentModel());
   sapNotification$ = new BehaviorSubject<string>("");
-  notaDeEntrada$ = new BehaviorSubject<string>("");
+  notaDeEntrada$ = new BehaviorSubject<String>("");
   notaFiscal$ = new BehaviorSubject<string>("");
   warranty$ = new BehaviorSubject<boolean>(false);
   repairFups$ = new Subject<RepairFupModel[]>();
@@ -50,8 +49,6 @@ export class ReparoDetailComponent implements OnInit {
   prevStep() {
     this.step--;
   }
-
-  approvalUser : UserModel = new UserModel(this._auth.getId());
 
   constructor(
               private _http: RepairService,
@@ -79,8 +76,7 @@ export class ReparoDetailComponent implements OnInit {
 
   ngOnInit() {
     this.repairFormGroup = this._fb.group({
-      id: this._fb.control(this.id),
-      approvalUser: this._fb.control(this.approvalUser)
+      id: this._fb.control(this.id, Validators.required),
     })
     this.role = this._auth.getRole();
     this._cdr.detectChanges();
@@ -89,24 +85,25 @@ export class ReparoDetailComponent implements OnInit {
   postSubscription: Subscription;
 
   submitForm(){
-    this.postSubscription =
-      this._http.patchRepair(this.repairFormGroup.value)
-      .subscribe(
-        ((response) => {
-          const quo = <RepairModel>response;
-          // this.status = quo.status;
-          this.setMessage('sucesso');
-          this.bar = false;
-          location.reload();
-        }),
-        ((error) => {
-          console.error(error);
-          this.setMessage('erro');
-          this.error = error;
-          this.bar = false;
-        })
-      )
-      this.bar = true;
+    console.log(this.repairFormGroup.value)
+    // this.postSubscription =
+    //   this._http.patchRepair(this.repairFormGroup.value)
+    //   .subscribe(
+    //     ((response) => {
+    //       const quo = <RepairModel>response;
+    //       // this.status = quo.status;
+    //       this.setMessage('sucesso');
+    //       this.bar = false;
+    //       location.reload();
+    //     }),
+    //     ((error) => {
+    //       console.error(error);
+    //       this.setMessage('erro');
+    //       this.error = error;
+    //       this.bar = false;
+    //     })
+    //   )
+    //   this.bar = true;
   }
 
   setMessage(m: string){

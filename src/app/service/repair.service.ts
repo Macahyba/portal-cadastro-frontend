@@ -27,7 +27,7 @@ export class RepairService {
         return this._http.get<RepairModel[]>('repairs/');
     }
 
-    getOneRepair(id: string): Observable<RepairModel> {
+    getOneRepair(id: number): Observable<RepairModel> {
         return this._http.get<RepairModel>(`repairs/${id}`);
     }
 

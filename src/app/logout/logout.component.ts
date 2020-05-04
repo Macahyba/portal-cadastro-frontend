@@ -11,14 +11,14 @@ import { StorageService } from '../service/storage.service';
 export class LogoutComponent implements OnInit {
 
   constructor(
-    private router: Router,
+    private _router: Router,
     private _auth: AuthenticationService,
     private _stor: StorageService) { }
 
   ngOnInit() {
     sessionStorage.clear();
     this._stor.storageSub.next(this._auth.getRole());
-    this.router.navigateByUrl('/login');
+    this._router.navigateByUrl('/login');
   }
 
 }

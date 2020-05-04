@@ -11,8 +11,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ReparoFupsComponent implements OnInit {
 
   @Input() parentFormGroup : FormGroup;
-  @Input() repairFups$ : Observable<RepairFupModel[]>;
-  @Input() disabled: boolean;
+  @Input() repairFups$ : BehaviorSubject<RepairFupModel[]>;
 
   repairFupFormArray: FormArray;
   reverseRepairFups;

@@ -40,7 +40,6 @@ export class OrcamentoListComponent implements OnInit {
       };
       this.dataSource.paginator = this.paginator;
       this.dataSource.sortingDataAccessor = (item, property) => {
-        // return this.nestedCheck(null, item, property);
         switch(property){
           case 'name' : return item.customer.name;
           case 'equipment' : return item.equipment.name;

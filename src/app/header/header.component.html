@@ -2,41 +2,41 @@
     <mat-toolbar-row>
         <h1>Serviço</h1>
         <div *ngIf="role">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
+          <button id="customMenu" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon>menu</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item [routerLink]="'/clientes'">
+            <button id="clientes" mat-menu-item [routerLink]="'/clientes'">
               <mat-icon>contacts</mat-icon>
               <span>Clientes</span>
             </button>
-            <button mat-menu-item [routerLink]="'/equipamentos'">
+            <button id="equipamentos" mat-menu-item [routerLink]="'/equipamentos'">
               <mat-icon>build</mat-icon>
               <span>Equipamentos</span>
             </button>
-            <button mat-menu-item [routerLink]="'/servicos'">
+            <button id="servicos" mat-menu-item [routerLink]="'/servicos'">
               <mat-icon>format_list_bulleted</mat-icon>
               <span>Serviços</span>
             </button>
           </mat-menu>
-          <a *ngIf="role" mat-button [routerLink]="'/reparos'">Reparos</a>
-          <a *ngIf="role" mat-button [routerLink]="'/orcamentos'">Orçamentos</a>
+          <a *ngIf="role" mat-button id="reparos" [routerLink]="'/reparos'">Reparos</a>
+          <a *ngIf="role" mat-button id="orcamentos" [routerLink]="'/orcamentos'">Orçamentos</a>
         </div>
         <span class="example-spacer"></span>
         <div *ngIf="role">
-          <button mat-icon-button [matMenuTriggerFor]="user">
+          <button id="userMenu" mat-icon-button [matMenuTriggerFor]="user">
             <mat-icon>person</mat-icon>
           </button>
           <mat-menu #user="matMenu">
-            <button mat-menu-item [routerLink]="'/perfil'">
+            <button id="perfil" mat-menu-item [routerLink]="'/perfil'">
               <mat-icon>face</mat-icon>
               <span>Meu Perfil</span>
             </button>
-            <button mat-menu-item *ngIf="role === 'admin'" [routerLink]="'/usuarios'">
+            <button id='usuarios' mat-menu-item *ngIf="role === 'admin'" [routerLink]="'/usuarios'">
               <mat-icon>people</mat-icon>
               <span>Usuários</span>
             </button>
-            <button mat-menu-item [routerLink]="'/logout'">
+            <button id="logout" mat-menu-item [routerLink]="'/logout'">
               <mat-icon>exit_to_app</mat-icon>
               <span>Logout</span>
             </button>

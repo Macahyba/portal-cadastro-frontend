@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RepairService } from 'src/app/service/repair.service';
 import { StatusModel } from 'src/app/model/status.model';
@@ -27,8 +27,8 @@ export class ReparoInsertComponent implements OnInit {
 
   constructor(private _http: RepairService , private _auth: AuthenticationService) {
     this.reparoFormGroup = new FormGroup({
-      user: new FormControl(this.user),
-      status: new FormControl(this.status)
+      user: new FormControl(this.user, Validators.required),
+      status: new FormControl(this.status, Validators.required)
     });
    }
 

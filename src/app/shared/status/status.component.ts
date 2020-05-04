@@ -46,7 +46,10 @@ export class StatusComponent implements OnInit {
       this.status.setValue(sts.status);
     })
 
-    if (this.disabled) this.status.disable();
+    if (this.disabled) {
+      this.status.disable();
+      this.parentFormGroup.removeControl('status');
+    }
 
     this._ref.detectChanges();
   }

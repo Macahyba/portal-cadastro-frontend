@@ -64,7 +64,6 @@ export class UserCrudComponent implements OnInit {
       passwordConfirm: this.passwordConfirm,
       user: this._fb.group({
         id: this.id,
-        username: this.username,
         fullName : this.fullName,
         email: this.email,
         role: this.role,
@@ -127,7 +126,6 @@ export class UserCrudComponent implements OnInit {
     this.userForm.controls.username.setValue(this.selectedUser.username);
     this.userForm.controls.profile.setValue(this.selectedUser.profile);
     this.getUserForm().controls.id.setValue(this.selectedUser.id);
-    this.getUserForm().controls.username.setValue(this.selectedUser.username);
     this.getUserForm().controls.fullName.setValue(this.selectedUser.user.fullName);
     this.getUserForm().controls.email.setValue(this.selectedUser.user.email);
     this.getUserForm().controls.phone.setValue(this.selectedUser.user.phone);

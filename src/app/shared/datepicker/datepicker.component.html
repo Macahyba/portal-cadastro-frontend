@@ -1,11 +1,11 @@
-<ng-container [formGroup]="parentFormGroup">
+<form [formGroup]="parentFormGroup">
   <mat-form-field *ngIf="injectedDate">
-    <input matInput type="text" [formControl]="date" value="{{injectedDate | date:'dd/MM/yyyy HH:mm:ss':'-0300'}}">
+    <input matInput type="text" [formControl]="date" value="{{injectedDate.value | date:'dd/MM/yyyy HH:mm:ss':'-0300'}}">
   </mat-form-field>
   <mat-form-field *ngIf="!injectedDate">
     <mat-label>Selecione a data</mat-label>
-    <input matInput [matDatepicker]="picker" [formControl]="date" >
+    <input matInput [matDatepicker]="picker" #data (dateChange)="addEvent($event)" >
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-</ng-container>
+</form>

@@ -6,7 +6,7 @@ import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
 import { ServiceModel } from 'src/app/model/service.model';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { UserModel } from 'src/app/model/user.model';
@@ -21,7 +21,7 @@ export class OrcamentoDetailComponent implements OnInit {
 
   totalPrice: number = 0;
 
-  id: string;
+  id: number;
   label: string;
   quotation: QuotationModel;
   customer$ = new BehaviorSubject<CustomerModel>(new CustomerModel());
@@ -33,7 +33,7 @@ export class OrcamentoDetailComponent implements OnInit {
   message: string;
   bar: boolean;
   barFetch: boolean;
-  creationDate: Date;
+  creationDate = new BehaviorSubject<Date>(new Date());
   error: string;
 
   role: string;
@@ -56,7 +56,7 @@ export class OrcamentoDetailComponent implements OnInit {
       this.services$.next(Array.from(this.quotation.services));
       this.totalDiscount$.next(this.quotation.totalDiscount);
       this.status$.next(this.quotation.status);
-      this.creationDate = this.quotation.creationDate;
+      this.creationDate.next(this.quotation.creationDate);
       this.label = this.quotation.label;
       this.barFetch = false;
     })
@@ -65,9 +65,9 @@ export class OrcamentoDetailComponent implements OnInit {
 
   ngOnInit() {
     this.orcamentoFormGroup = this._fb.group({
-      id : this._fb.control(this.id),
-      approvalUser : this._fb.control(this.approvalUser),
-      approvalDate : this._fb.control(new Date())
+      id : this._fb.control(this.id, Validators.required),
+      approvalUser : this._fb.control(this.approvalUser, Validators.required),
+      approvalDate : this._fb.control(new Date(), Validators.required)
     });
     this.role = this._auth.getRole();
 

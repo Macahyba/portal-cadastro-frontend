@@ -85,7 +85,7 @@ export class OrcamentoInsertComponent implements OnInit {
   }
 
   checkValid(){
-    return this.serviceSubGroup.value.length > 0  && this.orcamentoFormGroup.valid ? false : true;
+    return this.serviceSubGroup && this.serviceSubGroup.value.length > 0  && this.orcamentoFormGroup.valid ? false : true;
   }
 
   setMessage(m: string){

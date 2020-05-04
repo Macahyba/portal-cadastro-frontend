@@ -30,10 +30,13 @@ export class ValorComponent implements OnInit {
     this.totalDiscount$.next(this.parentFormGroup.controls.totalDiscount.value);
 
     this.injectedDiscount$.subscribe(disc =>{
-      this.parentFormGroup.controls.totalDiscount.setValue(disc);
+      this.totalDiscountControl.setValue(disc);
     })
 
-    if (this.disabled) this.parentFormGroup.controls.totalDiscount.disable();
+    if (this.disabled) {
+      this.parentFormGroup.controls.totalDiscount.disable();
+      this.parentFormGroup.removeControl('totalDiscount');
+    }
 
     this._cdr.detectChanges();
   }

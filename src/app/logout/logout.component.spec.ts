@@ -6,7 +6,7 @@ import { AuthenticationService } from '../service/authentication.service';
 import { StorageService } from '../service/storage.service';
 import { LogoutComponent } from './logout.component';
 
-fdescribe('LogoutComponent', () => {
+describe('LogoutComponent', () => {
   let component: LogoutComponent;
   let fixture: ComponentFixture<LogoutComponent>;
   let storageService;

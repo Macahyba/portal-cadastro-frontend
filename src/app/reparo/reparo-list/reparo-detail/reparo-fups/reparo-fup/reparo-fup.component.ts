@@ -3,8 +3,7 @@ import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
 import { UserModel } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
-import { SparePartModel } from 'src/app/model/spare-part.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-reparo-fup',
@@ -28,7 +27,7 @@ export class ReparoFupComponent implements OnInit {
     return this.repairFupFormGroup.controls.spareParts as FormArray;
   }
 
-  creationDate = this._fb.control('');
+  creationDate = new BehaviorSubject<Date>(new Date());
   user = this._fb.control(new UserModel(this._auth.getId()));
 
   constructor(private _fb: FormBuilder, private _auth: AuthenticationService) { }
@@ -50,7 +49,6 @@ export class ReparoFupComponent implements OnInit {
         this.description.setValue(this.injectedRepairFup.description);
         this.username.setValue(this.injectedRepairFup.user.fullName);
 
-
         for (let index = 0; index < this.injectedRepairFup.spareParts.length; index++) {
           this.spareParts.push(
             this._fb.group({
@@ -59,8 +57,7 @@ export class ReparoFupComponent implements OnInit {
             })
           )
         }
-
-        this.creationDate.setValue(this.injectedRepairFup.updateDate);
+        this.creationDate.next(this.injectedRepairFup.updateDate);
         this.user.setValue(this.injectedRepairFup.user);
     }
 
@@ -68,8 +65,8 @@ export class ReparoFupComponent implements OnInit {
       this.description.disable();
       this.spareParts.disable();
       this.username.disable();
+      this.parentFormArray.removeAt(this.parentFormArray.length-1)
     }
-
 
   }
 

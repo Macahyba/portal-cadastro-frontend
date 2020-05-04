@@ -9,14 +9,12 @@ export class RepairFupModel {
         public updateDate?: Date,
         public description?: string,
         public user?: UserModel,
-        public repair?: RepairModel,
         public spareParts?: SparePartModel[],
         public equipment?: EquipmentModel
     ){
         this.id = id || null
         this.updateDate = updateDate || null
         this.user = user || null
-        this.repair = repair || null
         this.spareParts = spareParts || null
         this.equipment = equipment || null
     }

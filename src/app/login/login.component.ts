@@ -3,7 +3,6 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '../service/authentication.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +21,7 @@ export class LoginComponent implements OnInit {
   error: string;
 
   constructor(
+    private _router: Router,
     private _fb: FormBuilder,
     private _auth: AuthenticationService) { }
 
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
           this.setMessage('sucesso');
           this.bar = false;
           setTimeout(() => {
-            window.open('/orcamentos',"_self");
+            this._router.navigateByUrl('/orcamentos');
           }, 1000);
         }),
         ((error) => {

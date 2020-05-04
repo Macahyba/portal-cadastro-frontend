@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { DateAdapter } from '@angular/material';
+import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { DateAdapter, MatDatepickerInputEvent } from '@angular/material';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-datepicker',
@@ -12,21 +13,34 @@ export class DatepickerComponent implements OnInit {
 
   @Input() parentFormGroup : FormGroup;
   @Input() control: string;
-  @Input() injectedDate: Date;
+  @Input() injectedDate: BehaviorSubject<Date>;
   @Input() disabled: boolean;
 
-  date = new FormControl(new Date(), Validators.required);
+  @ViewChild('data', {static: false}) el: ElementRef;
 
-  constructor(private _adapter: DateAdapter<any>, private _cdr: ChangeDetectorRef) { }
+  date = new FormControl(new Date(), Validators.required);
+  formattedDate: string = `${String("00" + (this.date.value.getDate())).slice(-2)}/${String("00" + (this.date.value.getMonth()+1)).slice(-2)}/${this.date.value.getFullYear()}`;
+
+  constructor(
+      private _adapter: DateAdapter<any>,
+      private _cdr: ChangeDetectorRef,
+      private _renderer: Renderer2) { }
 
   ngOnInit() {
     this._adapter.setLocale('pt-br');
     this.parentFormGroup.registerControl(this.control, this.date);
 
-    if (this.disabled) this.date.disable();
-
+    if (this.disabled) {
+      this.date.disable();
+      this.parentFormGroup.removeControl(this.control);
+    }
     this._cdr.detectChanges();
+    if (this.el) this._renderer.setProperty(this.el.nativeElement, 'value', this.formattedDate);
 
+  }
+
+  addEvent(event: MatDatepickerInputEvent<Date>) {
+    this.date.setValue(event.value);
   }
 
 }

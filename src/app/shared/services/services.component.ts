@@ -3,7 +3,7 @@ import { ServiceModel } from 'src/app/model/service.model';
 import { MatTableDataSource } from '@angular/material';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceService } from 'src/app/service/service.service';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-services',
@@ -13,12 +13,12 @@ import { Observable } from 'rxjs';
 export class ServicesComponent implements OnInit {
 
   @Input() disabled: boolean;
-  @Input() injectedServices$: Observable<ServiceModel[]>;
+  @Input() injectedServices$ = new BehaviorSubject<ServiceModel[]>([new ServiceModel()]);
   @Output() servicesToInsert = new EventEmitter<number>();
   @Input () parentFormGroup: FormGroup;
 
   services: ServiceModel[];
-  ckdServices: ServiceModel[];;
+  ckdServices: ServiceModel[];
 
   displayedColumns: string[] = ['name', 'desc', 'price'];
   dataSource: MatTableDataSource<ServiceModel>;
@@ -32,15 +32,12 @@ export class ServicesComponent implements OnInit {
     this._http.getServices().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.dataSource = new MatTableDataSource(this.services);
-
     })
-
   }
 
   ngOnInit() {
-    this.parentFormGroup.registerControl('services', this.serviceArray)
-
-    if(this.injectedServices$) this.injectedServices$.subscribe(services =>{
+    this.parentFormGroup.registerControl('services', this.serviceArray);
+    this.injectedServices$.subscribe(services =>{
       const injectedPrices = services.reduce((sum, s) =>{
         return sum + s.price;
       }, 0);

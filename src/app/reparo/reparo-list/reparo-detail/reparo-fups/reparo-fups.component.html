@@ -9,12 +9,12 @@
           (change)="toggleNewFup($event)">Adicionar Follow-up
         </mat-slide-toggle>
         <div *ngIf="showNewFup">
-          <app-reparo-fup
+          <app-reparo-fup id='fup-novo'
             [parentFormArray]="repairFupFormArray">
           </app-reparo-fup>
         </div>
       <mat-action-row>
-        <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
+        <button id="aaa" type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
       </mat-action-row>
     </mat-expansion-panel>
     <div *ngFor="let repairFup of reverseRepairFups; let i = index">
@@ -22,7 +22,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title>Follow-up {{reverseRepairFups.length - i}}</mat-panel-title>
         </mat-expansion-panel-header>
-          <app-reparo-fup
+          <app-reparo-fup id="fup-{{reverseRepairFups.length - i}}"
             [disabled]="true"
             [injectedRepairFup]="repairFup"
             [parentFormArray]="repairFupFormArray">

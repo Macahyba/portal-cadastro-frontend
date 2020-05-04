@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { EquipmentService } from 'src/app/service/equipment.service';
@@ -13,7 +13,7 @@ import { EquipmentService } from 'src/app/service/equipment.service';
 export class EquipmentComponent implements OnInit {
 
   @Input() disabled: boolean;
-  @Input() injectedEquipment$: Observable<EquipmentModel>;
+  @Input() injectedEquipment$: BehaviorSubject<EquipmentModel>;
   @Input() parentFormGroup: FormGroup;
 
   equipmentGroup : FormGroup;
@@ -49,9 +49,7 @@ export class EquipmentComponent implements OnInit {
     this.parentFormGroup.registerControl('equipment', this.equipmentGroup);
 
     if (this.injectedEquipment$) this.injectedEquipment$.subscribe(data =>{
-      this.equipmentGroup.controls.id.setValue(data.id);
-      this.equipmentGroup.controls.name.setValue(data.name);
-      this.equipmentGroup.controls.serialNumber.setValue(data.serialNumber);
+      this.equipmentGroup.patchValue(data);
     })
 
     if (this.disabled){
@@ -64,7 +62,7 @@ export class EquipmentComponent implements OnInit {
   private _filter(data: EquipmentModel[], name: any): EquipmentModel[] {
 
     const filterValue = name.name ? name.name.toLowerCase() : name.toLowerCase();
-    return data.filter(option => option.name.toLowerCase().includes(filterValue));
+    return Array.from(data).filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
   private _uniqueName(array: any): EquipmentModel[]{

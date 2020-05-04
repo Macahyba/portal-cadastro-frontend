@@ -18,10 +18,11 @@
           [parentFormGroup]="orcamentoFormGroup"></app-status>
         <br>
         <span *ngIf="role !== 'user'">
-          <button type="submit" mat-raised-button color="primary">Atualizar</button>&nbsp;
+          <button id='atualizar' type="submit" mat-raised-button color="primary">Atualizar</button>&nbsp;
         </span>
         <span *ngIf="checkStatus()">
         <button
+          id="download"
           type="button"
           mat-raised-button color="warn"
           (click)="downloadPdf()">Download</button>

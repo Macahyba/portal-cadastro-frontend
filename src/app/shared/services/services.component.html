@@ -1,4 +1,4 @@
-<ng-container [formGroup]="parentFormGroup">
+<form [formGroup]="parentFormGroup">
     <mat-card  class="outer-card">
         <table mat-table class="table-container" [dataSource]="dataSource">
             <ng-container matColumnDef="name">
@@ -24,4 +24,4 @@
             <tr mat-row *matRowDef="let service; columns: displayedColumns;"></tr>
         </table>
     </mat-card>
-</ng-container>
+  </form>

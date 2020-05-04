@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 import { ContactModel } from 'src/app/model/contact.model';
 import { CustomerService } from 'src/app/service/customer.service';
@@ -14,8 +14,8 @@ import { CustomerService } from 'src/app/service/customer.service';
 export class CustomerComponent implements OnInit {
 
   @Input() disabled: boolean;
-  @Input() injectedCustomer$: Observable<CustomerModel>;
-  @Input() injectedContact$: Observable<ContactModel>;
+  @Input() injectedCustomer$: BehaviorSubject<CustomerModel>;
+  @Input() injectedContact$: BehaviorSubject<ContactModel>;
   @Input() parentFormGroup: FormGroup;
 
   customerGroup : FormGroup;
@@ -42,7 +42,7 @@ export class CustomerComponent implements OnInit {
   filteredContact: Observable<ContactModel[]> =
     this.clientAutoComplete.valueChanges.pipe(
       filter(customer => customer.contacts !== undefined && customer.contacts !== null),
-      map(customer => Array.from(customer.contacts))
+      map(customer => customer.contacts)
     )
 
 
@@ -76,8 +76,8 @@ export class CustomerComponent implements OnInit {
     })
     this.parentFormGroup.registerControl('customer', this.customerGroup);
     this.parentFormGroup.registerControl('contact', this.contactGroup);
-    if (this.injectedCustomer$) this.injectedCustomer$.subscribe(data =>{
-      this.customerGroup.controls.cnpj.setValue(data.cnpj)
+
+    if(this.injectedCustomer$) this.injectedCustomer$.subscribe(data =>{
       this.customerGroup.patchValue(data);
     })
 
@@ -88,8 +88,9 @@ export class CustomerComponent implements OnInit {
     if(this.disabled){
       this.customerGroup.disable();
       this.contactGroup.disable();
+      this.parentFormGroup.removeControl('customer');
+      this.parentFormGroup.removeControl('contact');
     }
-
   }
 
   displayFn(customer: CustomerModel): string {
