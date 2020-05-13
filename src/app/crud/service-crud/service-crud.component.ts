@@ -69,11 +69,18 @@ export class ServiceCrudComponent implements OnInit {
     }
   }
 
+  isInserir(): boolean {
+    return this.operacao === 'inserir'
+  }
+
+  isAtualizar(): boolean {
+    return this.operacao === 'atualizar'
+  }
   postSubscription: Subscription;
 
   submitForm(){
 
-    if (this.operacao === 'atualizar') {
+    if (this.isAtualizar()) {
 
       this.postSubscription =
         this._http.patchService(this.serviceForm.value)
@@ -124,7 +131,7 @@ export class ServiceCrudComponent implements OnInit {
   }
 
   radioSelect(){
-    if (this.operacao === 'inserir'){
+    if (this.isInserir()){
       this.serviceForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();

@@ -49,8 +49,16 @@ export class EquipmentCrudComponent implements OnInit {
     }
   }
 
+  isInserir(): boolean {
+    return this.operacao === 'inserir'
+  }
+
+  isAtualizar(): boolean {
+    return this.operacao === 'atualizar'
+  }
+
   radioSelect(){
-    if (this.operacao === 'inserir'){
+    if (this.isInserir()){
       this.equipmentForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();
@@ -71,7 +79,7 @@ export class EquipmentCrudComponent implements OnInit {
 
   submitForm(){
 
-    if (this.operacao === 'atualizar') {
+    if (this.isAtualizar()) {
 
       this.postSubscription =
         this._http.patchEquipment(this.equipmentForm.value.equipment)

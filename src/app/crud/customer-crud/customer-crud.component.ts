@@ -74,6 +74,14 @@ export class CustomerCrudComponent implements OnInit {
     }
   }
 
+  isInserir(): boolean {
+    return this.operacao === 'inserir'
+  }
+
+  isAtualizar(): boolean {
+    return this.operacao === 'atualizar'
+  }
+
   postSubscription: Subscription;
 
   submitForm(){
@@ -81,7 +89,7 @@ export class CustomerCrudComponent implements OnInit {
     let sendForm: CustomerModel = this.customerForm.value.customer;
     sendForm.contacts = [this.customerForm.value.contact];
 
-    if (this.operacao === 'atualizar') {
+    if (this.isAtualizar()) {
 
       this.postSubscription =
         this._http.patchCustomer(sendForm)
@@ -132,7 +140,7 @@ export class CustomerCrudComponent implements OnInit {
   }
 
   radioSelect(){
-    if (this.operacao === 'inserir'){
+    if (this.isInserir()){
       this.customerForm.reset();
       this.selectControl.setValue("")
       this.selectControl.disable();

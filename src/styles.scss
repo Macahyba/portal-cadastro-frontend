@@ -1,48 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/theming";
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-$primaryPalette: mat-palette($mat-indigo);
-$accentPalette:  mat-palette($mat-pink, A200, A100, A400);
+@include mat-core();
 
-// the default warn palette is red, so use that if the theme doesn't define one
-$warnPalette:    mat-palette($mat-red);
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+$app-primary: mat-palette($mat-indigo);
+$app-accent:  mat-palette($mat-pink, A200, A100, A400);
+$app-warn:    mat-palette($mat-red);
 
-.base-form {
-  width: 100%;
+$app-theme: mat-light-theme($app-primary, $app-accent);
+
+
+@mixin mix-app-theme($app-theme) {
+  $primary: map-get($app-theme, primary);
+  $accent: map-get($app-theme, accent);
+
+  html, body { height: 100%; }
+  body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+  .base-form {
+    width: 100%;
+  }
+
+  .full-width {
+    width: 100%;
+    align-self: baseline;
+  }
+
+  .half-width {
+    width: 50%;
+    align-self: baseline;
+  }
+
+  .outer-card {
+    overflow: auto;
+    background-color: mat-color($app-primary);
+  }
+
+  .ng-invalid .ng-touched {
+    border: red;
+  }
+
+  .sucesso {
+    color: #4CAF50;
+    font-weight: bold;
+  }
+
+  .erro {
+    color: #D50000;
+    font-weight: bold;
+  }
+
+  .mat-progress-bar {
+    width: 100%;
+  }
 }
-
-.full-width {
-  width: 100%;
-  align-self: baseline;
-}
-
-.half-width {
-  width: 50%;
-  align-self: baseline;
-}
-
-.outer-card {
-  overflow: auto;
-  background-color: mat-color($primaryPalette);
-}
-
-.ng-invalid .ng-touched {
-  border: red;
-}
-
-.sucesso {
-  color: #4CAF50;
-  font-weight: bold;
-}
-
-.erro {
-  color: #D50000;
-  font-weight: bold;
-}
-
-.mat-progress-bar {
-  width: 100%;
-}
+@include mix-app-theme($app-theme);
