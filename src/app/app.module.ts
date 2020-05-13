@@ -55,6 +55,7 @@ import { UserCrudComponent } from './crud/user-crud/user-crud.component';
 import { CustomerCrudComponent } from './crud/customer-crud/customer-crud.component';
 import { ServiceCrudComponent } from './crud/service-crud/service-crud.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { DummyComponentMock } from './mock/dummy-component-mock';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { PerfilComponent } from './perfil/perfil.component';
     UserCrudComponent,
     CustomerCrudComponent,
     ServiceCrudComponent,
-    PerfilComponent
+    PerfilComponent,
+    DummyComponentMock
   ],
   imports: [
     BrowserModule,

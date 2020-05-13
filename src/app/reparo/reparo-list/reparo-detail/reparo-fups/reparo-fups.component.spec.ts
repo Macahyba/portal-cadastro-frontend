@@ -6,7 +6,6 @@ import { MatExpansionModule, MatSlideToggleModule } from '@angular/material';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RepairServiceMock } from 'src/app/mock/repair-service-mock';
-import { ReparoFupComponentMock } from 'src/app/mock/reparo-fup-component-mock';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
 
 describe('given the ReparoFupsComponent', () => {
@@ -19,7 +18,7 @@ describe('given the ReparoFupsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReparoFupsComponent, ReparoFupComponentMock ],
+      declarations: [ ReparoFupsComponent ],
       imports: [
         ReactiveFormsModule,
         MatExpansionModule,

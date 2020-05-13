@@ -101,10 +101,10 @@ describe('ServicesComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should check the loaded services', (() => {
+    // it('should check the loaded services', (() => {
 
-      // console.log(chk)
-    }))
+    //   // console.log(chk)
+    // }))
 
   });
 
