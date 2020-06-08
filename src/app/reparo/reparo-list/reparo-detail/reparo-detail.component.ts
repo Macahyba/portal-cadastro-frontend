@@ -85,25 +85,22 @@ export class ReparoDetailComponent implements OnInit {
   postSubscription: Subscription;
 
   submitForm(){
-    console.log(this.repairFormGroup.value)
-    // this.postSubscription =
-    //   this._http.patchRepair(this.repairFormGroup.value)
-    //   .subscribe(
-    //     ((response) => {
-    //       const quo = <RepairModel>response;
-    //       // this.status = quo.status;
-    //       this.setMessage('sucesso');
-    //       this.bar = false;
-    //       location.reload();
-    //     }),
-    //     ((error) => {
-    //       console.error(error);
-    //       this.setMessage('erro');
-    //       this.error = error;
-    //       this.bar = false;
-    //     })
-    //   )
-    //   this.bar = true;
+    this.postSubscription =
+      this._http.patchRepair(this.repairFormGroup.value)
+      .subscribe(
+        ((response) => {
+          this.setMessage('sucesso');
+          this.bar = false;
+          location.reload();
+        }),
+        ((error) => {
+          console.error(error);
+          this.setMessage('erro');
+          this.error = error;
+          this.bar = false;
+        })
+      )
+      this.bar = true;
   }
 
   setMessage(m: string){

@@ -28,7 +28,9 @@
     (click)="submitForm()"
     [disabled]="checkButton()"
     mat-raised-button
-    color="primary">Atualizar
+    color="primary">
+      <div *ngIf="isAtualizar()">Atualizar</div>
+      <div *ngIf="isInserir()">Inserir</div>
   </button><br><br>
   <div class="sucesso" *ngIf="message === 'sucesso'">
     Salvo com sucesso!<br><br>

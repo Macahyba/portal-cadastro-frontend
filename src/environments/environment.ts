@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   http_host: 'http://127.0.0.1:4200',
-  api_host: 'https://127.0.0.1:8443/api'
+  api_host: 'http://127.0.0.1:8080/api'
 };
 
 /*
