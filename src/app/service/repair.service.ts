@@ -1,11 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry, catchError, timeout } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { RepairModel } from '../model/repair.model';
-import { ServiceModel } from '../model/service.model';
-import { CustomerModel } from '../model/customer.model';
-import { EquipmentModel } from '../model/equipament.model';
 
 @Injectable({
   providedIn: 'root'

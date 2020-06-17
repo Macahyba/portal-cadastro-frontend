@@ -83,9 +83,9 @@ export class RepairServiceMock {
     const repairFups2 = [this.repairFup3, this.repairFup4];
 
     const repairs = [
-      new RepairModel(1, new Date(2020,3,1), new Date(2020,3,10), "sapNotification1", true, "notaFiscal1", 10,
+      new RepairModel(1, new Date(2020,3,1), new Date(2020,3,10), "sapNotification1", true, "notaFiscal1", 10, true,
                         this.status1, "notaDeEntrada1", repairFups1, this.user1, this.equipment1, this.customer1, this.contacts1[0]),
-      new RepairModel(2, new Date(2020,4,1), new Date(2020,4,10), "sapNotification2", false, "notaFiscal2", 20,
+      new RepairModel(2, new Date(2020,4,1), new Date(2020,4,10), "sapNotification2", false, "notaFiscal2", 20, true,
                         this.status2, "notaDeEntrada2", repairFups2, this.user2, this.equipment2, this.customer2, this.contacts2[0])
     ]
 
@@ -96,7 +96,7 @@ export class RepairServiceMock {
 
     const repairFups1 = [this.repairFup1, this.repairFup2];
 
-    const repair = new RepairModel(1, new Date(2020,3,1), new Date(2020,3,10), "sapNotification1", true, "notaFiscal1", 10,
+    const repair = new RepairModel(1, new Date(2020,3,1), new Date(2020,3,10), "sapNotification1", true, "notaFiscal1", 10, true,
                         this.status1, "notaDeEntrada1", repairFups1, this.user1, this.equipment1, this.customer1, this.contacts1[0]);
 
     return new BehaviorSubject<RepairModel>(repair);

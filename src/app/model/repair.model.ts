@@ -14,6 +14,7 @@ export class RepairModel {
         public warranty?: boolean,
         public notaFiscal?: string,
         public tat?: number,
+        public active?: boolean,
         public status?: StatusModel,
         public notaDeEntrada?: string,
         public repairFups?: RepairFupModel[],
@@ -29,6 +30,7 @@ export class RepairModel {
         this.warranty = warranty || null
         this.notaFiscal = notaFiscal || null
         this.tat = tat || null
+        this.active = active || null
         this.status = status || null
         this.notaDeEntrada = notaDeEntrada || null
         this.repairFups = repairFups || null

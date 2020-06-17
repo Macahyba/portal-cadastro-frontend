@@ -41,7 +41,8 @@ export class OrcamentoInsertComponent implements OnInit {
       private _auth: AuthenticationService) {
     this.orcamentoFormGroup = new FormGroup({
       user : new FormControl(this.user),
-      status : new FormControl(this.status)
+      status : new FormControl(this.status),
+      active: new FormControl(true)
     });
   }
 

@@ -19,7 +19,9 @@ export class QuotationModel {
         public customer?: CustomerModel,
         public contact?: ContactModel,
         public aprovalUser?: UserModel,
-        public services?: Set<ServiceModel>
+        public services?: Set<ServiceModel>,
+        public active?: boolean
+
     ){
         this.id = id || null
         this.label = label || null
@@ -34,5 +36,6 @@ export class QuotationModel {
         this.contact = contact || null
         this.aprovalUser = aprovalUser || null
         this.services = services || null
+        this.active = active || null
     }
 }

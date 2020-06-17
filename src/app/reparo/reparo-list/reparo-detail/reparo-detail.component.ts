@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RepairService } from 'src/app/service/repair.service';
 import { RepairModel } from 'src/app/model/repair.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { ContactModel } from 'src/app/model/contact.model';
 import { EquipmentModel } from 'src/app/model/equipament.model';
@@ -53,6 +53,7 @@ export class ReparoDetailComponent implements OnInit {
   constructor(
               private _http: RepairService,
               private _route: ActivatedRoute,
+              private _router: Router,
               private _fb: FormBuilder,
               private _auth: AuthenticationService,
               private _cdr: ChangeDetectorRef) {
@@ -84,9 +85,9 @@ export class ReparoDetailComponent implements OnInit {
 
   postSubscription: Subscription;
 
-  submitForm(){
+  submitForm(form){
     this.postSubscription =
-      this._http.patchRepair(this.repairFormGroup.value)
+      this._http.patchRepair(form.value)
       .subscribe(
         ((response) => {
           this.setMessage('sucesso');
@@ -112,4 +113,11 @@ export class ReparoDetailComponent implements OnInit {
     this.message = m;
   }
 
+  deleteEntry(){
+    const del = confirm("Deseja realmente deletar?")
+    if (del) {
+      const deleteFormGroup = this._fb.group({id: this.id, active: false})
+      this.submitForm(deleteFormGroup)
+    }
+  }
 }

@@ -1,4 +1,4 @@
-<form [formGroup]="repairFormGroup" (submit)="submitForm()">
+<form [formGroup]="repairFormGroup">
   <div *ngIf="barFetch">
     <br><mat-progress-bar mode="query"></mat-progress-bar><br>
   </div>
@@ -9,7 +9,6 @@
         <mat-panel-description>Status do reparo</mat-panel-description>
       </mat-expansion-panel-header>
       <app-status
-        [disabled]="role == 'user'"
         [injectedStatus$]="status$"
         [parentFormGroup]="repairFormGroup">
       </app-status>
@@ -84,7 +83,8 @@
   </mat-accordion>
   <div class="full-width">
     <br>
-    <button id="atualizar" mat-raised-button color="primary">Atualizar</button>
+    <button type="button" id="atualizar" mat-raised-button color="primary" (click)="submitForm(repairFormGroup)">Atualizar</button>&nbsp;
+    <button type="button" id="deletar" mat-raised-button color="warn" (click)="deleteEntry()">Deletar</button>
     <br><br>
     <div class="sucesso" *ngIf="message === 'sucesso'">
       Salvo com sucesso!<br><br>

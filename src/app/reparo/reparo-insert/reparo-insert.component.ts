@@ -28,7 +28,8 @@ export class ReparoInsertComponent implements OnInit {
   constructor(private _http: RepairService , private _auth: AuthenticationService) {
     this.reparoFormGroup = new FormGroup({
       user: new FormControl(this.user, Validators.required),
-      status: new FormControl(this.status, Validators.required)
+      status: new FormControl(this.status, Validators.required),
+      active: new FormControl(true)
     });
    }
 

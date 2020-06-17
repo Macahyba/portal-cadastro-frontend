@@ -35,7 +35,6 @@ export class StatusComponent implements OnInit {
    }
 
   ngOnInit() {
-
     this.statusGroup = new FormGroup({
       id : this.select
     })
@@ -48,7 +47,6 @@ export class StatusComponent implements OnInit {
 
     if (this.disabled) {
       this.status.disable();
-      this.parentFormGroup.removeControl('status');
     }
 
     this._ref.detectChanges();

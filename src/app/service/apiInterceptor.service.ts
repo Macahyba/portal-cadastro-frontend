@@ -39,8 +39,9 @@ export class APIInterceptor implements HttpInterceptor {
     return next.handle(this.apiReq).pipe( tap(() => {},
     (err: any) => {
       if (err instanceof HttpErrorResponse) {
-        if (err.status !== 401 || this.apiReq.url.includes("authenticate")) return;
-        this._router.navigate(['logout']);
+        const path = this._router.url.replace(/(\w+)(\/)(\w+)/, '$1')
+        if (err.status == 401 && this.apiReq.url.includes("authenticate")) return;
+        this._router.navigate([path]);
       }
     }))
   }
