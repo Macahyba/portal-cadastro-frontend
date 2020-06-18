@@ -40,8 +40,9 @@ export class APIInterceptor implements HttpInterceptor {
     (err: any) => {
       if (err instanceof HttpErrorResponse) {
         const path = this._router.url.replace(/(\w+)(\/)(\w+)/, '$1')
-        if (err.status == 401 && this.apiReq.url.includes("authenticate")) return;
-        this._router.navigate([path]);
+        if (err.status == 401) this._router.navigate(['logout']);
+        if (err.status == 404) this._router.navigate([path]);
+        return;
       }
     }))
   }
