@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
 export class ReparoListComponent implements OnInit {
 
   displayedColumns: string[] =
-    ['sapNotification', 'repairFups', 'notaFiscal', 'equipment',
-      'serialNumber', 'customer', 'warranty', 'tat', 'status', 'creationDate'];
+    ['creationDate', 'sapNotification', 'repairFups', 'equipment', 'serialNumber',
+    'customer', 'warranty', 'tat', 'status', 'notaFiscal', 'endDate'];
   dataSource: MatTableDataSource<RepairModel>;
   barFetch: boolean;
 

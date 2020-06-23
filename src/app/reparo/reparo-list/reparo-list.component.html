@@ -10,6 +10,11 @@
 <div class="table-container">
   <table mat-table [dataSource]="dataSource" matSort>
 
+    <ng-container matColumnDef="creationDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Criação </th>
+      <td mat-cell *matCellDef="let row"> {{row.creationDate | date:'dd/MM/yyyy':'-0300'}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="sapNotification">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Notificação SAP </th>
       <td mat-cell *matCellDef="let row"> {{row.sapNotification}} </td>
@@ -18,11 +23,6 @@
     <ng-container matColumnDef="repairFups">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Follow-ups </th>
       <td mat-cell *matCellDef="let row"> {{row.repairFups.length}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="notaFiscal">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> NF de Saída </th>
-      <td mat-cell *matCellDef="let row"> {{row.notaFiscal}} </td>
     </ng-container>
 
     <ng-container matColumnDef="equipment">
@@ -58,9 +58,14 @@
         <td mat-cell *matCellDef="let row"> {{row.status.status}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="creationDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Criação </th>
-        <td mat-cell *matCellDef="let row"> {{row.creationDate | date:'dd/MM/yyyy':'-0300'}} </td>
+    <ng-container matColumnDef="notaFiscal">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> NF de Saída </th>
+      <td mat-cell *matCellDef="let row"> {{row.notaFiscal}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Fim </th>
+      <td mat-cell *matCellDef="let row"> {{row.endDate | date:'dd/MM/yyyy':'-0300'}} </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

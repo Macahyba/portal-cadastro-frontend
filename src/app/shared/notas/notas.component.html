@@ -1,18 +1,24 @@
 <form [formGroup]="parentFormGroup">
   <mat-card class="outer-card">
     <mat-card>
-      <mat-form-field class="full-width">
+      <mat-checkbox matInput
+        *ngIf="!updateNotaFiscal"
+        [formControl]="isExternal"
+        (change)="checkExternal($event)">
+        Serviço Externo?
+      </mat-checkbox>
+      <mat-form-field class="full-width" *ngIf="!isExternal.value">
         <mat-label>SAP Notification</mat-label>
         <input matInput
           [formControl]="sapNotification">
       </mat-form-field>
       <br>
-      <mat-form-field class="full-width">
+      <mat-form-field class="full-width" *ngIf="!isExternal.value">
         <mat-label>Nota de Entrada</mat-label>
         <input matInput
           [formControl]="notaDeEntrada">
       </mat-form-field>
-      <mat-form-field class="full-width" *ngIf="updateNotaFiscal">
+      <mat-form-field class="full-width" *ngIf="updateNotaFiscal || !isExternal.value">
         <mat-label>Nota Fiscal</mat-label>
         <input matInput
           [formControl]="notaFiscal">
@@ -20,7 +26,8 @@
       <br>
       <mat-checkbox
         [checked]="injectedWarranty$"
-        [formControl]="warranty">Garantia</mat-checkbox>
+        [formControl]="warranty">Garantia?
+      </mat-checkbox>
     </mat-card>
   </mat-card>
 </form>

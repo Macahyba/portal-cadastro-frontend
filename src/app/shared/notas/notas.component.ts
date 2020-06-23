@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-notas',
@@ -21,6 +21,7 @@ export class NotasComponent implements OnInit {
   sapNotification = this._fb.control('', Validators.required);
   notaFiscal = this._fb.control('');
   warranty = this._fb.control('');
+  isExternal = this._fb.control('');
 
   constructor(private _fb: FormBuilder) { }
 
@@ -55,6 +56,18 @@ export class NotasComponent implements OnInit {
       this.parentFormGroup.removeControl('warranty');
     }
 
+  }
+
+  checkExternal(event){
+    if (event.checked) {
+      this.parentFormGroup.controls.sapNotification.setValue("Serviço Externo");
+      this.parentFormGroup.controls.notaDeEntrada.setValue("-");
+      this.parentFormGroup.controls.notaFiscal.setValue("-");
+    } else {
+      this.parentFormGroup.controls.sapNotification.setValue("");
+      this.parentFormGroup.controls.notaDeEntrada.setValue("");
+      this.parentFormGroup.controls.notaFiscal.setValue("");
+    }
   }
 
 }
