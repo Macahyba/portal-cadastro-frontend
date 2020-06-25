@@ -2,7 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReparoFupComponent } from './reparo-fup.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { MatProgressBarModule, MatInputModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, DateAdapter } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { DateAdapter } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatepickerComponent } from 'src/app/shared/datepicker/datepicker.component';

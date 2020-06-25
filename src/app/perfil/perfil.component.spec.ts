@@ -2,7 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PerfilComponent } from './perfil.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule, MatCardModule, MatInputModule, MatProgressBarModule, MatRadioModule, MatOptionModule, MatSelectModule, MatCheckboxModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';

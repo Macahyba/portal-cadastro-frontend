@@ -9,7 +9,7 @@ import { AuthenticationService } from 'src/app/service/authentication.service';
 import { AuthenticationServiceMock } from 'src/app/mock/authentication-service-mock';
 import { StatusModel } from 'src/app/model/status.model';
 import { By } from '@angular/platform-browser';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 
 describe('ReparoInsertComponent', () => {
   let component: ReparoInsertComponent;

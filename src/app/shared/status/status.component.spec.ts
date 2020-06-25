@@ -2,7 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatusComponent } from './status.component';
 import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
-import { MatInputModule, MatCardModule, MatSelectModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { StatusServiceMock } from 'src/app/mock/status-service-mock';

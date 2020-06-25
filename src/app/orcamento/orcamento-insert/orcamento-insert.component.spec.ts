@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { OrcamentoInsertComponent } from './orcamento-insert.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { MatProgressBarModule } from '@angular/material';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ServiceService } from 'src/app/service/service.service';

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { DateAdapter, MatDatepickerInputEvent } from '@angular/material';
+import { DateAdapter } from '@angular/material/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 

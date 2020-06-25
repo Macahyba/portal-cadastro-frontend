@@ -2,7 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ServicesComponent } from './services.component';
 import { ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
-import { MatTableModule, MatCheckboxModule, MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { ServiceServiceMock } from 'src/app/mock/service-service-mock';
 import { ServiceService } from 'src/app/service/service.service';

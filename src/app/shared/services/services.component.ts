@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ServiceModel } from 'src/app/model/service.model';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceService } from 'src/app/service/service.service';
 import { Observable, BehaviorSubject } from 'rxjs';

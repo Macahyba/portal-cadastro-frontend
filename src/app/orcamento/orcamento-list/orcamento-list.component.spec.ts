@@ -3,7 +3,13 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { OrcamentoListComponent } from './orcamento-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatFormFieldModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatIconModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuotationService } from 'src/app/service/quotation.service';

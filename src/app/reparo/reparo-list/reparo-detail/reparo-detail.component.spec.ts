@@ -2,7 +2,11 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { ReparoDetailComponent } from './reparo-detail.component';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { MatFormFieldModule, MatProgressBarModule, MatInputModule, MatButtonModule, MatExpansionModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
