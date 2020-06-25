@@ -16,7 +16,7 @@ export class DatepickerComponent implements OnInit {
   @Input() injectedDate$: BehaviorSubject<Date>;
   @Input() disabled: boolean;
 
-  @ViewChild('data', {static: false}) el: ElementRef;
+  @ViewChild('data') el: ElementRef;
 
   date = new FormControl(new Date(), Validators.required);
   formattedDate: string = `${String("00" + (this.date.value.getDate())).slice(-2)}/${String("00" + (this.date.value.getMonth()+1)).slice(-2)}/${this.date.value.getFullYear()}`;
