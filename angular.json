@@ -126,7 +126,7 @@
   "defaultProject": "portal-cadastro-frontend",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
   }
 }
