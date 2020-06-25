@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, timeout, catchError } from 'rxjs/operators';
 import * as decode from 'jwt-decode';
 import { StorageService } from './storage.service';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

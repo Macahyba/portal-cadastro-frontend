@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import * as moment from 'moment';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { DatePickerComponent } from 'ng2-date-picker';
 
 @Component({
   selector: 'app-datepicker',
@@ -17,31 +18,34 @@ export class DatepickerComponent implements OnInit {
   @Input() injectedDate$: BehaviorSubject<Date>;
   @Input() disabled: boolean;
 
-  @ViewChild('data') el: ElementRef;
+  datePickerConfig = { 'format': 'DD/MM/YYYY HH:mm'}
 
-  date = new FormControl(new Date(), Validators.required);
-  formattedDate: string = `${String("00" + (this.date.value.getDate())).slice(-2)}/${String("00" + (this.date.value.getMonth()+1)).slice(-2)}/${this.date.value.getFullYear()}`;
+  @ViewChild('dayPicker') datePicker: DatePickerComponent;
 
-  constructor(
-      private _adapter: DateAdapter<any>,
-      private _cdr: ChangeDetectorRef,
-      private _renderer: Renderer2) { }
+  date = new FormControl(moment(), Validators.required);
+  dateForm = new FormControl(moment().toDate(), Validators.required);
+  constructor(private _adapter: DateAdapter<any>) { }
 
   ngOnInit() {
     this._adapter.setLocale('pt-br');
-    this.parentFormGroup.registerControl(this.control, this.date);
+    this.parentFormGroup.registerControl(this.control, this.dateForm);
 
     if (this.disabled) {
       this.date.disable();
       this.parentFormGroup.removeControl(this.control);
     }
-    this._cdr.detectChanges();
-    if (this.el) this._renderer.setProperty(this.el.nativeElement, 'value', this.formattedDate);
 
+    if (this.injectedDate$) {
+      this.injectedDate$.subscribe(i => this.date.setValue(moment(i).format('DD/MM/YYYY HH:mm')))
+    }
   }
 
-  addEvent(event: MatDatepickerInputEvent<Date>) {
-    this.date.setValue(event.value);
+  changeDate(event){
+    if (event && this.parentFormGroup.controls[this.control]) this.parentFormGroup.controls[this.control].setValue(event._d);
+  }
+
+  open(){
+    this.datePicker.api.open();
   }
 
 }

@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EquipmentComponent } from 'src/app/shared/equipment/equipment.component';
+import { EquipmentServiceMock } from 'src/app/mock/equipment-service-mock';
+import { EquipmentService } from 'src/app/service/equipment.service';
 
 describe('EquipmentCrudComponent', () => {
   let component: EquipmentCrudComponent;
@@ -26,7 +28,6 @@ describe('EquipmentCrudComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ EquipmentCrudComponent ],
       imports: [
-        RouterTestingModule.withRoutes([]),
         MatFormFieldModule,
         MatInputModule,
         MatProgressBarModule,
@@ -40,7 +41,7 @@ describe('EquipmentCrudComponent', () => {
         BrowserAnimationsModule
       ],
       providers: [
-        EquipmentComponent
+        { provide: EquipmentService, useClass: EquipmentServiceMock }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -52,9 +53,9 @@ describe('EquipmentCrudComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    de = fixture.debugElement.query(By.css('form'));
-    el = de.nativeElement;
-    fixture.detectChanges();
+    // de = fixture.debugElement.query(By.css('form'));
+    // el = de.nativeElement;
+    // fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -1,11 +1,18 @@
 <form [formGroup]="parentFormGroup">
   <mat-form-field *ngIf="injectedDate$">
-    <input matInput type="text" [formControl]="date" value="{{injectedDate$.value | date:'dd/MM/yyyy HH:mm:ss':'-0300'}}">
+    <input matInput type="text" [formControl]="date" >
   </mat-form-field>
-  <mat-form-field *ngIf="!injectedDate$">
-    <mat-label>Selecione a data</mat-label>
-    <input matInput [matDatepicker]="picker" #data (dateChange)="addEvent($event)" >
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  <div id="inner"></div>
+  <div id="myDiv">
+   <mat-form-field *ngIf="!injectedDate$">
+    <input matInput drops='down'
+      #dayPicker="dpDayPicker"
+      [formControl]="date"
+      mode="daytime"
+      [dpDayPicker]="datePickerConfig"
+      theme="dp-material"
+      (onChange)="changeDate($event)" />
+    </mat-form-field>
+    <button *ngIf="!injectedDate$" mat-button (click)="open()"><mat-icon>calendar_today</mat-icon></button>
+  </div>
 </form>

@@ -4,9 +4,10 @@ import { DatepickerComponent } from './datepicker.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DpDatePickerModule } from 'ng2-date-picker';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('DatepickerComponent', () => {
   describe('given the DatepickerComponent', () => {
@@ -19,11 +20,12 @@ describe('DatepickerComponent', () => {
         declarations: [ DatepickerComponent ],
         imports: [
           ReactiveFormsModule,
-          MatDatepickerModule,
           MatInputModule,
           MatCardModule,
           BrowserAnimationsModule,
-          MatNativeDateModule
+          MatNativeDateModule,
+          DpDatePickerModule,
+          MatIconModule
         ],
         providers: [
           DateAdapter
@@ -63,11 +65,12 @@ describe('DatepickerComponent', () => {
         declarations: [ DatepickerComponent ],
         imports: [
           ReactiveFormsModule,
-          MatDatepickerModule,
           MatInputModule,
           MatCardModule,
           BrowserAnimationsModule,
-          MatNativeDateModule
+          MatNativeDateModule,
+          DpDatePickerModule,
+          MatIconModule
         ],
         providers: [
           DateAdapter

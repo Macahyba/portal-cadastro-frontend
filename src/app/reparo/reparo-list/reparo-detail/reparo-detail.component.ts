@@ -53,7 +53,6 @@ export class ReparoDetailComponent implements OnInit {
   constructor(
               private _http: RepairService,
               private _route: ActivatedRoute,
-              private _router: Router,
               private _fb: FormBuilder,
               private _auth: AuthenticationService,
               private _cdr: ChangeDetectorRef) {

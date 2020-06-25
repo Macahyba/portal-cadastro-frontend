@@ -60,7 +60,7 @@ export class ReparoFupComponent implements OnInit {
           )
         }
 
-        this.updateDate$.next(this.injectedRepairFup.updateDate);
+        this.updateDate$.next(new Date(this.injectedRepairFup.updateDate));
         this.user.setValue(this.injectedRepairFup.user);
     }
 

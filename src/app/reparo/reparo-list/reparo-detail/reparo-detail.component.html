@@ -12,6 +12,10 @@
         [injectedStatus$]="status$"
         [parentFormGroup]="repairFormGroup">
       </app-status>
+      <app-datepicker
+        [control]="'endDate'"
+        [parentFormGroup]="repairFormGroup">
+      </app-datepicker>
       <mat-action-row>
         <button type="button" mat-button color="primary" (click)="nextStep()">Próximo</button>
       </mat-action-row>

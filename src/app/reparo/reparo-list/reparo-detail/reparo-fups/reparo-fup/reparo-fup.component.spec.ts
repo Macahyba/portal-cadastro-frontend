@@ -15,6 +15,7 @@ import { DatepickerComponent } from 'src/app/shared/datepicker/datepicker.compon
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RepairServiceMock } from 'src/app/mock/repair-service-mock';
 import { UserModel } from 'src/app/model/user.model';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 describe('ReparoFupComponent', () => {
   describe('given the ReparoFupComponent', () => {
@@ -37,7 +38,8 @@ describe('ReparoFupComponent', () => {
           HttpClientModule,
           MatInputModule,
           BrowserAnimationsModule,
-          MatButtonModule
+          MatButtonModule,
+          DpDatePickerModule
         ],
         providers: [
           DateAdapter
@@ -104,7 +106,8 @@ describe('ReparoFupComponent', () => {
           HttpClientModule,
           MatInputModule,
           BrowserAnimationsModule,
-          MatButtonModule
+          MatButtonModule,
+          DpDatePickerModule
         ],
         providers: [
           DateAdapter
@@ -175,7 +178,8 @@ describe('ReparoFupComponent', () => {
           HttpClientModule,
           MatInputModule,
           BrowserAnimationsModule,
-          MatButtonModule
+          MatButtonModule,
+          DpDatePickerModule
         ],
         providers: [
           DateAdapter
