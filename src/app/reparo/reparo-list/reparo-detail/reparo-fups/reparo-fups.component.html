@@ -24,6 +24,7 @@
         </mat-expansion-panel-header>
           <app-reparo-fup id="fup-{{reverseRepairFups.length - i}}"
             [disabled]="true"
+            [dateDisabled]="true"
             [injectedRepairFup]="repairFup"
             [parentFormArray]="repairFupFormArray">
           </app-reparo-fup>

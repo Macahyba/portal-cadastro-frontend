@@ -21,8 +21,8 @@
             <br><br>
           </div>
           <app-datepicker
-            [disabled]="true"
-            [injectedDate]="creationDate"
+            [disabled]="dateDisabled"
+            [injectedDate$]="updateDate$"
             [control]="'updateDate'"
             [parentFormGroup]="repairFupFormGroup">
           </app-datepicker>

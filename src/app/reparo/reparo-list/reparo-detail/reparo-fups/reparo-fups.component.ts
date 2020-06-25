@@ -18,6 +18,8 @@ export class ReparoFupsComponent implements OnInit {
 
   showNewFup: boolean;
 
+  creationDate$ = new BehaviorSubject<Date>(new Date());
+
   step = null;
 
   setStep(index: number) {

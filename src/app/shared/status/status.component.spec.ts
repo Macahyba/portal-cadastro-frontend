@@ -51,7 +51,7 @@ describe('StatusComponent', () => {
     })
 
     it('should register status.id in the statusForm', () =>{
-      expect(component.statusForm.controls.id).toBeTruthy();
+      expect(component.statusGroup.controls.id).toBeTruthy();
     })
 
   });
@@ -95,7 +95,7 @@ describe('StatusComponent', () => {
     });
 
     it('should load the id', () =>{
-      expect(component.statusForm.controls.id.value).toEqual(1);
+      expect(component.statusGroup.controls.id.value).toEqual(1);
     })
 
     it('should load the status', () =>{

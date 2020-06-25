@@ -33,7 +33,7 @@ export class OrcamentoDetailComponent implements OnInit {
   message: string;
   bar: boolean;
   barFetch: boolean;
-  creationDate = new BehaviorSubject<Date>(new Date());
+  creationDate$ = new BehaviorSubject<Date>(new Date());
   error: string;
 
   role: string;
@@ -56,7 +56,7 @@ export class OrcamentoDetailComponent implements OnInit {
       this.services$.next(Array.from(this.quotation.services));
       this.totalDiscount$.next(this.quotation.totalDiscount);
       this.status$.next(this.quotation.status);
-      this.creationDate.next(this.quotation.creationDate);
+      this.creationDate$.next(this.quotation.creationDate);
       this.label = this.quotation.label;
       this.barFetch = false;
     })

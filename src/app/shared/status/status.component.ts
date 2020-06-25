@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
 import { StatusService } from 'src/app/service/status.service';
 import { Observable } from 'rxjs';
@@ -15,19 +15,15 @@ export class StatusComponent implements OnInit {
   @Input() parentFormGroup : FormGroup;
   @Input() disabled : boolean;
 
-  status = new FormControl('');
+  status = this._fb.control('')
 
   statuses : StatusModel[];
 
   statusGroup : FormGroup;
 
-  select = new FormControl('', Validators.required);
+  select = this._fb.control('', Validators.required);
 
-  get statusForm() : FormGroup {
-    return this.parentFormGroup.controls.status as FormGroup;
-  }
-
-  constructor(private _http: StatusService, private _ref: ChangeDetectorRef) {
+  constructor(private _http: StatusService, private _fb: FormBuilder) {
     this._http.getStatus().subscribe(data =>{
       this.statuses = <StatusModel[]>data;
     })
@@ -35,21 +31,20 @@ export class StatusComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.statusGroup = new FormGroup({
+    this.statusGroup = this._fb.group({
       id : this.select
     })
     this.parentFormGroup.registerControl('status', this.statusGroup);
 
     if (this.injectedStatus$) this.injectedStatus$.subscribe(sts => {
-      this.statusForm.controls.id.setValue(sts.id);
       this.status.setValue(sts.status);
+      this.statusGroup.patchValue(sts);
     })
 
     if (this.disabled) {
       this.status.disable();
+      this.statusGroup.controls.id.disable();
+      this.parentFormGroup.removeControl('status');
     }
-
-    this._ref.detectChanges();
   }
-
 }

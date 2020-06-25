@@ -13,7 +13,7 @@ export class DatepickerComponent implements OnInit {
 
   @Input() parentFormGroup : FormGroup;
   @Input() control: string;
-  @Input() injectedDate: BehaviorSubject<Date>;
+  @Input() injectedDate$: BehaviorSubject<Date>;
   @Input() disabled: boolean;
 
   @ViewChild('data', {static: false}) el: ElementRef;
