@@ -31,7 +31,7 @@ $app-theme: mat-light-theme($app-primary, $app-accent);
   }
 
   .outer-card {
-    overflow: auto;
+    overflow: visible;
     background-color: mat-color($app-primary);
   }
 
