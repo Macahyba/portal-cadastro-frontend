@@ -14,55 +14,7 @@ table {
     width: 100%;
 }
 
-.mat-column-label {
-
-  padding-right: 10px;
+[class*="mat-column-"] {
+  padding-left: 15px;
+  padding-right: 15px;
 }
-
-.mat-column-sapNotification {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-repairFups {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-equipment {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-serialNumber {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-customer {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-warranty {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-tat {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-status {
-
-  padding-left: 10px;
-}
-

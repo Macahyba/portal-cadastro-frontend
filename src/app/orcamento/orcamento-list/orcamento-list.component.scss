@@ -14,48 +14,7 @@ table {
   width: 100%;
 }
 
-
-.mat-column-label {
-
-  padding-right: 10px;
-}
-
-.mat-column-name {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-equipment {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-serialNumber {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-totalPrice {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-totalDiscount {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-status {
-
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.mat-column-creationDate {
-
-  padding-left: 10px;
+[class*="mat-column-"] {
+  padding-left: 15px;
+  padding-right: 15px;
 }

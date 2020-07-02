@@ -54,10 +54,9 @@
     <tr [id]="'orc-'+row.id" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetail(row.id)"></tr>
 
   </table>
-
-  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
-
-  <button mat-button id="csv" style="zoom: 2;" (click)="downloadCsv()">
-    <mat-icon>cloud_download</mat-icon>
-  </button>
 </div>
+<mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+
+<button mat-button id="csv" style="zoom: 2;" (click)="downloadCsv()">
+  <mat-icon>cloud_download</mat-icon>
+</button>

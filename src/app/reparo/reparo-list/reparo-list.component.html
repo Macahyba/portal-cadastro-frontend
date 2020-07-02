@@ -72,6 +72,5 @@
     <tr [id]="'rep-'+row.id" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDetail(row.id)"></tr>
 
   </table>
-
-  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
 </div>
+<mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
