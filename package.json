@@ -2,7 +2,7 @@
   "name": "tk.portalcadasto",
   "displayName": "PortalCadastro",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "PortalCadastro android app.",
   "main": "index.js",
   "scripts": {
     "ng": "ng",

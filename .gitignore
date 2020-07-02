@@ -47,6 +47,7 @@ Thumbs.db
 
 # Cordova
 plugins/
+www/
 platforms/android/.gradle
 platforms/android/build
 platforms/android/assets/www
