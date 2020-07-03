@@ -46,8 +46,8 @@ export class CustomerComponent implements OnInit {
     )
 
 
-  constructor(private _http: CustomerService, private _fb: FormBuilder) {
-    this._http.getCustomers().subscribe(data =>{
+  constructor(private _customerService: CustomerService, private _fb: FormBuilder) {
+    this._customerService.getAll().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
 
       this.filteredCustomer =

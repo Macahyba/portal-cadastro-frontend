@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceService } from 'src/app/service/service.service';
 import { ServiceServiceMock } from 'src/app/mock/service-service-mock';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ServiceCrudComponent', () => {
   let component: ServiceCrudComponent;
@@ -23,6 +24,7 @@ describe('ServiceCrudComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ServiceCrudComponent ],
       imports: [
+        RouterTestingModule,
         ReactiveFormsModule,
         MatProgressBarModule,
         MatRadioModule,

@@ -1,38 +1,38 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EquipmentService } from 'src/app/service/equipment.service';
+import { Router } from '@angular/router';
+import { GenericFormService } from '../../service/generic-form.service';
 
 @Component({
   selector: 'app-equipment-crud',
   templateUrl: './equipment-crud.component.html',
   styleUrls: ['./equipment-crud.component.scss']
 })
-export class EquipmentCrudComponent implements OnInit {
+export class EquipmentCrudComponent extends GenericFormService implements OnInit  {
 
   HTTP_HOST = environment.http_host;
 
   equipmentForm = this._fb.group({});
 
-  operacao: string = "inserir";
-  selectControl = this._fb.control('');
-
   equipments: EquipmentModel[];
   selectedEquipment$ = new BehaviorSubject<EquipmentModel>(new EquipmentModel());
-  message: string;
-  bar: boolean;
-  barFetch: boolean;
-  error: string;
+
+  path: string = 'equipamentos';
 
   constructor(
-        private _fb: FormBuilder,
-        private _http: EquipmentService,
-        private _cdr: ChangeDetectorRef) { }
+        _fb: FormBuilder,
+        private _equipmentService: EquipmentService,
+        _router: Router,
+        private _cdr: ChangeDetectorRef) {
+          super( _fb, _equipmentService, _router)
+        }
 
   ngOnInit() {
-    this._http.getEquipments().subscribe(data =>{
+    this._equipmentService.getAll().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
       this.barFetch = false;
     })
@@ -49,24 +49,6 @@ export class EquipmentCrudComponent implements OnInit {
     }
   }
 
-  isInserir(): boolean {
-    return this.operacao === 'inserir'
-  }
-
-  isAtualizar(): boolean {
-    return this.operacao === 'atualizar'
-  }
-
-  radioSelect(){
-    if (this.isInserir()){
-      this.equipmentForm.reset();
-      this.selectControl.setValue("")
-      this.selectControl.disable();
-    } else {
-      this.selectControl.enable();
-    }
-  }
-
   selected(event){
     this.selectedEquipment$.next(this.getEquipmentById(parseInt(event.value)));
   }
@@ -75,57 +57,9 @@ export class EquipmentCrudComponent implements OnInit {
     return this.equipments.find(eq => eq.id === id)
   }
 
-  postSubscription: Subscription;
+  submitForm(form){
 
-  submitForm(){
-
-    if (this.isAtualizar()) {
-
-      this.postSubscription =
-        this._http.patchEquipment(this.equipmentForm.value.equipment)
-        .subscribe(
-          ((response) => {
-            this.setMessage('sucesso');
-            this.bar = false;
-            setTimeout(() => {
-              window.open(`${this.HTTP_HOST}/equipamentos`,"_self");
-            }, 2000);
-          }),
-          ((error) => {
-            console.error(error);
-            this.setMessage('erro');
-            this.bar = false;
-          })
-        )
-    } else {
-
-      this.postSubscription =
-      this._http.postEquipment(this.equipmentForm.value.equipment)
-      .subscribe(
-        ((response) => {
-          this.setMessage('sucesso');
-          this.bar = false;
-          setTimeout(() => {
-            window.open(`${this.HTTP_HOST}/equipamentos`,"_self");
-          }, 2000);
-        }),
-        ((error) => {
-          console.error(error);
-          this.setMessage('erro');
-          this.error = error;
-          this.bar = false;
-        })
-      )
-    }
-
-    this.bar = true;
+    this.isAtualizar() ? this.patchForm(form.value.equipment) : this.postForm(form.value.equipment)
   }
 
-  setMessage(m: string){
-
-    setTimeout(() => {
-      this.message = "";
-    }, 3000);
-    this.message = m;
-  }
 }

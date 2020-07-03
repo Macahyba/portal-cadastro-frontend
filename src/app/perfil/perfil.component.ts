@@ -1,17 +1,20 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { UserDetailsModel } from '../model/user-details';
 import { UserService } from '../service/user.service';
 import { AuthenticationService } from '../service/authentication.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { GenericFormService } from '../service/generic-form.service';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss']
 })
-export class PerfilComponent implements OnInit {
+export class PerfilComponent extends GenericFormService implements OnInit {
 
 
   HTTP_HOST = environment.http_host;
@@ -31,24 +34,24 @@ export class PerfilComponent implements OnInit {
   passwordConfirm = this._fb.control('', [Validators.required, Validators.minLength(8)]);
 
   user = new Subject<UserDetailsModel>();
-  message: string;
-  bar: boolean;
-  barFetch: boolean;
-  error: string;
+
+  path: string = 'perfil';
 
   getUserForm(){
     return this.userForm.controls.user as FormGroup;
   }
 
   constructor(
-      private _fb: FormBuilder,
-      private _http: UserService,
-      private _auth: AuthenticationService) {
-    this._http.getOneUserDetails(this._auth.getId()).subscribe(data =>{
-      this.user.next(<UserDetailsModel>data);
-      this.barFetch = false;
-    });
-    this.barFetch = true;
+    _fb: FormBuilder,
+    private _userService: UserService,
+    _router: Router,
+    private _auth: AuthenticationService) {
+      super( _fb, _userService, _router);
+      this._userService.getOneUserDetails(this._auth.getId()).subscribe(data =>{
+        this.user.next(<UserDetailsModel>data);
+        this.barFetch = false;
+      });
+      this.barFetch = true;
    }
 
   ngOnInit() {
@@ -86,21 +89,6 @@ export class PerfilComponent implements OnInit {
 
   }
 
-  // ngAfterViewInit(){
-  //   setTimeout(() => {
-  //     this.userForm.controls.id.setValue(this.user.id);
-  //     this.userForm.controls.username.setValue(this.user.username);
-  //     this.userForm.controls.profile.setValue(this.user.profile);
-  //     this.getUserForm().controls.id.setValue(this.user.id);
-  //     this.getUserForm().controls.fullName.setValue(this.user.user.fullName);
-  //     this.getUserForm().controls.email.setValue(this.user.user.email);
-  //     this.getUserForm().controls.phone.setValue(this.user.user.phone);
-  //     this.getUserForm().controls.role.setValue(this.user.user.role);
-  //     this.profile.disable();
-  //     this.username.disable();
-  //   }, 1000);
-  // }
-
   checkButton(): boolean {
       return (this.userForm.valid) ? false : true;
   }
@@ -115,40 +103,25 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  postSubscription: Subscription;
-
-  submitForm(){
-
-    this.postSubscription =
-      this._http.patchUserDetails(this.userForm.value)
-      .subscribe(
-        ((response) => {
-          this.setMessage('sucesso');
-          this.bar = false;
-          setTimeout(() => {
-            window.open(`${this.HTTP_HOST}/perfil`,"_self");
-          }, 2000);
-        }),
-        ((error) => {
-          console.error(error);
-          this.setMessage('erro');
-          this.error = error;
-          this.bar = false;
-        })
-      )
-
+  submitForm(form){
 
     this.bar = true;
+
+    this._userService.patchUserDetails(form.value)
+    .pipe( finalize(() => this.bar = false ))
+    .subscribe(
+      (() => {
+        this.showSuccess();
+        this.redirectTo(this.path);
+      }),
+      ((error) => {
+        console.error(error);
+        this.showFailure();
+        this.error = error;
+      })
+    )
+
   }
-
-  setMessage(m: string){
-
-    setTimeout(() => {
-      this.message = "";
-    }, 3000);
-    this.message = m;
-  }
-
 
   validateEquals(field1: AbstractControl, field2: AbstractControl){
     return function(){

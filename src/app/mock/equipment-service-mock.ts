@@ -7,7 +7,7 @@ import { EquipmentModel } from '../model/equipament.model';
 })
 export class EquipmentServiceMock {
 
-  getEquipments(): BehaviorSubject<EquipmentModel[]> {
+  getAll(): BehaviorSubject<EquipmentModel[]> {
 
     const equipments = [
       new EquipmentModel(1, "name1", "serialNumber1"),

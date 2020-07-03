@@ -23,15 +23,15 @@ export class QuotationService {
 
   constructor(private _http: HttpClient){}
 
-  getQuotations(): Observable<QuotationModel[]> {
+  getAll(): Observable<QuotationModel[]> {
       return this._http.get<QuotationModel[]>('quotations/');
   }
 
-  getOneQuotation(id: number): Observable<QuotationModel> {
+  get(id: number): Observable<QuotationModel> {
       return this._http.get<QuotationModel>(`quotations/${id}`);
   }
 
-  postQuotation(quotation: QuotationModel){
+  post(quotation: QuotationModel){
       const payload = JSON.stringify(<QuotationModel>quotation);
 
       return this._http.post('quotations/', payload, this.httpOptions).pipe(
@@ -40,7 +40,7 @@ export class QuotationService {
       );
   }
 
-  patchQuotation(quotation: QuotationModel){
+  patch(quotation: QuotationModel){
     const payload = JSON.stringify(<QuotationModel>quotation);
     const id = quotation.id;
 

@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserService } from 'src/app/service/user.service';
 import { UserServiceMock } from 'src/app/mock/user-service-mock';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('UserCrudComponent', () => {
   let component: UserCrudComponent;
@@ -25,6 +26,7 @@ describe('UserCrudComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UserCrudComponent ],
       imports: [
+        RouterTestingModule,
         MatFormFieldModule,
         FormsModule,
         MatInputModule,

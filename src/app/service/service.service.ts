@@ -21,11 +21,11 @@ export class ServiceService {
 
   constructor(private _http: HttpClient){}
 
-  getServices(): Observable<ServiceModel> {
+  getAll(): Observable<ServiceModel> {
     return this._http.get<ServiceModel>('services/');
   }
 
-  postService(service: ServiceModel){
+  post(service: ServiceModel){
     const payload = JSON.stringify(<ServiceModel>service);
 
     return this._http.post('services/', payload, this.httpOptions).pipe(
@@ -34,7 +34,7 @@ export class ServiceService {
     );
   }
 
-  patchService(service : ServiceModel){
+  patch(service : ServiceModel){
     const payload = JSON.stringify(<ServiceModel>service);
     const id = service.id;
 

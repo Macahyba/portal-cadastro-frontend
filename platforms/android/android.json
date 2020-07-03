@@ -14,17 +14,72 @@
             }
           ]
         }
+      },
+      "config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<allow-navigation href=\"http://localhost/*\" />",
+              "count": 1
+            },
+            {
+              "xml": "<allow-navigation href=\"https://localhost/*\" />",
+              "count": 1
+            },
+            {
+              "xml": "<allow-navigation href=\"ionic://*\" />",
+              "count": 1
+            },
+            {
+              "xml": "<preference name=\"webView\" value=\"com.ionicframework.cordova.webview.IonicWebViewEngine\" />",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"IonicWebView\"><param name=\"android-package\" value=\"com.ionicframework.cordova.webview.IonicWebView\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"ExitApp\"><param name=\"android-package\" value=\"kr.co.joycorp.cordova.exitapp\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
       }
     }
   },
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "tk.portalcadasto"
+    },
+    "cordova-plugin-ionic-webview": {
+      "PACKAGE_NAME": "tk.portalcadasto"
+    },
+    "kr.co.joycorp.cordova.exitapp": {
+      "PACKAGE_NAME": "tk.portalcadasto"
     }
   },
   "dependent_plugins": {},
-  "modules": [],
+  "modules": [
+    {
+      "id": "cordova-plugin-ionic-webview.IonicWebView",
+      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
+      "pluginId": "cordova-plugin-ionic-webview",
+      "clobbers": [
+        "Ionic.WebView"
+      ]
+    },
+    {
+      "id": "kr.co.joycorp.cordova.exitapp.exitApp",
+      "file": "plugins/kr.co.joycorp.cordova.exitapp/www/ExitApp.js",
+      "pluginId": "kr.co.joycorp.cordova.exitapp",
+      "merges": [
+        "navigator.app"
+      ]
+    }
+  ],
   "plugin_metadata": {
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-plugin-ionic-webview": "5.0.0",
+    "kr.co.joycorp.cordova.exitapp": "1.0.0"
   }
 }

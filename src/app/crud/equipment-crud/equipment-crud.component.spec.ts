@@ -14,7 +14,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EquipmentComponent } from 'src/app/shared/equipment/equipment.component';
 import { EquipmentServiceMock } from 'src/app/mock/equipment-service-mock';
 import { EquipmentService } from 'src/app/service/equipment.service';
 
@@ -28,6 +27,7 @@ describe('EquipmentCrudComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ EquipmentCrudComponent ],
       imports: [
+        RouterTestingModule,
         MatFormFieldModule,
         MatInputModule,
         MatProgressBarModule,

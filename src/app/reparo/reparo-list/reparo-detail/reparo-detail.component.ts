@@ -8,15 +8,16 @@ import { EquipmentModel } from 'src/app/model/equipament.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
-import { Subscription, BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { StatusModel } from 'src/app/model/status.model';
+import { GenericFormService } from 'src/app/service/generic-form.service';
 
 @Component({
   selector: 'app-reparo-detail',
   templateUrl: './reparo-detail.component.html',
   styleUrls: ['./reparo-detail.component.scss']
 })
-export class ReparoDetailComponent implements OnInit {
+export class ReparoDetailComponent extends GenericFormService implements OnInit {
 
   id: number;
   repair: RepairModel;
@@ -30,11 +31,10 @@ export class ReparoDetailComponent implements OnInit {
   repairFups$ = new Subject<RepairFupModel[]>();
   status$ = new BehaviorSubject<StatusModel>(new StatusModel());
   role: string;
-  bar: boolean;
-  barFetch: boolean;
-  message: string;
+
   repairFormGroup;
-  error: string;
+
+  path: string = 'reparos';
 
   step = null;
 
@@ -51,28 +51,31 @@ export class ReparoDetailComponent implements OnInit {
   }
 
   constructor(
-              private _http: RepairService,
-              private _route: ActivatedRoute,
-              private _fb: FormBuilder,
-              private _auth: AuthenticationService,
-              private _cdr: ChangeDetectorRef) {
-    this._route.params.subscribe( params => this.id = params.id );
+      private _repairService: RepairService,
+      private _activatedRouter: ActivatedRoute,
+      _router: Router,
+      _fb: FormBuilder,
+      private _auth: AuthenticationService,
+      private _cdr: ChangeDetectorRef) {
 
-    this._http.getOneRepair(this.id).subscribe(data =>{
-      this.repair = <RepairModel>data;
-      this.customer$.next(this.repair.customer);
-      this.contact$.next(this.repair.contact);
-      this.equipment$.next(this.repair.equipment);
-      this.sapNotification$.next(this.repair.sapNotification);
-      this.notaDeEntrada$.next(this.repair.notaDeEntrada);
-      this.notaFiscal$.next(this.repair.notaFiscal);
-      this.warranty$.next(this.repair.warranty);
-      this.repairFups$.next(this.repair.repairFups);
-      this.status$.next(this.repair.status);
-      this.barFetch = false;
-    });
-    this.barFetch = true;
-   }
+        super(_fb, _repairService, _router);
+        this._activatedRouter.params.subscribe( params => this.id = params.id );
+
+        this._repairService.get(this.id).subscribe(data =>{
+          this.repair = <RepairModel>data;
+          this.customer$.next(this.repair.customer);
+          this.contact$.next(this.repair.contact);
+          this.equipment$.next(this.repair.equipment);
+          this.sapNotification$.next(this.repair.sapNotification);
+          this.notaDeEntrada$.next(this.repair.notaDeEntrada);
+          this.notaFiscal$.next(this.repair.notaFiscal);
+          this.warranty$.next(this.repair.warranty);
+          this.repairFups$.next(this.repair.repairFups);
+          this.status$.next(this.repair.status);
+          this.barFetch = false;
+        });
+        this.barFetch = true;
+      }
 
   ngOnInit() {
     this.repairFormGroup = this._fb.group({
@@ -82,34 +85,11 @@ export class ReparoDetailComponent implements OnInit {
     this._cdr.detectChanges();
   }
 
-  postSubscription: Subscription;
 
   submitForm(form){
-    this.postSubscription =
-      this._http.patchRepair(form.value)
-      .subscribe(
-        ((response) => {
-          this.setMessage('sucesso');
-          this.bar = false;
-          location.reload();
-        }),
-        ((error) => {
-          console.error(error);
-          this.setMessage('erro');
-          this.error = error;
-          this.bar = false;
-        })
-      )
-      this.bar = true;
-  }
 
-  setMessage(m: string){
-
-
-    setTimeout(() => {
-      this.message = "";
-    }, 3000);
-    this.message = m;
+    this.path = `reparos/${this.id}`;
+    this.patchForm(form.value);
   }
 
   deleteEntry(){

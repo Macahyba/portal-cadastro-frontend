@@ -1,4 +1,4 @@
-<form [formGroup]="reparoFormGroup" (submit)="submitForm()">
+<form [formGroup]="reparoFormGroup">
   <mat-tab-group>
     <mat-tab label="Cliente">
       <br>
@@ -27,15 +27,16 @@
   <br><br>
   <button
     id="enviar"
-    type="submit"
+    type="button"
+    (click)="submitForm(reparoFormGroup)"
     [disabled]="checkValid()"
     mat-raised-button
     color="primary">Enviar
   </button><br><br>
-  <div class="sucesso" *ngIf="message === 'sucesso'">
+  <div class="sucesso" *ngIf="isSuccess()">
     Salvo com sucesso!<br><br>
   </div>
-  <div class="erro" *ngIf="message === 'erro'">
+  <div class="erro" *ngIf="isFailure()">
     {{error}}<br><br>
   </div>
   <div *ngIf="bar">

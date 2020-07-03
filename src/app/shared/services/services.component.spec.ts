@@ -56,7 +56,7 @@ describe('ServicesComponent', () => {
     })
 
     it('should load the services', () => {
-      expect(component.services).toEqual(serviceService.getServices().value);
+      expect(component.services).toEqual(serviceService.getAll().value);
     })
 
   });

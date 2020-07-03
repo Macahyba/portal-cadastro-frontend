@@ -2,42 +2,41 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormBuilder } from '@angular/forms';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ContactModel } from 'src/app/model/contact.model';
 import { CustomerService } from 'src/app/service/customer.service';
+import { Router } from '@angular/router';
+import { GenericFormService } from '../../service/generic-form.service';
 
 @Component({
   selector: 'app-customer-crud',
   templateUrl: './customer-crud.component.html',
   styleUrls: ['./customer-crud.component.scss']
 })
-export class CustomerCrudComponent implements OnInit {
+export class CustomerCrudComponent extends GenericFormService implements OnInit {
 
   HTTP_HOST = environment.http_host;
 
   customerForm = this._fb.group({});
-
-  operacao: string = "inserir";
-  selectControl = this._fb.control('');
 
   customers: CustomerModel[];
   contacts: ContactModel[];
 
   selectedCustomer$ = new BehaviorSubject<CustomerModel>(new CustomerModel());
   selectedContact$ = new BehaviorSubject<ContactModel>(new ContactModel());
-  message: string;
-  bar: boolean;
-  barFetch: boolean;
-  error: string;
 
+  path: string = 'clientes';
 
   constructor(
-    private _fb: FormBuilder,
-    private _http: CustomerService,
-    private _cdr: ChangeDetectorRef) { }
+    _fb: FormBuilder,
+    private _customerService: CustomerService,
+    _router: Router,
+    private _cdr: ChangeDetectorRef) {
+      super( _fb, _customerService, _router)
+    }
 
   ngOnInit() {
-    this._http.getCustomers().subscribe(data =>{
+    this._customerService.getAll().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
       this.barFetch = false;
     })
@@ -74,78 +73,11 @@ export class CustomerCrudComponent implements OnInit {
     }
   }
 
-  isInserir(): boolean {
-    return this.operacao === 'inserir'
-  }
+  submitForm(form){
 
-  isAtualizar(): boolean {
-    return this.operacao === 'atualizar'
-  }
+    let sendForm: CustomerModel = form.value.customer;
+    sendForm.contacts = [form.value.contact];
 
-  postSubscription: Subscription;
-
-  submitForm(){
-
-    let sendForm: CustomerModel = this.customerForm.value.customer;
-    sendForm.contacts = [this.customerForm.value.contact];
-
-    if (this.isAtualizar()) {
-
-      this.postSubscription =
-        this._http.patchCustomer(sendForm)
-        .subscribe(
-          ((response) => {
-            this.setMessage('sucesso');
-            this.bar = false;
-            setTimeout(() => {
-              window.open(`${this.HTTP_HOST}/clientes`,"_self");
-            }, 2000);
-          }),
-          ((error) => {
-            console.error(error);
-            this.setMessage('erro');
-            this.bar = false;
-          })
-        )
-    } else {
-
-      this.postSubscription =
-      this._http.postCustomer(sendForm)
-      .subscribe(
-        ((response) => {
-          this.setMessage('sucesso');
-          this.bar = false;
-          setTimeout(() => {
-            window.open(`${this.HTTP_HOST}/clientes`,"_self");
-          }, 2000);
-        }),
-        ((error) => {
-          console.error(error);
-          this.setMessage('erro');
-          this.error = error;
-          this.bar = false;
-        })
-      )
-    }
-
-    this.bar = true;
-  }
-
-  setMessage(m: string){
-
-    setTimeout(() => {
-      this.message = "";
-    }, 3000);
-    this.message = m;
-  }
-
-  radioSelect(){
-    if (this.isInserir()){
-      this.customerForm.reset();
-      this.selectControl.setValue("")
-      this.selectControl.disable();
-    } else {
-      this.selectControl.enable();
-    }
+    this.isAtualizar() ? this.patchForm(sendForm) : this.postForm(sendForm)
   }
 }

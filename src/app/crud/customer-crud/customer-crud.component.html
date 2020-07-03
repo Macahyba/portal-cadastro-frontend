@@ -3,7 +3,7 @@
     <br><mat-progress-bar mode="query"></mat-progress-bar><br>
   </div>
   <label>Selecione a operação</label><br><br>
-  <mat-radio-group [(ngModel)]="operacao" (change)="radioSelect()" [ngModelOptions]="{standalone: true}">
+  <mat-radio-group [(ngModel)]="operacao" (change)="radioSelect(customerForm)" [ngModelOptions]="{standalone: true}">
     <mat-radio-button value="inserir">Inserir</mat-radio-button>&nbsp;
     <mat-radio-button value="atualizar">Atualizar</mat-radio-button>
   </mat-radio-group>
@@ -37,17 +37,17 @@
   <br>
   <button
     type="button"
-    (click)="submitForm()"
+    (click)="submitForm(customerForm)"
     [disabled]="checkButton()"
     mat-raised-button
     color="primary">
       <div *ngIf="isAtualizar()">Atualizar</div>
       <div *ngIf="isInserir()">Inserir</div>
   </button><br><br>
-  <div class="sucesso" *ngIf="message === 'sucesso'">
+  <div class="sucesso" *ngIf="isSuccess()">
     Salvo com sucesso!<br><br>
   </div>
-  <div class="erro" *ngIf="message === 'erro'">
+  <div class="erro" *ngIf="isFailure()">
     {{error}}<br><br>
   </div>
   <div *ngIf="bar">

@@ -27,7 +27,7 @@ export class EquipmentComponent implements OnInit {
   filteredEquipment: Observable<EquipmentModel[]>;
 
   constructor(private _http: EquipmentService, private _fb: FormBuilder) {
-    this._http.getEquipments().subscribe(data =>{
+    this._http.getAll().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 
       this.filteredEquipment = this.equipmentAutoComplete.valueChanges

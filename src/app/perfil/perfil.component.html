@@ -55,14 +55,14 @@
   <button
     type="button"
     [disabled]="checkButton()"
-    (click)="submitForm()"
+    (click)="submitForm(userForm)"
     mat-raised-button
     color="primary">Atualizar
   </button><br><br>
-  <div class="sucesso" *ngIf="message === 'sucesso'">
+  <div class="sucesso" *ngIf="isSuccess()">
     Salvo com sucesso!<br><br>
   </div>
-  <div class="erro" *ngIf="message === 'erro'">
+  <div class="erro" *ngIf="isFailure()">
     {{error}}<br><br>
   </div>
   <div *ngIf="bar">

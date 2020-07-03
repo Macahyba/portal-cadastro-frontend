@@ -23,11 +23,11 @@ export class CustomerService {
 
   constructor(private _http: HttpClient){}
 
-  getCustomers(): Observable<CustomerModel> {
+  getAll(): Observable<CustomerModel> {
     return this._http.get<CustomerModel>('customers/');
   }
 
-  postCustomer(customer: CustomerModel){
+  post(customer: CustomerModel){
     const payload = JSON.stringify(<CustomerModel>customer);
 
     return this._http.post('customers/', payload, this.httpOptions).pipe(
@@ -36,7 +36,7 @@ export class CustomerService {
     );
   }
 
-  patchCustomer(customer: CustomerModel){
+  patch(customer: CustomerModel){
     const payload = JSON.stringify(<CustomerModel>customer);
     const id = customer.id;
 

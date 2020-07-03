@@ -22,11 +22,11 @@ export class EquipmentService {
 
   constructor(private _http: HttpClient){}
 
-  getEquipments(): Observable<EquipmentModel> {
+  getAll(): Observable<EquipmentModel> {
     return this._http.get<EquipmentModel>('equipments/');
   }
 
-  postEquipment(equipment: EquipmentModel){
+  post(equipment: EquipmentModel){
     const payload = JSON.stringify(<EquipmentModel>equipment);
 
     return this._http.post('equipments/', payload, this.httpOptions).pipe(
@@ -34,7 +34,7 @@ export class EquipmentService {
     );
   }
 
-  patchEquipment(equipment: EquipmentModel){
+  patch(equipment: EquipmentModel){
     const payload = JSON.stringify(<EquipmentModel>equipment);
     const id = equipment.id;
 

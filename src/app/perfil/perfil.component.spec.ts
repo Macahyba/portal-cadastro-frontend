@@ -17,6 +17,7 @@ import { AuthenticationService } from '../service/authentication.service';
 import { AuthenticationServiceMock } from '../mock/authentication-service-mock';
 import { UserService } from '../service/user.service';
 import { UserServiceMock } from '../mock/user-service-mock';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PerfilComponent', () => {
   let component: PerfilComponent;
@@ -27,6 +28,7 @@ describe('PerfilComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ PerfilComponent ],
       imports: [
+        RouterTestingModule,
         MatFormFieldModule,
         MatInputModule,
         MatProgressBarModule,

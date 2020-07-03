@@ -90,10 +90,10 @@
     <button type="button" id="atualizar" mat-raised-button color="primary" (click)="submitForm(repairFormGroup)">Atualizar</button>&nbsp;
     <button type="button" id="deletar" mat-raised-button color="warn" (click)="deleteEntry()">Deletar</button>
     <br><br>
-    <div class="sucesso" *ngIf="message === 'sucesso'">
+    <div class="sucesso" *ngIf="isSuccess()">
       Salvo com sucesso!<br><br>
     </div>
-    <div class="erro" *ngIf="message === 'erro'">
+    <div class="erro" *ngIf="isFailure()">
       {{error}}<br><br>
     </div>
     <div *ngIf="bar">

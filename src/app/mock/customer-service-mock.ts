@@ -8,7 +8,7 @@ import { ContactModel } from '../model/contact.model';
 })
 export class CustomerServiceMock {
 
-  getCustomers(): BehaviorSubject<CustomerModel[]> {
+  getAll(): BehaviorSubject<CustomerModel[]> {
 
     const contacts1 = [
       new ContactModel(1, "name1", "email1@mail", "depto1"),

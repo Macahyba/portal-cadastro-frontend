@@ -11,41 +11,41 @@ import { RepairModel } from '../model/repair.model';
 export class RepairService {
 
 
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'my-auth-token'
-      })
-    };
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': 'my-auth-token'
+    })
+  };
 
-    constructor(private _http: HttpClient){}
+  constructor(private _http: HttpClient){}
 
-    getRepairs(): Observable<RepairModel[]> {
-        return this._http.get<RepairModel[]>('repairs/');
-    }
+  getAll(): Observable<RepairModel[]> {
+      return this._http.get<RepairModel[]>('repairs/');
+  }
 
-    getOneRepair(id: number): Observable<RepairModel> {
-        return this._http.get<RepairModel>(`repairs/${id}`);
-    }
+  get(id: number): Observable<RepairModel> {
+      return this._http.get<RepairModel>(`repairs/${id}`);
+  }
 
-    postRepair(repair: RepairModel){
-      const payload = JSON.stringify(<RepairModel>repair);
+  post(repair: RepairModel){
+    const payload = JSON.stringify(<RepairModel>repair);
 
-      return this._http.post('repairs/', payload, this.httpOptions).pipe(
-        timeout(15000),
-        catchError(this.handleError)
-      );
-    }
+    return this._http.post('repairs/', payload, this.httpOptions).pipe(
+      timeout(15000),
+      catchError(this.handleError)
+    );
+  }
 
-    patchRepair(repair: RepairModel){
-      const payload = JSON.stringify(<RepairModel>repair);
-      const id = repair.id;
+  patch(repair: RepairModel){
+    const payload = JSON.stringify(<RepairModel>repair);
+    const id = repair.id;
 
-      return this._http.patch(`repairs/${id}`, payload, this.httpOptions).pipe(
-        timeout(15000),
-        catchError(this.handleError)
-      );
-    }
+    return this._http.patch(`repairs/${id}`, payload, this.httpOptions).pipe(
+      timeout(15000),
+      catchError(this.handleError)
+    );
+  }
 
   handleError(error) {
     let errorMessage = '';

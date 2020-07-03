@@ -13,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CustomerCrudComponent', () => {
   let component: CustomerCrudComponent;
@@ -22,14 +24,16 @@ describe('CustomerCrudComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CustomerCrudComponent ],
       imports: [
-        ReactiveFormsModule,
-        MatProgressBarModule,
-        MatRadioModule,
-        FormsModule,
+        RouterTestingModule,
+        MatFormFieldModule,
         MatInputModule,
+        MatProgressBarModule,
+        MatCardModule,
+        MatRadioModule,
         MatOptionModule,
         MatSelectModule,
-        MatCardModule,
+        FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         BrowserAnimationsModule
       ],

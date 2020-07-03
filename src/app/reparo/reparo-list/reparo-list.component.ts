@@ -27,7 +27,7 @@ export class ReparoListComponent implements OnInit {
   repairs: Array<RepairModel>;
 
   ngOnInit() {
-    this._http.getRepairs().subscribe(data =>{
+    this._http.getAll().subscribe(data =>{
       this.repairs = data.slice().reverse();
       this.repairs.forEach(repair => { this.getTat(repair)});
       this.dataSource = new MatTableDataSource(Array.from(this.repairs.values()));

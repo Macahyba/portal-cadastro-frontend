@@ -29,7 +29,7 @@ export class ServicesComponent implements OnInit {
 
   constructor(private _http: ServiceService,  private _fb: FormBuilder) {
 
-    this._http.getServices().subscribe(data =>{
+    this._http.getAll().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.dataSource = new MatTableDataSource(this.services);
     })

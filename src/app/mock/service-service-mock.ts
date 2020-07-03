@@ -7,7 +7,7 @@ import { ServiceModel } from '../model/service.model';
 })
 export class ServiceServiceMock {
 
-  getServices(): BehaviorSubject<ServiceModel[]> {
+  getAll(): BehaviorSubject<ServiceModel[]> {
 
     const services = [
       new ServiceModel(1, "service1", "description1", 100),

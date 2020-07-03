@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { FormBuilder, Validators, FormGroup, AbstractControl, ValidatorFn, FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
 import { UserDetailsModel } from 'src/app/model/user-details';
 import { AuthenticationService } from 'src/app/service/authentication.service';
+import { Router } from '@angular/router';
+import { GenericFormService } from '../../service/generic-form.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-crud',
   templateUrl: './user-crud.component.html',
   styleUrls: ['./user-crud.component.scss']
 })
-export class UserCrudComponent implements OnInit {
+export class UserCrudComponent extends GenericFormService implements OnInit {
 
   HTTP_HOST = environment.http_host;
 
   userForm = this._fb.group({});
-
-  operacao: string = "inserir";
-  selectControl = this._fb.control('');
 
   id = this._fb.control('');
   username = this._fb.control('', Validators.required);
@@ -35,25 +34,26 @@ export class UserCrudComponent implements OnInit {
   users: UserDetailsModel[];
 
   selectedUser: UserDetailsModel;
-  message: string;
-  bar: boolean;
-  barFetch: boolean;
-  error: string;
+
+  path: string = 'usuarios';
 
   getUserForm(){
     return this.userForm.controls.user as FormGroup;
   }
 
   constructor(
-      private _fb: FormBuilder,
-      private _http: UserService,
-      private _auth: AuthenticationService) {
-    this._http.getUsersDetails().subscribe(data =>{
-      this.users = <UserDetailsModel[]>data;
-      this.barFetch = false;
-    });
-    this.barFetch = true;
-   }
+    _fb: FormBuilder,
+    private _userService: UserService,
+    _router: Router,
+    private _auth: AuthenticationService) {
+      super( _fb, _userService, _router);
+      this._userService.getUsersDetails().subscribe(data =>{
+        this.users = <UserDetailsModel[]>data;
+        this.barFetch = false;
+      });
+      this.barFetch = true;
+
+    }
 
   ngOnInit() {
     this.userForm = this._fb.group({
@@ -97,14 +97,6 @@ export class UserCrudComponent implements OnInit {
     }
   }
 
-  isInserir(): boolean {
-    return this.operacao === 'inserir'
-  }
-
-  isAtualizar(): boolean {
-    return this.operacao === 'atualizar'
-  }
-
   radioSelect(){
     if (this.isInserir()){
       this.userForm.reset();
@@ -136,75 +128,58 @@ export class UserCrudComponent implements OnInit {
     return this.users.find(eq => eq.id === id)
   }
 
-  postSubscription: Subscription;
 
-  submitForm(){
+  submitForm(form){
+
+    this.bar = true;
 
     if (this.isAtualizar()) {
 
-      if (this.changePass){
-        this.postSubscription =
-        this._http.resetUser(this.userForm.value)
+      if (this.changePass.value){
+        this._userService.resetUser(form.value)
+        .pipe( finalize(() => this.bar = false ))
         .subscribe(
-          ((response) => {
-            this.setMessage('sucesso');
+          (() => {
+            this.showSuccess();
           }),
           ((error) => {
             console.error(error);
-            this.setMessage('erro');
+            this.showFailure();
             this.error = error;
           })
         )
       }
 
-      this.postSubscription =
-        this._http.patchUserDetails(this.userForm.value)
-        .subscribe(
-          ((response) => {
-            this.setMessage('sucesso');
-            this.bar = false;
-            setTimeout(() => {
-              window.open(`${this.HTTP_HOST}/usuarios`,"_self");
-            }, 2000);
-          }),
-          ((error) => {
-            console.error(error);
-            this.setMessage('erro');
-            this.error = error;
-            this.bar = false;
-          })
-        )
-    } else {
-
-      this.postSubscription =
-      this._http.postUserDetails(this.userForm.value)
+      this._userService.patchUserDetails(form.value)
+      .pipe( finalize(() => this.bar = false ))
       .subscribe(
-        ((response) => {
-          this.setMessage('sucesso');
-          this.bar = false;
-          setTimeout(() => {
-            window.open(`${this.HTTP_HOST}/usuarios`,"_self");
-          }, 2000);
+        (() => {
+          this.showSuccess();
+          this.redirectTo(this.path);
         }),
         ((error) => {
           console.error(error);
-          this.setMessage('erro');
-          this.bar = false;
+          this.showFailure();
+          this.error = error;
+        })
+      )
+    } else {
+
+      this._userService.postUserDetails(form.value)
+      .pipe( finalize(() => this.bar = false ))
+      .subscribe(
+        (() => {
+          this.showSuccess();
+          this.redirectTo(this.path);
+        }),
+        ((error) => {
+          console.error(error);
+          this.showFailure();
         })
       )
     }
 
-    this.bar = true;
   }
-
-  setMessage(m: string){
-
-    setTimeout(() => {
-      this.message = "";
-    }, 3000);
-    this.message = m;
-  }
-
 
   validateEquals(field1: AbstractControl, field2: AbstractControl){
     return function(){

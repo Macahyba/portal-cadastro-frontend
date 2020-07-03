@@ -1,12 +1,12 @@
-<form [formGroup]="orcamentoFormGroup" (submit)="submitForm()">
+<form [formGroup]="orcamentoFormGroup">
       <div *ngIf="barFetch">
         <br><mat-progress-bar mode="query"></mat-progress-bar><br>
       </div>
       <div class="full-width">
-        <div class="sucesso" *ngIf="message === 'sucesso'">
+        <div class="sucesso" *ngIf="isSuccess()">
           Salvo com sucesso!<br><br>
         </div>
-        <div class="erro" *ngIf="message === 'erro'">
+        <div class="erro" *ngIf="isFailure()">
           {{error}}<br><br>
         </div>
         <div *ngIf="bar">
@@ -18,15 +18,21 @@
           [parentFormGroup]="orcamentoFormGroup"></app-status>
         <br>
         <span *ngIf="role !== 'user'">
-          <button id='atualizar' type="submit" mat-raised-button color="primary">Atualizar</button>&nbsp;
+          <button
+            id='atualizar'
+            type="submit"
+            mat-raised-button color="primary"
+            (click)="submitForm(orcamentoFormGroup)">Atualizar
+          </button>&nbsp;
         </span>
         <span *ngIf="checkStatus()">
         <button
           id="download"
           type="button"
           mat-raised-button color="warn"
-          (click)="downloadPdf()">Download</button>
-          <br>
+          (click)="downloadPdf()">Download
+        </button>
+        <br>
         </span>
         <br>
         <input type="hidden" [value]="id">
