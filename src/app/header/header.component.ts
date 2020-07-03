@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../service/storage.service';
 
-interface Navigator {
-  app: {
-      exitApp: () => any;
-  }
-}
 
 @Component({
   selector: 'app-header',
@@ -23,11 +18,4 @@ export class HeaderComponent implements OnInit {
     this._stor.storageSub.subscribe(data =>this.role = data)
   }
 
-  exit(){
-    console.log(navigator);
-    // (navigator as any).app.exitApp();
-    navigator['app'].exitApp();
-  }
-
 }
-

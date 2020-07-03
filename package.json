@@ -28,7 +28,6 @@
     "@angular/router": "~9.1.11",
     "@auth0/angular-jwt": "^4.0.0",
     "cordova-android": "^8.1.0",
-    "cordova-plugin-exitapp2": "^1.0.4",
     "cordova-plugin-ionic-webview": "^5.0.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.27.0",
@@ -68,8 +67,7 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-ionic-webview": {},
-      "kr.co.joycorp.cordova.exitapp": {}
+      "cordova-plugin-ionic-webview": {}
     },
     "platforms": [
       "android"

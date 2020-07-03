@@ -48,16 +48,4 @@ Thumbs.db
 # Cordova
 plugins/
 www/
-platforms/android/.gradle
-platforms/android/build
-platforms/android/assets/www
-platforms/android/app/src/main/assets/www
-platforms/android/local.properties
-platforms/android/CordovaLib/build
-platforms/android/CordovaLib/gen
-platforms/android/CordovaLib/local.properties
-platforms/android/settings.gradle
-platforms/android/app/build.gradle
-platforms/android/app/src/main/res/values/strings.xml
-platforms/android/app/src/main/res/xml/config.xml
-platforms/android/app/src/main/AndroidManifest.xml
+platforms/
