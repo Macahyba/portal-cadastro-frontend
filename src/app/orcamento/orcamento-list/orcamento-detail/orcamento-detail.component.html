@@ -9,6 +9,9 @@
         <div class="erro" *ngIf="isFailure()">
           {{error}}<br><br>
         </div>
+        <div class="warning" *ngIf="isWarning()">
+          {{warningMessage}}<br><br>
+        </div>
         <div *ngIf="bar">
           <mat-progress-bar mode="indeterminate"></mat-progress-bar><br>
         </div>

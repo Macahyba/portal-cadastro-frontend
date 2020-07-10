@@ -80,7 +80,7 @@ describe('ReparoListComponent', () => {
 
   it('should load the data table', () => {
 
-    const reps = repairService.getRepairs()
+    const reps = repairService.getAll()
     expect(component.dataSource.filteredData).toEqual(reps.value.slice().reverse());
   });
 

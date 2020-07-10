@@ -144,7 +144,7 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
           }),
           ((error) => {
             console.error(error);
-            this.showFailure();
+            this.showFailure(error);
             this.error = error;
           })
         )
@@ -159,7 +159,7 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
         }),
         ((error) => {
           console.error(error);
-          this.showFailure();
+          this.showFailure(error);
           this.error = error;
         })
       )
@@ -174,7 +174,7 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
         }),
         ((error) => {
           console.error(error);
-          this.showFailure();
+          this.showFailure(error);
         })
       )
     }

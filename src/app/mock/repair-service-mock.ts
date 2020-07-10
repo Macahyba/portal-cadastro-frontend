@@ -77,7 +77,7 @@ export class RepairServiceMock {
     return new BehaviorSubject<boolean>(true);
   }
 
-  getRepairs(): BehaviorSubject<RepairModel[]> {
+  getAll(): BehaviorSubject<RepairModel[]> {
 
     const repairFups1 = [this.repairFup1, this.repairFup2];
     const repairFups2 = [this.repairFup3, this.repairFup4];
@@ -92,7 +92,7 @@ export class RepairServiceMock {
     return new BehaviorSubject<RepairModel[]>(repairs);
   }
 
-  getOneRepair(): BehaviorSubject<RepairFupModel>{
+  get(): BehaviorSubject<RepairFupModel>{
 
     const repairFups1 = [this.repairFup1, this.repairFup2];
 

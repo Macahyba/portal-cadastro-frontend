@@ -48,7 +48,7 @@ describe('OrcamentoDetailComponent', () => {
       component = fixture.componentInstance;
 
       quotationService = TestBed.get(QuotationServiceMock);
-      quotation = quotationService.getOneQuotation().value;
+      quotation = quotationService.get().value;
 
       component.id = 1;
 
@@ -127,7 +127,7 @@ describe('OrcamentoDetailComponent', () => {
       component = fixture.componentInstance;
 
       quotationService = TestBed.get(QuotationServiceMock);
-      quotation = quotationService.getOneQuotation().value;
+      quotation = quotationService.get().value;
 
       component.id = 1;
 
@@ -219,7 +219,7 @@ describe('OrcamentoDetailComponent', () => {
       component = fixture.componentInstance;
 
       quotationService = TestBed.get(QuotationServiceMock);
-      quotation = quotationService.getOneQuotation().value;
+      quotation = quotationService.get().value;
 
       component.id = 1;
 
@@ -271,7 +271,7 @@ describe('OrcamentoDetailComponent', () => {
       component = fixture.componentInstance;
 
       quotationService = TestBed.get(QuotationServiceMock);
-      quotation = quotationService.getOneQuotation().value;
+      quotation = quotationService.get().value;
 
       component.id = 1;
 

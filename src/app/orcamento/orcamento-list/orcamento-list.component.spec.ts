@@ -84,7 +84,7 @@ describe('OrcamentoListComponent', () => {
 
   it('should load the data table', () => {
 
-    const quots = quotationService.getQuotations()
+    const quots = quotationService.getAll()
     expect(component.dataSource.filteredData).toEqual(quots.value.slice().reverse());
   });
 

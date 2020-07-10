@@ -116,7 +116,7 @@ export class PerfilComponent extends GenericFormService implements OnInit {
       }),
       ((error) => {
         console.error(error);
-        this.showFailure();
+        this.showFailure(error);
         this.error = error;
       })
     )

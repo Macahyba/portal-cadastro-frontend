@@ -22,12 +22,12 @@ export class ReparoListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private _http: RepairService, private router: Router) { }
+  constructor(private _repairService: RepairService, private router: Router) { }
 
   repairs: Array<RepairModel>;
 
   ngOnInit() {
-    this._http.getAll().subscribe(data =>{
+    this._repairService.getAll().subscribe(data =>{
       this.repairs = data.slice().reverse();
       this.repairs.forEach(repair => { this.getTat(repair)});
       this.dataSource = new MatTableDataSource(Array.from(this.repairs.values()));

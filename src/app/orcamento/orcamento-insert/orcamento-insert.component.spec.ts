@@ -9,12 +9,11 @@ import { ServiceService } from 'src/app/service/service.service';
 import { ServiceServiceMock } from 'src/app/mock/service-service-mock';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { AuthenticationServiceMock } from 'src/app/mock/authentication-service-mock';
-import { QuotationServiceMock } from 'src/app/mock/quotation-service-mock';
-import { QuotationModel } from 'src/app/model/quotation.model';
 import { UserModel } from 'src/app/model/user.model';
 import { StatusModel } from 'src/app/model/status.model';
 import { By } from '@angular/platform-browser';
 import { ServiceModel } from 'src/app/model/service.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('OrcamentoInsertComponent', () => {
   let component: OrcamentoInsertComponent;
@@ -27,6 +26,7 @@ describe('OrcamentoInsertComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ OrcamentoInsertComponent ],
       imports: [
+        RouterTestingModule,
         ReactiveFormsModule,
         MatProgressBarModule,
         HttpClientModule

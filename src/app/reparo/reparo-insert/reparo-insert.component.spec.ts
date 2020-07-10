@@ -10,6 +10,7 @@ import { AuthenticationServiceMock } from 'src/app/mock/authentication-service-m
 import { StatusModel } from 'src/app/model/status.model';
 import { By } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ReparoInsertComponent', () => {
   let component: ReparoInsertComponent;
@@ -21,6 +22,7 @@ describe('ReparoInsertComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ReparoInsertComponent ],
       imports: [
+        RouterTestingModule,
         ReactiveFormsModule,
         HttpClientModule,
         MatButtonModule

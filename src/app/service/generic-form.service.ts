@@ -14,31 +14,43 @@ export class GenericFormService {
   bar: boolean;
   barFetch: boolean;
   error: string;
+  warningMessage: string;
   path: string;
 
   selectControl = this._fb.control('');
 
   success: boolean = false;
   failure: boolean = false;
+  warning: boolean = false;
 
   isInserir(): boolean { return this.operacao === 'inserir' }
   isAtualizar(): boolean { return this.operacao === 'atualizar' }
 
   isSuccess(): boolean { return this.success }
   isFailure(): boolean { return this.failure }
+  isWarning(): boolean { return this.warning }
 
   showSuccess() {
+    this.success = true;
     setTimeout(() => {
       this.success = false;
     }, 3000);
-    this.success = true;
   }
 
-  showFailure() {
+  showFailure(error) {
+    this.error = error;
+    this.failure = true;
     setTimeout(() => {
       this.failure = false;
     }, 3000);
-    this.failure = true;
+  }
+
+  showWarning(warning) {
+    this.warningMessage = warning
+    this.warning = true;
+    setTimeout(() => {
+      this.warning = false;
+    }, 3000);
   }
 
   radioSelect(form){
@@ -66,13 +78,14 @@ export class GenericFormService {
     this._service.patch(form)
     .pipe( finalize(() => this.bar = false ))
     .subscribe(
-      (() => {
+      ((message) => {
+        if(message.warning) this.showWarning(message.warning);
         this.showSuccess();
         this.redirectTo(this.path);
       }),
       ((error) => {
         console.error(error);
-        this.showFailure();
+        this.showFailure(error);
         this.bar = false;
       })
     )
@@ -85,13 +98,14 @@ export class GenericFormService {
     this._service.post(form)
     .pipe( finalize(() => this.bar = false ))
     .subscribe(
-      (() => {
+      ((message) => {
+        if(message.warning) this.showWarning(message.warning);
         this.showSuccess();
         this.redirectTo(this.path);
       }),
       ((error) => {
         console.error(error);
-        this.showFailure();
+        this.showFailure(error);
         this.bar = false;
       })
     )

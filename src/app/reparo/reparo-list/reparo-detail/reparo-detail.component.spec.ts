@@ -55,7 +55,7 @@ describe('ReparoDetailComponent', () => {
     component = fixture.componentInstance;
 
     repairService = TestBed.get(RepairServiceMock);
-    repair = repairService.getOneRepair().value;
+    repair = repairService.get().value;
 
     component.id = 1;
 

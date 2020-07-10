@@ -42,7 +42,7 @@ export class QuotationServiceMock {
     return 100;
   }
 
-  getQuotations(): BehaviorSubject<QuotationModel[]>{
+  getAll(): BehaviorSubject<QuotationModel[]>{
 
     let services1 = new Set();
     services1.add(new ServiceModel(1, "service1", "description1", 100));
@@ -62,7 +62,7 @@ export class QuotationServiceMock {
     return new BehaviorSubject<QuotationModel[]>(quotations);
   }
 
-  getOneQuotation(): BehaviorSubject<QuotationModel>{
+  get(): BehaviorSubject<QuotationModel>{
     let services1 = new Set();
     services1.add(new ServiceModel(1, "service1", "description1", 100));
     services1.add(new ServiceModel(2, "service2", "description2", 200));
