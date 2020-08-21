@@ -5,7 +5,7 @@ import { UserService } from 'src/app/service/user.service';
 import { UserDetailsModel } from 'src/app/model/user-details';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { Router } from '@angular/router';
-import { GenericFormService } from '../../service/generic-form.service';
+import { GenericFormService, Message } from '../../service/generic-form.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './user-crud.component.html',
   styleUrls: ['./user-crud.component.scss']
 })
+
 export class UserCrudComponent extends GenericFormService implements OnInit {
 
   HTTP_HOST = environment.http_host;
@@ -139,7 +140,8 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
         this._userService.resetUser(form.value)
         .pipe( finalize(() => this.bar = false ))
         .subscribe(
-          (() => {
+          ((message: Message) => {
+            if (message && message.warning) this.showWarning(message.warning);
             this.showSuccess();
           }),
           ((error) => {
@@ -153,7 +155,8 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
       this._userService.patchUserDetails(form.value)
       .pipe( finalize(() => this.bar = false ))
       .subscribe(
-        (() => {
+        ((message: Message) => {
+          if (message && message.warning) this.showWarning(message.warning);
           this.showSuccess();
           this.redirectTo(this.path);
         }),
@@ -168,7 +171,8 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
       this._userService.postUserDetails(form.value)
       .pipe( finalize(() => this.bar = false ))
       .subscribe(
-        (() => {
+        ((message: Message) => {
+          if (message && message.warning) this.showWarning(message.warning);
           this.showSuccess();
           this.redirectTo(this.path);
         }),

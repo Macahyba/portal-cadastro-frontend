@@ -2,6 +2,10 @@ import { FormBuilder } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+export interface Message {
+  warning?: string;
+}
+
 export class GenericFormService {
 
   constructor(
@@ -79,7 +83,7 @@ export class GenericFormService {
     .pipe( finalize(() => this.bar = false ))
     .subscribe(
       ((message) => {
-        if(message.warning) this.showWarning(message.warning);
+        if(message && message.warning) this.showWarning(message.warning);
         this.showSuccess();
         this.redirectTo(this.path);
       }),
@@ -99,7 +103,7 @@ export class GenericFormService {
     .pipe( finalize(() => this.bar = false ))
     .subscribe(
       ((message) => {
-        if(message.warning) this.showWarning(message.warning);
+        if(message && message.warning) this.showWarning(message.warning);
         this.showSuccess();
         this.redirectTo(this.path);
       }),

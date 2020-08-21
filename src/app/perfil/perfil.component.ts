@@ -5,7 +5,7 @@ import { UserDetailsModel } from '../model/user-details';
 import { UserService } from '../service/user.service';
 import { AuthenticationService } from '../service/authentication.service';
 import { Subject } from 'rxjs';
-import { GenericFormService } from '../service/generic-form.service';
+import { GenericFormService, Message } from '../service/generic-form.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
@@ -110,7 +110,8 @@ export class PerfilComponent extends GenericFormService implements OnInit {
     this._userService.patchUserDetails(form.value)
     .pipe( finalize(() => this.bar = false ))
     .subscribe(
-      (() => {
+      ((message: Message) => {
+        if(message && message.warning) this.showWarning(message.warning);
         this.showSuccess();
         this.redirectTo(this.path);
       }),
