@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { map, startWith, filter } from 'rxjs/operators';
 import { ContactModel } from 'src/app/model/contact.model';
 import { CustomerService } from 'src/app/service/customer.service';
@@ -11,12 +11,14 @@ import { CustomerService } from 'src/app/service/customer.service';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent implements OnInit {
+export class CustomerComponent implements OnInit, OnDestroy {
 
   @Input() disabled: boolean;
   @Input() injectedCustomer$: BehaviorSubject<CustomerModel>;
   @Input() injectedContact$: BehaviorSubject<ContactModel>;
   @Input() parentFormGroup: FormGroup;
+
+  private _subscription: Subscription;
 
   customerGroup : FormGroup;
   id = this._fb.control('');
@@ -47,7 +49,7 @@ export class CustomerComponent implements OnInit {
 
 
   constructor(private _customerService: CustomerService, private _fb: FormBuilder) {
-    this._customerService.getAll().subscribe(data =>{
+    this._subscription = this._customerService.getAll().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
 
       this.filteredCustomer =
@@ -91,6 +93,10 @@ export class CustomerComponent implements OnInit {
       this.parentFormGroup.removeControl('customer');
       this.parentFormGroup.removeControl('contact');
     }
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   displayFn(customer: CustomerModel): string {

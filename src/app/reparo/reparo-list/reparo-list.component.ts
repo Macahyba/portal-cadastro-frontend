@@ -1,23 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RepairModel } from 'src/app/model/repair.model';
 import { RepairService } from 'src/app/service/repair.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reparo-list',
   templateUrl: './reparo-list.component.html',
   styleUrls: ['./reparo-list.component.scss']
 })
-export class ReparoListComponent implements OnInit {
+export class ReparoListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] =
     ['creationDate', 'sapNotification', 'repairFups', 'equipment', 'serialNumber',
     'customer', 'warranty', 'tat', 'status', 'notaFiscal', 'endDate'];
   dataSource: MatTableDataSource<RepairModel>;
   barFetch: boolean;
+
+  private _subscription: Subscription;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -27,7 +30,7 @@ export class ReparoListComponent implements OnInit {
   repairs: Array<RepairModel>;
 
   ngOnInit() {
-    this._repairService.getAll().subscribe(data =>{
+    this._subscription = this._repairService.getAll().subscribe(data =>{
       this.repairs = data.slice().reverse();
       this.repairs.forEach(repair => { this.getTat(repair)});
       this.dataSource = new MatTableDataSource(Array.from(this.repairs.values()));
@@ -54,6 +57,10 @@ export class ReparoListComponent implements OnInit {
       this.barFetch = false;
     });
     this.barFetch = true;
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   applyFilter(event: Event) {

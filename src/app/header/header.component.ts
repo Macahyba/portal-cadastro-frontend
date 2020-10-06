@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { StorageService } from '../service/storage.service';
 
 
@@ -7,7 +8,9 @@ import { StorageService } from '../service/storage.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   role: string;
 
@@ -15,7 +18,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.role = sessionStorage.getItem('role');
-    this._stor.storageSub.subscribe(data =>this.role = data)
+    this._subscription = this._stor.storageSub.subscribe(data =>this.role = data)
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 
 }

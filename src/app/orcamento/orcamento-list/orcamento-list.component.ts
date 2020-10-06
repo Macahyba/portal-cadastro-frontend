@@ -1,23 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { QuotationModel } from 'src/app/model/quotation.model';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-orcamento-list',
   templateUrl: './orcamento-list.component.html',
   styleUrls: ['./orcamento-list.component.scss']
 })
-export class OrcamentoListComponent implements OnInit {
+export class OrcamentoListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'label', 'name', 'equipment', 'serialNumber', 'totalPrice',
      'totalDiscount', 'status', 'creationDate'
   ];
   dataSource: MatTableDataSource<QuotationModel>;
   barFetch: boolean;
+
+  private _subscription: Subscription;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -27,7 +30,7 @@ export class OrcamentoListComponent implements OnInit {
   quotations: Array<QuotationModel>;
 
   ngOnInit() {
-    this._http.getAll().subscribe(apiData => {
+    this._subscription = this._http.getAll().subscribe(apiData => {
       this.quotations = apiData.slice().reverse();
       this.dataSource = new MatTableDataSource(this.quotations);
       this.dataSource.filterPredicate = (data, filter: string) => {
@@ -53,6 +56,10 @@ export class OrcamentoListComponent implements OnInit {
     });
     this.barFetch = true;
 
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 
   applyFilter(event: Event) {

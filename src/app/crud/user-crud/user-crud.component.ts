@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { UserService } from 'src/app/service/user.service';
@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/service/authentication.service';
 import { Router } from '@angular/router';
 import { GenericFormService, Message } from '../../service/generic-form.service';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-crud',
@@ -14,7 +15,9 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./user-crud.component.scss']
 })
 
-export class UserCrudComponent extends GenericFormService implements OnInit {
+export class UserCrudComponent extends GenericFormService implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   HTTP_HOST = environment.http_host;
 
@@ -48,7 +51,7 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
     _router: Router,
     private _auth: AuthenticationService) {
       super( _fb, _userService, _router);
-      this._userService.getUsersDetails().subscribe(data =>{
+      this._subscription = this._userService.getUsersDetails().subscribe(data =>{
         this.users = <UserDetailsModel[]>data;
         this.barFetch = false;
       });
@@ -74,6 +77,10 @@ export class UserCrudComponent extends GenericFormService implements OnInit {
       validator : this.validateEquals(this.password, this.passwordConfirm)
     })
     this.selectControl.disable();
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   checkButton(): boolean {

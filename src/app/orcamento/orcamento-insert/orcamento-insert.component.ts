@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ServiceModel } from 'src/app/model/service.model';
@@ -9,13 +9,16 @@ import { AuthenticationService } from 'src/app/service/authentication.service';
 import { ServiceService } from 'src/app/service/service.service';
 import { GenericFormService } from 'src/app/service/generic-form.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-orcamento-insert',
   templateUrl: './orcamento-insert.component.html',
   styleUrls: ['./orcamento-insert.component.scss']
 })
-export class OrcamentoInsertComponent extends GenericFormService implements OnInit {
+export class OrcamentoInsertComponent extends GenericFormService implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   HTTP_HOST = environment.http_host;
 
@@ -50,13 +53,17 @@ export class OrcamentoInsertComponent extends GenericFormService implements OnIn
 
   ngOnInit() {
 
-    this._services.getAll().subscribe(data =>{
+    this._subscription = this._services.getAll().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.totalPrice = this.selectedService.price;
       this.barFetch = false;
     });
     this.barFetch = true;
 
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   selectService(service){

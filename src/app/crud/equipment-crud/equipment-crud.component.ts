@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EquipmentService } from 'src/app/service/equipment.service';
 import { Router } from '@angular/router';
@@ -12,7 +12,9 @@ import { GenericFormService } from '../../service/generic-form.service';
   templateUrl: './equipment-crud.component.html',
   styleUrls: ['./equipment-crud.component.scss']
 })
-export class EquipmentCrudComponent extends GenericFormService implements OnInit  {
+export class EquipmentCrudComponent extends GenericFormService implements OnInit, OnDestroy  {
+
+  private _subscription: Subscription;
 
   HTTP_HOST = environment.http_host;
 
@@ -32,13 +34,17 @@ export class EquipmentCrudComponent extends GenericFormService implements OnInit
         }
 
   ngOnInit() {
-    this._equipmentService.getAll().subscribe(data =>{
+    this._subscription = this._equipmentService.getAll().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
       this.barFetch = false;
     })
     this.barFetch = true;
     this.selectControl.disable();
     this._cdr.detectChanges();
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   checkButton(): boolean {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '../service/authentication.service';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginFormGroup = this._fb.group({
     username: ['', Validators.required],
@@ -26,6 +26,10 @@ export class LoginComponent implements OnInit {
     private _auth: AuthenticationService) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(){
+    this.postSubscription.unsubscribe();
   }
 
   checkButton(){

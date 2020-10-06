@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { UserDetailsModel } from '../model/user-details';
 import { UserService } from '../service/user.service';
 import { AuthenticationService } from '../service/authentication.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { GenericFormService, Message } from '../service/generic-form.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
@@ -14,8 +14,9 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss']
 })
-export class PerfilComponent extends GenericFormService implements OnInit {
+export class PerfilComponent extends GenericFormService implements OnInit, OnDestroy {
 
+  private _subscription: Subscription;
 
   HTTP_HOST = environment.http_host;
 
@@ -47,7 +48,7 @@ export class PerfilComponent extends GenericFormService implements OnInit {
     _router: Router,
     private _auth: AuthenticationService) {
       super( _fb, _userService, _router);
-      this._userService.getOneUserDetails(this._auth.getId()).subscribe(data =>{
+      this._subscription = this._userService.getOneUserDetails(this._auth.getId()).subscribe(data =>{
         this.user.next(<UserDetailsModel>data);
         this.barFetch = false;
       });
@@ -87,6 +88,10 @@ export class PerfilComponent extends GenericFormService implements OnInit {
       this.username.disable();
     })
 
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   checkButton(): boolean {

@@ -1,16 +1,18 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { ServiceModel } from 'src/app/model/service.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ServiceService } from 'src/app/service/service.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss']
 })
-export class ServicesComponent implements OnInit {
+export class ServicesComponent implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   @Input() disabled: boolean;
   @Input() injectedServices$ = new BehaviorSubject<ServiceModel[]>([new ServiceModel()]);
@@ -29,7 +31,7 @@ export class ServicesComponent implements OnInit {
 
   constructor(private _http: ServiceService,  private _fb: FormBuilder) {
 
-    this._http.getAll().subscribe(data =>{
+    this._subscription = this._http.getAll().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.dataSource = new MatTableDataSource(this.services);
     })
@@ -46,6 +48,11 @@ export class ServicesComponent implements OnInit {
 
     })
 
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
+    this.servicesToInsert.complete();
   }
 
 

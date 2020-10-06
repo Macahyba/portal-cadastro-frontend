@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RepairService } from 'src/app/service/repair.service';
 import { RepairModel } from 'src/app/model/repair.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { EquipmentModel } from 'src/app/model/equipament.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { RepairFupModel } from 'src/app/model/repair-fup.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { StatusModel } from 'src/app/model/status.model';
 import { GenericFormService } from 'src/app/service/generic-form.service';
 
@@ -17,7 +17,9 @@ import { GenericFormService } from 'src/app/service/generic-form.service';
   templateUrl: './reparo-detail.component.html',
   styleUrls: ['./reparo-detail.component.scss']
 })
-export class ReparoDetailComponent extends GenericFormService implements OnInit {
+export class ReparoDetailComponent extends GenericFormService implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   id: number;
   repair: RepairModel;
@@ -61,7 +63,7 @@ export class ReparoDetailComponent extends GenericFormService implements OnInit 
         super(_fb, _repairService, _router);
         this._activatedRouter.params.subscribe( params => this.id = params.id );
 
-        this._repairService.get(this.id).subscribe(data =>{
+        this._subscription = this._repairService.get(this.id).subscribe(data =>{
           this.repair = <RepairModel>data;
           this.customer$.next(this.repair.customer);
           this.contact$.next(this.repair.contact);
@@ -85,6 +87,9 @@ export class ReparoDetailComponent extends GenericFormService implements OnInit 
     this._cdr.detectChanges();
   }
 
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
+  }
 
   submitForm(form){
 

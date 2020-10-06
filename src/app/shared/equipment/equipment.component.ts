@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { EquipmentModel } from 'src/app/model/equipament.model';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { EquipmentService } from 'src/app/service/equipment.service';
@@ -10,11 +10,13 @@ import { EquipmentService } from 'src/app/service/equipment.service';
   templateUrl: './equipment.component.html',
   styleUrls: ['./equipment.component.scss']
 })
-export class EquipmentComponent implements OnInit {
+export class EquipmentComponent implements OnInit, OnDestroy {
 
   @Input() disabled: boolean;
   @Input() injectedEquipment$: BehaviorSubject<EquipmentModel>;
   @Input() parentFormGroup: FormGroup;
+
+  private _subscription: Subscription;
 
   equipmentGroup : FormGroup;
   id = this._fb.control('');
@@ -27,7 +29,7 @@ export class EquipmentComponent implements OnInit {
   filteredEquipment: Observable<EquipmentModel[]>;
 
   constructor(private _http: EquipmentService, private _fb: FormBuilder) {
-    this._http.getAll().subscribe(data =>{
+    this._subscription = this._http.getAll().subscribe(data =>{
       this.equipments = <EquipmentModel[]>data;
 
       this.filteredEquipment = this.equipmentAutoComplete.valueChanges
@@ -57,6 +59,10 @@ export class EquipmentComponent implements OnInit {
       this.equipmentGroup.controls.serialNumber.disable();
       this.parentFormGroup.removeControl('equipment');
     }
+  }
+
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
   }
 
   private _filter(data: EquipmentModel[], name: any): EquipmentModel[] {

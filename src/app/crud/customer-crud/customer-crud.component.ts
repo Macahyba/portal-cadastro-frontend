@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CustomerModel } from 'src/app/model/customer.model';
 import { FormBuilder } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ContactModel } from 'src/app/model/contact.model';
 import { CustomerService } from 'src/app/service/customer.service';
 import { Router } from '@angular/router';
@@ -13,7 +13,9 @@ import { GenericFormService } from '../../service/generic-form.service';
   templateUrl: './customer-crud.component.html',
   styleUrls: ['./customer-crud.component.scss']
 })
-export class CustomerCrudComponent extends GenericFormService implements OnInit {
+export class CustomerCrudComponent extends GenericFormService implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   HTTP_HOST = environment.http_host;
 
@@ -36,13 +38,17 @@ export class CustomerCrudComponent extends GenericFormService implements OnInit 
     }
 
   ngOnInit() {
-    this._customerService.getAll().subscribe(data =>{
+    this._subscription = this._customerService.getAll().subscribe(data =>{
       this.customers = <CustomerModel[]>data;
       this.barFetch = false;
     })
     this.barFetch = true;
     this.selectControl.disable();
     this._cdr.detectChanges();
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   customerSelect(event){

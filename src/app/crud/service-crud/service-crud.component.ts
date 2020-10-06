@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ServiceModel } from 'src/app/model/service.model';
 import { ServiceService } from 'src/app/service/service.service';
 import { GenericFormService } from '../../service/generic-form.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-service-crud',
   templateUrl: './service-crud.component.html',
   styleUrls: ['./service-crud.component.scss']
 })
-export class ServiceCrudComponent extends GenericFormService implements OnInit {
+export class ServiceCrudComponent extends GenericFormService implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   HTTP_HOST = environment.http_host;
 
@@ -32,7 +35,7 @@ export class ServiceCrudComponent extends GenericFormService implements OnInit {
     private _serviceService: ServiceService,
     _router: Router, ) {
       super(_fb, _serviceService, _router)
-      this._serviceService.getAll().subscribe(data =>{
+      this._subscription = this._serviceService.getAll().subscribe(data =>{
       this.services = <ServiceModel[]>data;
       this.barFetch = false;
     });
@@ -47,6 +50,10 @@ export class ServiceCrudComponent extends GenericFormService implements OnInit {
       price: this.price
     })
     this.selectControl.disable();
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   selected(event){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { QuotationService } from 'src/app/service/quotation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuotationModel } from 'src/app/model/quotation.model';
@@ -8,7 +8,7 @@ import { EquipmentModel } from 'src/app/model/equipament.model';
 import { ServiceModel } from 'src/app/model/service.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { StatusModel } from 'src/app/model/status.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { UserModel } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { GenericFormService } from 'src/app/service/generic-form.service';
@@ -18,7 +18,9 @@ import { GenericFormService } from 'src/app/service/generic-form.service';
   templateUrl: './orcamento-detail.component.html',
   styleUrls: ['./orcamento-detail.component.scss']
 })
-export class OrcamentoDetailComponent extends GenericFormService implements OnInit {
+export class OrcamentoDetailComponent extends GenericFormService implements OnInit, OnDestroy {
+
+  private _subscription: Subscription;
 
   totalPrice: number = 0;
 
@@ -51,7 +53,7 @@ export class OrcamentoDetailComponent extends GenericFormService implements OnIn
 
         super( _fb, _quotationService, _router);
         this._activatedRouter.params.subscribe( params => this.id = params.id );
-        this._quotationService.get(this.id).subscribe(data =>{
+        this._subscription = this._quotationService.get(this.id).subscribe(data =>{
           this.quotation = <QuotationModel>data;
           this.customer$.next(this.quotation.customer);
           this.contact$.next(this.quotation.contact);
@@ -74,6 +76,10 @@ export class OrcamentoDetailComponent extends GenericFormService implements OnIn
     });
     this.role = this._auth.getRole();
 
+  }
+
+  ngOnDestroy(){
+    this._subscription.unsubscribe();
   }
 
   submitForm(form){
